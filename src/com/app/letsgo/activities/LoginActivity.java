@@ -1,4 +1,6 @@
-package com.example.letsgoapp;
+package com.app.letsgo.activities;
+
+import com.example.letsgoapp.R;
 
 import android.app.Activity;
 import android.os.Bundle;

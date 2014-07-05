@@ -3,5 +3,6 @@
 
     <string name="app_name">LetsGoApp</string>
     <string name="hello_world">LetsGo</string>
+    <string name="title_activity_map">Map</string>
 
 </resources>

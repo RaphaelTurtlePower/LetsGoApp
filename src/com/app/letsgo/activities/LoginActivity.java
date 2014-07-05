@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.letsgoapp.R;
+import com.app.letsgo.R;
 import com.parse.Parse;
 import com.parse.ParseObject;
 

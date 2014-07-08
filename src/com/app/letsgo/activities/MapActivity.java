@@ -1,5 +1,8 @@
 package com.app.letsgo.activities;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -10,8 +13,10 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
-import com.app.letsgo.R;
 
+import com.app.letsgo.R;
+import com.app.letsgo.fragments.MapFragment;
+import com.app.letsgo.models.Event;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -19,14 +24,13 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 public class MapActivity extends FragmentActivity implements
 		GooglePlayServicesClient.ConnectionCallbacks,
 		GooglePlayServicesClient.OnConnectionFailedListener {
 
-	private SupportMapFragment mapFragment;
+	private MapFragment mapFragment;
 	private GoogleMap map;
 	private LocationClient mLocationClient;
 	/*
@@ -40,7 +44,7 @@ public class MapActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		mLocationClient = new LocationClient(this, this, this);
-		mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
+		mapFragment = ((MapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
 		if (mapFragment != null) {
 			map = mapFragment.getMap();
 			if (map != null) {
@@ -52,7 +56,7 @@ public class MapActivity extends FragmentActivity implements
 		} else {
 			Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
 		}
-
+		mapFragment.initialize();
 	}
 
 	/*

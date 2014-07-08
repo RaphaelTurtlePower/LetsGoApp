@@ -1,0 +1,134 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <EditText
+        android:id="@+id/etEventType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="20dp"
+        android:hint="Event Theme"
+        android:ems="10" >
+
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/etEventName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etEventType"
+        android:layout_alignRight="@+id/etEventType"
+        android:layout_below="@+id/etEventType"
+        android:hint="Title (music, drinks, party...)"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+    
+    <EditText
+        android:id="@+id/etStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etEventName"
+        android:layout_below="@+id/etEventName"
+        android:ems="10"
+        android:hint="Start Date"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/etStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEventName"
+        android:layout_toRightOf="@+id/etStartDate"
+        android:ems="10"
+        android:hint="Start Time"
+        android:inputType="time" />
+
+    <EditText
+        android:id="@+id/etEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etEventName"
+        android:layout_below="@+id/etStartDate"
+        android:ems="10"
+        android:hint="End Date"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/etEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etStartTime"
+        android:layout_alignLeft="@+id/etStartTime"
+        android:layout_toRightOf="@+id/etEndDate"
+        android:ems="10"
+        android:hint="End Time"
+        android:inputType="time" />
+
+   <EditText
+        android:id="@+id/etLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etEventName"
+        android:layout_below="@+id/etEndDate"
+        android:ems="10"
+        android:hint="Location"
+        android:inputType="textPostalAddress" />
+
+   <EditText
+        android:id="@+id/etDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etEventName"
+        android:layout_below="@+id/etLocation"
+        android:ems="10"
+        android:hint="Description"
+        android:inputType="textMultiLine" />
+   
+    
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etEventName"
+        android:layout_alignParentBottom="true"
+        android:onClick="onSaveForLater"
+        android:text="Save for Later" />
+
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="37dp"
+        android:onClick="onCreateEvent"
+        android:text="Create" />
+
+    <RatingBar
+        android:id="@+id/ratingBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnSave"
+        android:layout_alignLeft="@+id/btnSave"
+        android:layout_marginBottom="31dp" />
+
+    <EditText
+        android:id="@+id/etCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etDescription"
+        android:layout_below="@+id/etDescription"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:hint="Free"
+        android:inputType="numberDecimal" />
+
+</RelativeLayout>

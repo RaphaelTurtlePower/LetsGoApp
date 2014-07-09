@@ -17,7 +17,8 @@ public class LetsGoApplication extends Application {
 		// initialize parse
 		ParseObject.registerSubclass(LocalEvent.class);
 		ParseObject.registerSubclass(Location.class);
-		Parse.initialize(this, "3mZcH7C0jA10fF0esmFovEZh4ZoiGD3stEKhlsLJ", "MyJD5Xqx4jaKzdVzD0DrDt6ZaBqkwTKZcd6mDcqH");
+		Parse.initialize(this, "3mZcH7C0jA10fF0esmFovEZh4ZoiGD3stEKhlsLJ", 
+				"MyJD5Xqx4jaKzdVzD0DrDt6ZaBqkwTKZcd6mDcqH");
 	
 		ParseUser.enableAutomaticUser();
 		ParseACL defaultACL = new ParseACL();

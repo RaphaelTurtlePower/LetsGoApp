@@ -1,6 +1,7 @@
 package com.app.letsgo.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 @ParseClassName("Location")
@@ -29,4 +30,9 @@ public class Location extends ParseObject {
 	public void setZipCode(String zip) {
 		put("zipCode", zip);
 	}
+	
+	public void setGeoPoint(ParseGeoPoint geoPoint) {
+		put("geoPoint", geoPoint);
+	}
+	
 }

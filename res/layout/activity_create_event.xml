@@ -126,9 +126,28 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/etDescription"
         android:layout_below="@+id/etDescription"
-        android:layout_marginTop="28dp"
+        
         android:ems="10"
         android:hint="Free"
         android:inputType="numberDecimal" />
 
+
+	<Button 
+	    android:id="@+id/startDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	    android:layout_below="@+id/etCost" 
+	    android:layout_alignLeft="@+id/etCost"
+	    android:text="Pick a Date" 
+	    android:onClick="showDatePickerDialog" />
+	
+	<Button 
+	    android:id="@+id/startTimePicker"
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"
+	   	android:layout_below="@+id/etCost" 
+	    android:layout_toRightOf="@+id/startDatePicker"	    
+	    android:text="Pick a time" 
+	    android:onClick="showTimePickerDialog" />
+     
 </RelativeLayout>

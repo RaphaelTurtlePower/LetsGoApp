@@ -28,7 +28,7 @@ public class LocalEvent extends ParseObject {
 	public void setEventType(String type) {
 		put("eventType", type);
 	}
-	
+
 	public Date getStartDate() {
 		return getDate("startDate");
 	}
@@ -44,7 +44,23 @@ public class LocalEvent extends ParseObject {
 	public void setStartTime(String startTime)  {
 		put("startTime", startTime);
 	}
+
+	public Date getEndDate() {
+		return getDate("endDate");
+	}
 	
+	public void setEndDate(String endDate) {
+		put("endDate", endDate);
+	}
+	
+	public Date getEndTime() {
+		return getDate("endTime");
+	}
+	
+	public void setEndTime(String endTime)  {
+		put("endTime", endTime);
+	}
+
 	public ParseUser getCreatedBy() {
 		return getParseUser("createdBy");
 	}

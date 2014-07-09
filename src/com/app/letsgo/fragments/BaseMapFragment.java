@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +21,20 @@ import com.app.letsgo.models.Event;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapFragment extends SupportMapFragment implements OnMarkerClickListener {
+public class BaseMapFragment extends MapFragment implements OnMarkerClickListener {
 	private HashMap<Marker, Event> markerMap = new HashMap<Marker, Event>();
+	
+	public static BaseMapFragment newInstance(){
+		BaseMapFragment mapFragment = new BaseMapFragment();
+		return mapFragment;
+	}
 	
 	public void initialize(){
 		//getMap().setOnMarkerClickListener(this);
@@ -37,6 +44,12 @@ public class MapFragment extends SupportMapFragment implements OnMarkerClickList
 		ev.add(new Event(getActivity(), "San Francisco, CA", "Fourth of July Bash!", "Bashing", new Date()));
 		loadEvents(ev);
 		
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState){
+		super.onActivityCreated(savedInstanceState);
+		initialize();
 	}
 	
 	public void addEvent(Event event){

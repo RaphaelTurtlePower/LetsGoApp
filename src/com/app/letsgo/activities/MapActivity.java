@@ -1,22 +1,24 @@
 package com.app.letsgo.activities;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.app.letsgo.R;
-import com.app.letsgo.fragments.MapFragment;
-import com.app.letsgo.models.Event;
+import com.app.letsgo.fragments.ListFragment;
+import com.app.letsgo.fragments.BaseMapFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -26,17 +28,20 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
-public class MapActivity extends FragmentActivity implements
-		GooglePlayServicesClient.ConnectionCallbacks,
-		GooglePlayServicesClient.OnConnectionFailedListener {
 
-	private MapFragment mapFragment;
+public class MapActivity extends android.support.v4.app.FragmentActivity implements
+		GooglePlayServicesClient.ConnectionCallbacks,
+		GooglePlayServicesClient.OnConnectionFailedListener,
+		OnBackStackChangedListener{
+
+	private BaseMapFragment mapFragment;
+	private com.app.letsgo.fragments.ListFragment listFragment;
 	private GoogleMap map;
 	private LocationClient mLocationClient;
-	/*
-	 * Define a request code to send to Google Play services This code is
-	 * returned in Activity.onActivityResult
-	 */
+	private Handler mHandler = new Handler();
+	private boolean mShowingBack = false;
+	private Button toggle;
+	
 	private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
 	@Override
@@ -44,7 +49,9 @@ public class MapActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		mLocationClient = new LocationClient(this, this, this);
-		mapFragment = ((MapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
+		listFragment = ListFragment.newInstance();
+		mapFragment = BaseMapFragment.newInstance();
+		//Load Map
 		if (mapFragment != null) {
 			map = mapFragment.getMap();
 			if (map != null) {
@@ -56,9 +63,64 @@ public class MapActivity extends FragmentActivity implements
 		} else {
 			Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
 		}
-		mapFragment.initialize();
+		if (savedInstanceState == null) {
+			getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, mapFragment)
+                    .commit();
+        } else {
+            mShowingBack = (getFragmentManager().getBackStackEntryCount() > 0);
+        }
+
+        getFragmentManager().addOnBackStackChangedListener(this);
+        toggle = (Button) findViewById(R.id.toggle);
+        toggle.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				//flips the card view
+				flipCard();
+			}
+        	
+        });
+        
+        toggle.setText("List");
 	}
 
+	 private void flipCard() {
+	        if (mShowingBack) {
+	        	toggle.setText("List");
+	            getFragmentManager().popBackStack();
+	            return;
+	        }
+
+	        mShowingBack = true;
+	        
+	        getFragmentManager()
+	                .beginTransaction()
+	                .setCustomAnimations(
+	                        R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+	                        R.animator.card_flip_left_in, R.animator.card_flip_left_out)
+	                .replace(R.id.container, listFragment)
+	                .addToBackStack(null)
+	                .commit();
+	        toggle.setText("Map");
+	        mHandler.post(new Runnable() {
+	            @Override
+	            public void run() {
+	                invalidateOptionsMenu();
+	            }
+	        });
+	    }
+	
+	@Override
+    public void onBackStackChanged() {
+        mShowingBack = (getFragmentManager().getBackStackEntryCount() > 0);
+	}	
+
+	 
+	 
+	
 	/*
 	 * Called when the Activity becomes visible.
 	 */
@@ -209,5 +271,4 @@ public class MapActivity extends FragmentActivity implements
 			return mDialog;
 		}
 	}
-
 }

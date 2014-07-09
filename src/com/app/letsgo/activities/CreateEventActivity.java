@@ -27,15 +27,26 @@ public class CreateEventActivity extends FragmentActivity {
 	EditText etEventName;
 	EditText etEventType;
 	EditText etLocation;
-	EditText etStartDate;
-	EditText etStartTime;
 	EditText etDescription;
 	EditText etCost;
+	
+	static EditText etStartDate;
+	static EditText etStartTime;
+	static GregorianCalendar startDate;
+	static GregorianCalendar endDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+        
+    	etEventName = (EditText) findViewById(R.id.etEventName);
+    	etEventType = (EditText) findViewById(R.id.etEventType);
+    	etStartDate = (EditText) findViewById(R.id.etStartDate);
+    	etStartTime = (EditText) findViewById(R.id.etStartTime);
+    	etLocation = (EditText) findViewById(R.id.etLocation);
+    	startDate = new GregorianCalendar();
+    	endDate = new GregorianCalendar();
     }
  
     public static class DatePickerFragment extends DialogFragment
@@ -54,8 +65,12 @@ public class CreateEventActivity extends FragmentActivity {
 		}
 		
 		public void onDateSet(DatePicker view, int year, int month, int day) {
-			// Do something with the date chosen by the user
+			showDate(etStartDate, year, month, day);
+			startDate.set(GregorianCalendar.YEAR, year);
+			startDate.set(GregorianCalendar.MONTH, month);
+			startDate.set(GregorianCalendar.DAY_OF_MONTH, day);
 		}
+		
 	}
     
     public static class TimePickerFragment extends DialogFragment
@@ -70,19 +85,26 @@ public class CreateEventActivity extends FragmentActivity {
 			
 			// Create a new instance of TimePickerDialog and return it
 			return new TimePickerDialog(getActivity(), this, hour, minute,
-			DateFormat.is24HourFormat(getActivity()));
+						DateFormat.is24HourFormat(getActivity()));
 		}
 		
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			// Do something with the time chosen by the user
+			showTime(etStartTime, hourOfDay, minute);
+			startDate.set(GregorianCalendar.HOUR, hourOfDay);
+			startDate.set(GregorianCalendar.MINUTE, minute);
 		}
-}
+    }
+    
+    public static void showDate(EditText date, int year, int month, int day) {
+        date.setText(new StringBuilder().append(month + 1)
+        		.append("/").append(day).append("/").append(year));
+    }
+    
+    public static void showTime(EditText time, int hour, int minute) {
+    	time.setText(new StringBuilder().append(hour).append(":").append(minute));
+    }
+    
     public void onCreateEvent(View v) {
-    	etEventName = (EditText) findViewById(R.id.etEventName);
-    	etEventType = (EditText) findViewById(R.id.etEventType);
-    	etStartDate = (EditText) findViewById(R.id.etStartDate);
-    	etStartTime = (EditText) findViewById(R.id.etStartTime);
-    	etLocation = (EditText) findViewById(R.id.etLocation);
     	
     	LocalEvent event = new LocalEvent();
     	event.setEventName(etEventName.getText().toString());
@@ -110,7 +132,7 @@ public class CreateEventActivity extends FragmentActivity {
     	event.put("public", true); // default to public
     	event.saveInBackground();
     	
-    	// addToCalendar();
+    	addToCalendar();
     }
     
     /**
@@ -122,14 +144,11 @@ public class CreateEventActivity extends FragmentActivity {
     	intent.setType("com.android.calendar/events");
     	intent.putExtra(Events.TITLE, etEventName.getText().toString());
     	intent.putExtra(Events.EVENT_LOCATION, "my place");
-    	intent.putExtra(Events.DESCRIPTION, etDescription.getText().toString());
+    	//intent.putExtra(Events.DESCRIPTION, etDescription.getText().toString());
 
-    	// Setting dates
-    	GregorianCalendar calDate = new GregorianCalendar(2012, 10, 02);
-    	intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-    	  calDate.getTimeInMillis());
-    	intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
-    	  calDate.getTimeInMillis());
+    	// Setting dates    	
+    	intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDate);
+    	intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDate);
     	startActivity(intent);     	
     }
 

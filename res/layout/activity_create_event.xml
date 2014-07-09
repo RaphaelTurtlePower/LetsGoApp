@@ -39,6 +39,7 @@
         android:layout_below="@+id/etEventName"
         android:ems="10"
         android:hint="Start Date"
+        android:onClick="showDatePickerDialog"
         android:inputType="date" />
 
     <EditText
@@ -49,6 +50,7 @@
         android:layout_toRightOf="@+id/etStartDate"
         android:ems="10"
         android:hint="Start Time"
+        android:onClick="showTimePickerDialog"
         android:inputType="time" />
 
     <EditText
@@ -131,23 +133,5 @@
         android:hint="Free"
         android:inputType="numberDecimal" />
 
-
-	<Button 
-	    android:id="@+id/startDatePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-	    android:layout_below="@+id/etCost" 
-	    android:layout_alignLeft="@+id/etCost"
-	    android:text="Pick a Date" 
-	    android:onClick="showDatePickerDialog" />
-	
-	<Button 
-	    android:id="@+id/startTimePicker"
-	    android:layout_width="wrap_content" 
-	    android:layout_height="wrap_content"
-	   	android:layout_below="@+id/etCost" 
-	    android:layout_toRightOf="@+id/startDatePicker"	    
-	    android:text="Pick a time" 
-	    android:onClick="showTimePickerDialog" />
      
 </RelativeLayout>

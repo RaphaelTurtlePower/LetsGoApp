@@ -20,7 +20,7 @@ import com.facebook.widget.ProfilePictureView;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.app.letsgo.R;
-import com.app.letsgo.helpers.LetsGoApplication;
+import com.app.letsgo.LetsGoApplication;
 
 public class UserDetailsActivity extends Activity {
 	private ProfilePictureView userProfilePictureView;

@@ -2,7 +2,7 @@ package com.app.letsgo.activities;
 
 
 import com.app.letsgo.R;
-import com.app.letsgo.helpers.LetsGoApplication;
+import com.app.letsgo.LetsGoApplication;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -50,7 +50,8 @@ public class LoginActivity extends Activity {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
 			// Go to the user info activity
-			showUserDetailsActivity();
+			//showUserDetailsActivity();
+			showMapViewActivity();
 		}
 		/**
 		 * Test Code to see if Parse communicates with the remote server 
@@ -107,4 +108,8 @@ public class LoginActivity extends Activity {
 		startActivity(intent);
 	}
 
+	private void showMapViewActivity(){
+		Intent intent = new Intent(this, MapActivity.class);
+		startActivity(intent);
+	}
 }

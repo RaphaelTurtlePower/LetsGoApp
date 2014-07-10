@@ -6,10 +6,14 @@ import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.Location;
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 public class LetsGoApplication extends Application {
+	public static final String TAG = "LETSGO";
+
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -27,6 +31,10 @@ public class LetsGoApplication extends Application {
 		defaultACL.setPublicReadAccess(true);
 		
 		ParseACL.setDefaultACL(defaultACL, true);
+		
+		 // the Facebook App Id 
+        ParseFacebookUtils.initialize("629002607207382");
+
 	}
 
 }

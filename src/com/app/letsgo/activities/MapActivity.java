@@ -3,14 +3,18 @@ package com.app.letsgo.activities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
+
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.app.FragmentManager.OnBackStackChangedListener;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,10 +30,11 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 
-public class MapActivity extends android.support.v4.app.FragmentActivity implements
+public class MapActivity extends FragmentActivity implements
 		GooglePlayServicesClient.ConnectionCallbacks,
 		GooglePlayServicesClient.OnConnectionFailedListener,
 		OnBackStackChangedListener{
@@ -203,6 +208,10 @@ public class MapActivity extends android.support.v4.app.FragmentActivity impleme
 			Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
 			LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 			CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+			if(map == null){
+				mapFragment = (BaseMapFragment) BaseMapFragment.newInstance();
+				map = mapFragment.getMap();
+			}
 			map.animateCamera(cameraUpdate);
 		} else {
 			Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
@@ -271,4 +280,21 @@ public class MapActivity extends android.support.v4.app.FragmentActivity impleme
 			return mDialog;
 		}
 	}
+	
+	
+	
+	// Inflate the menu; this adds items to the action bar if it is present.
+			@Override
+			public boolean onCreateOptionsMenu(Menu menu) {
+				getMenuInflater().inflate(R.menu.map, menu);
+				return true;
+			}
+
+			@Override
+			public boolean onOptionsItemSelected(MenuItem item) {
+				Intent i = new Intent(this, CreateEventActivity.class);
+				startActivity(i);
+			    return true;
+			}
+	
 }

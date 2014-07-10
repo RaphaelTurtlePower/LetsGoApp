@@ -1,14 +1,43 @@
 package com.app.letsgo.models;
 
+import java.text.SimpleDateFormat;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 @ParseClassName("Location")
-public class Location extends ParseObject {
+public class Location extends ParseObject implements Parcelable{
 
 	public Location() {
 		super();
+	}
+	
+	public String getAddressLine1(){
+		return getString("addressLine1");
+	}
+	
+	public String getAddressLine2(){
+		return getString("addressLine2");
+	}
+	
+	public String getCity(){
+		return getString("city");
+	}
+	
+	public String getState(){
+		return getString("state");
+	}
+	
+	public String getZipCode(){
+		return getString("zipCode");
+	}
+	
+	public ParseGeoPoint getGeoPoint(){
+		return getParseGeoPoint("geoPoint");
 	}
 	
 	public void setAddressLine1(String line1) {
@@ -33,6 +62,53 @@ public class Location extends ParseObject {
 	
 	public void setGeoPoint(ParseGeoPoint geoPoint) {
 		put("geoPoint", geoPoint);
+	}
+	
+	
+	
+	public Location(Parcel in){
+		String[] data = new String[7];
+		in.readStringArray(data);
+		setAddressLine1(data[0]);
+		setAddressLine2(data[1]);
+		setCity(data[2]);
+		setState(data[3]);
+		setZipCode(data[4]);
+		Double lat = new Double(data[5]);
+		Double lon = new Double(data[6]);
+		setGeoPoint(new ParseGeoPoint(lat, lon));
+	}
+	
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
+		dest.writeStringArray(new String[] {getAddressLine1(),
+				getAddressLine2(),
+				getCity(),
+				getState(),
+				getZipCode(),
+				new Double(getGeoPoint().getLatitude()).toString(),
+				new Double(getGeoPoint().getLongitude()).toString()});
+				
+	}
+	
+	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+		public Location createFromParcel(Parcel in){
+			return new Location(in);
+		}
+		public Location[] newArray(int size){
+			return new Location[size];
+		}
+	};
+	
+	public String getCityAndState(){
+		return getCity() + "," + getState();
 	}
 	
 }

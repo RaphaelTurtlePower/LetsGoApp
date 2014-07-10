@@ -408,35 +408,47 @@ containing a value of this type.
     }
     public static final class id {
         public static final int book_now=0x7f090010;
+        public static final int btnCreate=0x7f09001d;
+        public static final int btnSave=0x7f09001c;
         public static final int buyButton=0x7f09000a;
         public static final int buy_now=0x7f09000f;
         public static final int buy_with_google=0x7f09000e;
         public static final int classic=0x7f090011;
-        public static final int container=0x7f090014;
+        public static final int container=0x7f090020;
+        public static final int etCost=0x7f09001f;
+        public static final int etDescription=0x7f09001b;
+        public static final int etEndDate=0x7f090018;
+        public static final int etEndTime=0x7f090019;
+        public static final int etEventName=0x7f090015;
+        public static final int etEventType=0x7f090014;
+        public static final int etLocation=0x7f09001a;
+        public static final int etStartDate=0x7f090016;
+        public static final int etStartTime=0x7f090017;
         public static final int grayscale=0x7f090012;
         public static final int holo_dark=0x7f090005;
         public static final int holo_light=0x7f090006;
         public static final int hybrid=0x7f090004;
-        public static final int map_item_city_state=0x7f090019;
-        public static final int map_item_cost=0x7f09001e;
-        public static final int map_item_description=0x7f09001a;
-        public static final int map_item_startDate=0x7f09001b;
-        public static final int map_item_street=0x7f090018;
-        public static final int map_item_thumbs_down=0x7f09001d;
-        public static final int map_item_thumbs_up=0x7f09001c;
-        public static final int map_item_title=0x7f090017;
-        public static final int map_list_view=0x7f090016;
+        public static final int map_item_city_state=0x7f090025;
+        public static final int map_item_cost=0x7f09002a;
+        public static final int map_item_description=0x7f090026;
+        public static final int map_item_startDate=0x7f090027;
+        public static final int map_item_street=0x7f090024;
+        public static final int map_item_thumbs_down=0x7f090029;
+        public static final int map_item_thumbs_up=0x7f090028;
+        public static final int map_item_title=0x7f090023;
+        public static final int map_list_view=0x7f090022;
         public static final int match_parent=0x7f09000c;
         public static final int monochrome=0x7f090013;
         public static final int none=0x7f090000;
         public static final int normal=0x7f090001;
         public static final int production=0x7f090007;
+        public static final int ratingBar1=0x7f09001e;
         public static final int sandbox=0x7f090008;
         public static final int satellite=0x7f090002;
         public static final int selectionDetails=0x7f09000b;
         public static final int strict_sandbox=0x7f090009;
         public static final int terrain=0x7f090003;
-        public static final int toggle=0x7f090015;
+        public static final int toggle=0x7f090021;
         public static final int wrap_content=0x7f09000d;
     }
     public static final class integer {
@@ -445,11 +457,12 @@ containing a value of this type.
         public static final int google_play_services_version=0x7f0a0000;
     }
     public static final class layout {
-        public static final int activity_event_detail=0x7f030000;
-        public static final int activity_login=0x7f030001;
-        public static final int activity_map=0x7f030002;
-        public static final int fragment_map_list_view=0x7f030003;
-        public static final int map_item=0x7f030004;
+        public static final int activity_create_event=0x7f030000;
+        public static final int activity_event_detail=0x7f030001;
+        public static final int activity_login=0x7f030002;
+        public static final int activity_map=0x7f030003;
+        public static final int fragment_map_list_view=0x7f030004;
+        public static final int map_item=0x7f030005;
     }
     public static final class string {
         public static final int app_name=0x7f070020;

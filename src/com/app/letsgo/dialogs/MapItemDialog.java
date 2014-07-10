@@ -13,15 +13,15 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.app.letsgo.R;
-import com.app.letsgo.models.Event;
+import com.app.letsgo.models.LocalEvent;
 
 @SuppressLint("ValidFragment")
 public class MapItemDialog extends DialogFragment {
 
 private View dialogView;
-private Event event;
+private LocalEvent event;
 
-public MapItemDialog(Event event){
+public MapItemDialog(LocalEvent event){
 	this.event = event;
 	
 }
@@ -33,7 +33,7 @@ public Dialog onCreateDialog(Bundle savedInstanceState) {
     dialogView = inflater.inflate(R.layout.map_item, null);
     TextView title = (TextView) dialogView.findViewById(R.id.map_item_title);
     TextView description = (TextView) dialogView.findViewById(R.id.map_item_description);
-    title.setText(event.getName());
+    title.setText(event.getEventName());
     description.setText(event.getDescription());
     builder.setView(dialogView);
     // Create the AlertDialog object and return it

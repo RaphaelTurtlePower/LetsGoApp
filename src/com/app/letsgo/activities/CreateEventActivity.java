@@ -20,7 +20,7 @@ import android.widget.TimePicker;
 
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.Location;
-import com.example.letsgoapp.R;
+import com.app.letsgo.R;
 import com.parse.ParseUser;
 
 public class CreateEventActivity extends FragmentActivity {

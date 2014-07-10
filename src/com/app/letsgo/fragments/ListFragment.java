@@ -16,10 +16,10 @@ import android.widget.ListView;
 import com.app.letsgo.R;
 import com.app.letsgo.activities.EventDetailActivity;
 import com.app.letsgo.adapters.ListEventsAdapter;
-import com.app.letsgo.models.Event;
+import com.app.letsgo.models.LocalEvent;
 
 public class ListFragment extends Fragment {
-	private ArrayList<Event> itemList;
+	private ArrayList<LocalEvent> itemList;
 	private ListEventsAdapter itemsAdapter;
 	private ListView items;
 	
@@ -36,11 +36,7 @@ public class ListFragment extends Fragment {
 		 items = (ListView) view.findViewById(R.id.map_list_view);
 		 // Setup handles to view objects here
 	      // etFoo = (EditText) v.findViewById(R.id.etFoo);
-	 	 itemList = new ArrayList<Event>();
-	 	 itemList.add( new Event(getActivity(), "3081 Tulare Dr, San Jose, CA 95132", "Raphael's 1st Birthday", "It's his birthday!", new Date()));
-		 itemList.add(new Event(getActivity(), "1 Washington Square, San Jose, CA 95132", "Graduation!", "Yay!", new Date()));
-		 itemList.add(new Event(getActivity(), "San Francisco, CA", "Fourth of July Bash!", "Bashing", new Date()));
-	
+	 	 itemList = LocalEvent.getLocalEvents();
 	 	 itemsAdapter = new ListEventsAdapter(getActivity(), itemList);
 	 	 items.setAdapter(itemsAdapter);
 	 	 items.setOnItemClickListener(new OnItemClickListener() {
@@ -48,7 +44,7 @@ public class ListFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Event event = itemList.get(position);
+				LocalEvent event = itemList.get(position);
 				Intent i = new Intent(getActivity(), EventDetailActivity.class);
 				i.putExtra("event", event);
 				startActivity(i);

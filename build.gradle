@@ -40,6 +40,9 @@ android {
         {
           exclude module: 'support-v4'
         }
+        compile 'com.nineoldandroids:library:2.4.0'
+        compile 'com.daimajia.easing:library:1.0.0@aar'
+        compile 'com.daimajia.androidanimations:library:1.0.6@aar'
 
       // Support Libraries
       //compile 'com.android.support:support-v4:19.0.0'

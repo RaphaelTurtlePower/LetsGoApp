@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
-import com.app.letsgo.R;
 
+import com.app.letsgo.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -55,6 +58,19 @@ public class MapActivity extends FragmentActivity implements
 
 	}
 
+   @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.actions, menu);
+        return true;
+    }
+    
+    public void onCreateAction(MenuItem mi) {
+    	Intent i = new Intent(this, CreateEventActivity.class);
+    	startActivity(i); 
+    }
+    
 	/*
 	 * Called when the Activity becomes visible.
 	 */

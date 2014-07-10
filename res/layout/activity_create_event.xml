@@ -15,7 +15,6 @@
         android:hint="Event Theme"
         android:ems="10" >
 
-
     </EditText>
 
     <EditText
@@ -61,6 +60,7 @@
         android:layout_below="@+id/etStartDate"
         android:ems="10"
         android:hint="End Date"
+        android:onClick="showDatePickerDialog"
         android:inputType="date" />
 
     <EditText
@@ -72,28 +72,18 @@
         android:layout_toRightOf="@+id/etEndDate"
         android:ems="10"
         android:hint="End Time"
+        android:onClick="showTimePickerDialog"
         android:inputType="time" />
 
    <EditText
-        android:id="@+id/etLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etEventName"
-        android:layout_below="@+id/etEndDate"
-        android:ems="10"
-        android:hint="Location"
-        android:inputType="textPostalAddress" />
-
-   <EditText
-        android:id="@+id/etDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etEventName"
-        android:layout_below="@+id/etLocation"
-        android:ems="10"
-        android:hint="Description"
-        android:inputType="textMultiLine" />
-   
+       android:id="@+id/etDescription"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignLeft="@+id/etEventName"
+       android:layout_below="@+id/etLocation"
+       android:ems="10"
+       android:hint="Description"
+       android:inputType="textMultiLine" />
     
     <Button
         android:id="@+id/btnSave"
@@ -127,11 +117,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/etDescription"
-        android:layout_below="@+id/etDescription"
-        
+        android:layout_below="@+id/etDescription"        
         android:ems="10"
-        android:hint="Free"
+        android:hint="$$"
         android:inputType="numberDecimal" />
 
+    <AutoCompleteTextView
+        android:id="@+id/etLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etEventName"
+        android:layout_below="@+id/etEndDate"
+        android:ems="10"
+        android:hint="Venue" />
      
 </RelativeLayout>

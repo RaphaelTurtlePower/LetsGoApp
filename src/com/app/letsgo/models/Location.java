@@ -10,7 +10,11 @@ public class Location extends ParseObject {
 	public Location() {
 		super();
 	}
-	
+
+	public void setAddress(String addr) {
+		put("address", addr);
+	}
+
 	public void setAddressLine1(String line1) {
 		put("addressLine1", line1);
 	}

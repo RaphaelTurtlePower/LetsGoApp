@@ -13,14 +13,22 @@ import android.provider.CalendarContract.Events;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.app.letsgo.R;
+import com.app.letsgo.adapters.PlacesAdapter;
+import com.app.letsgo.helpers.Utils;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.Location;
-import com.example.letsgoapp.R;
 import com.parse.ParseUser;
 
 public class CreateEventActivity extends FragmentActivity {
@@ -32,8 +40,11 @@ public class CreateEventActivity extends FragmentActivity {
 	
 	static EditText etStartDate;
 	static EditText etStartTime;
+	static EditText etEndDate;
+	static EditText etEndTime;
 	static GregorianCalendar startDate;
 	static GregorianCalendar endDate;
+	String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +53,27 @@ public class CreateEventActivity extends FragmentActivity {
         
     	etEventName = (EditText) findViewById(R.id.etEventName);
     	etEventType = (EditText) findViewById(R.id.etEventType);
+    	etDescription = (EditText) findViewById(R.id.etDescription);
+    	etCost = (EditText) findViewById(R.id.etCost);
+    	
     	etStartDate = (EditText) findViewById(R.id.etStartDate);
     	etStartTime = (EditText) findViewById(R.id.etStartTime);
-    	etLocation = (EditText) findViewById(R.id.etLocation);
+    	etEndDate = (EditText) findViewById(R.id.etEndDate);
+    	etEndTime = (EditText) findViewById(R.id.etEndTime);
     	startDate = new GregorianCalendar();
     	endDate = new GregorianCalendar();
+
+        AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.etLocation);
+        autoCompView.setAdapter(new PlacesAdapter(this, R.layout.place_list));
+        // autoCompView.setOnItemClickListener(this);
     }
  
+
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        String str = (String) adapterView.getItemAtPosition(position);
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    }
+
     public static class DatePickerFragment extends DialogFragment
     	implements DatePickerDialog.OnDateSetListener {
 
@@ -64,6 +89,7 @@ public class CreateEventActivity extends FragmentActivity {
 			return new DatePickerDialog(getActivity(), this, year, month, day);
 		}
 		
+		@Override
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 			showDate(etStartDate, year, month, day);
 			startDate.set(GregorianCalendar.YEAR, year);
@@ -88,6 +114,7 @@ public class CreateEventActivity extends FragmentActivity {
 						DateFormat.is24HourFormat(getActivity()));
 		}
 		
+		@Override
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 			showTime(etStartTime, hourOfDay, minute);
 			startDate.set(GregorianCalendar.HOUR, hourOfDay);
@@ -111,17 +138,26 @@ public class CreateEventActivity extends FragmentActivity {
     	event.setEventType(etEventType.getText().toString());
     	event.setStartDate(etStartDate.getText().toString());
     	event.setStartTime(etStartTime.getText().toString());
-    	// event.setCost(etCost.getText().toString());
-    	// event.setDescription(etDescription.getText().toString());
+    	if (!Utils.isNull(etCost)) {
+    		try {
+    			Double cost = Double.parseDouble(etCost.getText().toString());
+    			event.setCost(cost);
+    		} catch (NumberFormatException e) {
+    			e.printStackTrace();
+    			event.setCost(0);
+    		}
+    	} else event.setCost(0);
     	
-    	String[] address = etLocation.getText().toString().split("\\,");
-    	if (address != null && address.length > 0) {
+    	// only set description if it's not entered
+    	if (!Utils.isNull(etDescription)) {
+    		event.setDescription(etDescription.getText().toString());
+    	}
+    	
+    	if (!Utils.isNull(etLocation)) {
+        	address = etLocation.getText().toString();
         	Location loc = new Location();
-	    	loc.setAddressLine1(address[0]);
-	    	// loc.setAddressLine2(address[1]);
-	    	// loc.setCity(address[1]);
-	    	// loc.setState(address[2]);
-	    	//loc.setZipCode(address[3]);
+	    	loc.setAddress(address);
+	    	// TODO: set latitude and longitude as well
 	    	event.setLocation(loc);
 	    }
     	
@@ -141,10 +177,12 @@ public class CreateEventActivity extends FragmentActivity {
     public void addToCalendar() {
     	Intent intent = new Intent(Intent.ACTION_INSERT);
     	intent.setData(CalendarContract.Events.CONTENT_URI);
-    	intent.setType("com.android.calendar/events");
+    	intent.setType("vnd.android.cursor.item/event");
     	intent.putExtra(Events.TITLE, etEventName.getText().toString());
-    	intent.putExtra(Events.EVENT_LOCATION, "my place");
-    	//intent.putExtra(Events.DESCRIPTION, etDescription.getText().toString());
+    	intent.putExtra(Events.EVENT_LOCATION, address);
+    	if (!Utils.isNull(etDescription)) {
+    		intent.putExtra(Events.DESCRIPTION, etDescription.getText().toString());
+    	}
 
     	// Setting dates    	
     	intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDate);
@@ -161,6 +199,7 @@ public class CreateEventActivity extends FragmentActivity {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
+    
     
     public void onSaveForLater(View v) {
     	

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/map_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title" />
+
+    <TextView
+        android:id="@+id/map_item_street"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/map_item_title"
+        android:text="Street" />
+
+             <TextView
+                 android:id="@+id/map_item_city_state"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:layout_below="@+id/map_item_street"
+                 android:text="CityState" />
+
+           
+
+             <TextView
+                 android:id="@+id/map_item_description"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:layout_below="@+id/map_item_city_state"
+                 android:text="Description" />
+
+             <TextView
+                 android:id="@+id/map_item_startDate"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:layout_below="@+id/map_item_title"
+                 android:text="StartDate" />
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/map_item_description"
+    android:layout_alignParentRight="true"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/map_item_thumbs_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_above="@+id/map_item_description"
+        android:layout_alignLeft="@+id/map_item_startDate"
+        android:text="Thumbs Up" />
+
+    <TextView
+        android:id="@+id/map_item_thumbs_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/map_item_description"
+        android:layout_alignParentRight="true"
+        android:text="Thumbs Down" />
+</LinearLayout>
+
+<TextView
+    android:id="@+id/map_item_cost"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/map_item_startDate"
+    android:layout_alignParentRight="true"
+    android:text="$100.00" />
+
+</RelativeLayout>

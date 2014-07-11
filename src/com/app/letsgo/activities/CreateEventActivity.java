@@ -13,11 +13,9 @@ import android.provider.CalendarContract.Events;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -34,7 +32,6 @@ import com.parse.ParseUser;
 public class CreateEventActivity extends FragmentActivity {
 	EditText etEventName;
 	EditText etEventType;
-	EditText etLocation;
 	EditText etDescription;
 	EditText etCost;
 	
@@ -44,6 +41,7 @@ public class CreateEventActivity extends FragmentActivity {
 	static EditText etEndTime;
 	static GregorianCalendar startDate;
 	static GregorianCalendar endDate;
+	AutoCompleteTextView etLocation;
 	String address;
 
     @Override
@@ -60,20 +58,28 @@ public class CreateEventActivity extends FragmentActivity {
     	etStartTime = (EditText) findViewById(R.id.etStartTime);
     	etEndDate = (EditText) findViewById(R.id.etEndDate);
     	etEndTime = (EditText) findViewById(R.id.etEndTime);
-    	startDate = new GregorianCalendar();
-    	endDate = new GregorianCalendar();
-
-        AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.etLocation);
-        autoCompView.setAdapter(new PlacesAdapter(this, R.layout.place_list));
-        // autoCompView.setOnItemClickListener(this);
-    }
- 
-
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        String str = (String) adapterView.getItemAtPosition(position);
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    	etLocation = (AutoCompleteTextView) findViewById(R.id.etLocation);
+        
+	   	startDate = new GregorianCalendar();
+	   	endDate = new GregorianCalendar();
+	   	
+	   	setLocation();
     }
 
+    private void setLocation() {
+    	etLocation.setAdapter(new PlacesAdapter(this, R.layout.place_list));
+        etLocation.setOnItemClickListener(new OnItemClickListener() {
+
+        	@Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String str = (String) adapterView.getItemAtPosition(position);
+                etLocation.setText(str);
+                Toast.makeText(CreateEventActivity.this, str, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    
     public static class DatePickerFragment extends DialogFragment
     	implements DatePickerDialog.OnDateSetListener {
 

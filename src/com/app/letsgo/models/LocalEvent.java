@@ -63,7 +63,7 @@ public class LocalEvent extends ParseObject implements Parcelable {
 	public void setStartTime(String startTime)  {
 		put("startTime", startTime);
 	}
-/*
+
 	public String getEndDate() {
 		return getString("endDate");
 	}
@@ -79,7 +79,7 @@ public class LocalEvent extends ParseObject implements Parcelable {
 	public void setEndTime(String endTime)  {
 		put("endTime", endTime);
 	}
-*/
+
 	public ParseUser getCreatedBy() {
 		return getParseUser("createdBy");
 	}
@@ -119,9 +119,9 @@ public class LocalEvent extends ParseObject implements Parcelable {
 		setEventName(data[0]);
 		setEventType(data[1]);
 		setStartDate(data[2]);
-	//	setEndDate(data[3]);
+		setEndDate(data[3]);
 		setStartTime(data[3]);
-	//	setEndTime(data[5]);
+		setEndTime(data[5]);
 		setCost(Double.parseDouble(data[4]));
 		setDescription(data[5]);
 		Location location = (Location) Location.CREATOR.createFromParcel(in);
@@ -139,9 +139,9 @@ public class LocalEvent extends ParseObject implements Parcelable {
 		dest.writeStringArray(new String[] {getEventName(),
 				getEventType(),
 				getStartDate(),
-		//		getEndDate(),
+				getEndDate(),
 				getStartTime(),
-		//		getEndTime(),
+				getEndTime(),
 				getCost().toString(),
 				getDescription()});
 		getLocation().writeToParcel(dest, flags);

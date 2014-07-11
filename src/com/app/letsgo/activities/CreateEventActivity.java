@@ -13,11 +13,9 @@ import android.provider.CalendarContract.Events;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -34,7 +32,6 @@ import com.parse.ParseUser;
 public class CreateEventActivity extends FragmentActivity {
 	EditText etEventName;
 	EditText etEventType;
-	EditText etLocation;
 	EditText etDescription;
 	EditText etCost;
 	
@@ -44,6 +41,7 @@ public class CreateEventActivity extends FragmentActivity {
 	static EditText etEndTime;
 	static GregorianCalendar startDate;
 	static GregorianCalendar endDate;
+	AutoCompleteTextView etLocation;
 	String address;
 
     @Override
@@ -60,20 +58,28 @@ public class CreateEventActivity extends FragmentActivity {
     	etStartTime = (EditText) findViewById(R.id.etStartTime);
     	etEndDate = (EditText) findViewById(R.id.etEndDate);
     	etEndTime = (EditText) findViewById(R.id.etEndTime);
-    	startDate = new GregorianCalendar();
-    	endDate = new GregorianCalendar();
-
-        AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.etLocation);
-        autoCompView.setAdapter(new PlacesAdapter(this, R.layout.place_list));
-        // autoCompView.setOnItemClickListener(this);
-    }
- 
-
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        String str = (String) adapterView.getItemAtPosition(position);
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    	etLocation = (AutoCompleteTextView) findViewById(R.id.etLocation);
+        
+	   	startDate = new GregorianCalendar();
+	   	endDate = new GregorianCalendar();
+	   	
+	   	setLocation();
     }
 
+    private void setLocation() {
+    	etLocation.setAdapter(new PlacesAdapter(this, R.layout.place_list));
+        etLocation.setOnItemClickListener(new OnItemClickListener() {
+
+        	@Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String str = (String) adapterView.getItemAtPosition(position);
+                etLocation.setText(str);
+                Toast.makeText(CreateEventActivity.this, str, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    
     public static class DatePickerFragment extends DialogFragment
     	implements DatePickerDialog.OnDateSetListener {
 
@@ -101,7 +107,7 @@ public class CreateEventActivity extends FragmentActivity {
     
     public static class TimePickerFragment extends DialogFragment
     	implements TimePickerDialog.OnTimeSetListener {
-
+    	
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			// Use the current time as the default values for the picker
@@ -121,7 +127,57 @@ public class CreateEventActivity extends FragmentActivity {
 			startDate.set(GregorianCalendar.MINUTE, minute);
 		}
     }
-    
+
+    // TODO: need to refactor this!
+    public static class EndDatePickerFragment extends DialogFragment
+	implements DatePickerDialog.OnDateSetListener {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the current date as the default date in the picker
+			final Calendar c = Calendar.getInstance();
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH);
+			int day = c.get(Calendar.DAY_OF_MONTH);
+			
+			// Create a new instance of DatePickerDialog and return it
+			return new DatePickerDialog(getActivity(), this, year, month, day);
+		}
+		
+		@Override
+		public void onDateSet(DatePicker view, int year, int month, int day) {
+			showDate(etEndDate, year, month, day);
+			endDate.set(GregorianCalendar.YEAR, year);
+			endDate.set(GregorianCalendar.MONTH, month);
+			endDate.set(GregorianCalendar.DAY_OF_MONTH, day);
+		}
+	
+    }
+
+    // TODO: need to refactor this!
+    public static class EndTimePickerFragment extends DialogFragment
+		implements TimePickerDialog.OnTimeSetListener {
+	
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			// Use the current time as the default values for the picker
+			final Calendar c = Calendar.getInstance();
+			int hour = c.get(Calendar.HOUR_OF_DAY);
+			int minute = c.get(Calendar.MINUTE);
+			
+			// Create a new instance of TimePickerDialog and return it
+			return new TimePickerDialog(getActivity(), this, hour, minute,
+						DateFormat.is24HourFormat(getActivity()));
+		}
+		
+		@Override
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+			showTime(etEndTime, hourOfDay, minute);
+			endDate.set(GregorianCalendar.HOUR, hourOfDay);
+			endDate.set(GregorianCalendar.MINUTE, minute);
+		}
+	}
+
     public static void showDate(EditText date, int year, int month, int day) {
         date.setText(new StringBuilder().append(month + 1)
         		.append("/").append(day).append("/").append(year));
@@ -138,6 +194,8 @@ public class CreateEventActivity extends FragmentActivity {
     	event.setEventType(etEventType.getText().toString());
     	event.setStartDate(etStartDate.getText().toString());
     	event.setStartTime(etStartTime.getText().toString());
+    	event.setEndDate(etEndDate.getText().toString());
+    	event.setEndTime(etEndTime.getText().toString());
     	if (!Utils.isNull(etCost)) {
     		try {
     			Double cost = Double.parseDouble(etCost.getText().toString());
@@ -169,6 +227,7 @@ public class CreateEventActivity extends FragmentActivity {
     	event.saveInBackground();
     	
     	addToCalendar();
+    	finish();
     }
     
     /**
@@ -190,18 +249,29 @@ public class CreateEventActivity extends FragmentActivity {
     	startActivity(intent);     	
     }
 
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
+    public void showStartDatePickerDialog(View v) {
+    	DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");	
     }
     
-    public void showTimePickerDialog(View v) {
+    public void showStartTimePickerDialog(View v) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
     
+    // TODO: refactor this
+    public void showEndDatePickerDialog(View v) {
+    	DialogFragment newFragment = new EndDatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");	
+    }
     
-    public void onSaveForLater(View v) {
-    	
+    public void showEndTimePickerDialog(View v) {
+        DialogFragment newFragment = new EndTimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+    
+    // TODO: return to Map view
+    public void onCancel(View v) {
+    	finish();  	
     }
 }

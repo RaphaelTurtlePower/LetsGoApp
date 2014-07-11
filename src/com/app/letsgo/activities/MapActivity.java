@@ -3,7 +3,6 @@ package com.app.letsgo.activities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
-
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
@@ -13,8 +12,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.app.FragmentManager.OnBackStackChangedListener;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -30,9 +27,9 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MapActivity extends FragmentActivity implements
 		GooglePlayServicesClient.ConnectionCallbacks,

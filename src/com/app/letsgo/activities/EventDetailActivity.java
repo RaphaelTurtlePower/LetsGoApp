@@ -34,7 +34,7 @@ public class EventDetailActivity extends Activity {
 
 
 		TextView startDate = (TextView) findViewById(R.id.map_item_startDate);
-		startDate.setText(sdf.format(event.getStartDate()).toString());
+		startDate.setText(event.getStartDate());
 		
 	}
 }

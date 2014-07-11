@@ -71,15 +71,15 @@ public class Location extends ParseObject implements Parcelable{
 	
 	
 	public Location(Parcel in){
-		String[] data = new String[7];
+		String[] data = new String[6];
 		in.readStringArray(data);
 		setAddressLine1(data[0]);
-		setAddressLine2(data[1]);
-		setCity(data[2]);
-		setState(data[3]);
-		setZipCode(data[4]);
-		Double lat = new Double(data[5]);
-		Double lon = new Double(data[6]);
+	//	setAddressLine2(data[1]);
+		setCity(data[1]);
+		setState(data[2]);
+		setZipCode(data[3]);
+		Double lat = new Double(data[4]);
+		Double lon = new Double(data[5]);
 		setGeoPoint(new ParseGeoPoint(lat, lon));
 	}
 	
@@ -93,7 +93,7 @@ public class Location extends ParseObject implements Parcelable{
 	public void writeToParcel(Parcel dest, int flags) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
 		dest.writeStringArray(new String[] {getAddressLine1(),
-				getAddressLine2(),
+		//		getAddressLine2(),
 				getCity(),
 				getState(),
 				getZipCode(),

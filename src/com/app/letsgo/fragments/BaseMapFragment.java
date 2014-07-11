@@ -70,8 +70,7 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 	
 
 				TextView startDate = (TextView) v.findViewById(R.id.map_item_startDate);
-				startDate.setText(sdf.format(event.getStartDate()).toString());
-				
+				startDate.setText(event.getStartDate());
 				return v;
 			}
 

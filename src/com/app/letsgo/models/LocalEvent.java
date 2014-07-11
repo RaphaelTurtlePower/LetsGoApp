@@ -48,38 +48,38 @@ public class LocalEvent extends ParseObject implements Parcelable {
 		put("eventType", type);
 	}
 
-	public Date getStartDate() {
-		return getDate("startDate");
+	public String getStartDate() {
+		return getString("startDate");
 	}
 	
 	public void setStartDate(String startDate) {
 		put("startDate", startDate);
 	}
 	
-	public Date getStartTime() {
-		return getDate("startTime");
+	public String getStartTime() {
+		return getString("startTime");
 	}
 	
 	public void setStartTime(String startTime)  {
 		put("startTime", startTime);
 	}
-
-	public Date getEndDate() {
-		return getDate("endDate");
+/*
+	public String getEndDate() {
+		return getString("endDate");
 	}
 	
 	public void setEndDate(String endDate) {
 		put("endDate", endDate);
 	}
 	
-	public Date getEndTime() {
-		return getDate("endTime");
+	public String getEndTime() {
+		return getString("endTime");
 	}
 	
 	public void setEndTime(String endTime)  {
 		put("endTime", endTime);
 	}
-
+*/
 	public ParseUser getCreatedBy() {
 		return getParseUser("createdBy");
 	}
@@ -114,16 +114,16 @@ public class LocalEvent extends ParseObject implements Parcelable {
 	
 	
 	public LocalEvent(Parcel in){
-		String[] data = new String[8];
+		String[] data = new String[6];
 		in.readStringArray(data);
 		setEventName(data[0]);
 		setEventType(data[1]);
 		setStartDate(data[2]);
-		setEndDate(data[3]);
-		setStartTime(data[4]);
-		setEndTime(data[5]);
-		setCost(Double.parseDouble(data[6]));
-		setDescription(data[7]);
+	//	setEndDate(data[3]);
+		setStartTime(data[3]);
+	//	setEndTime(data[5]);
+		setCost(Double.parseDouble(data[4]));
+		setDescription(data[5]);
 		Location location = (Location) Location.CREATOR.createFromParcel(in);
 		setLocation(location);
 	}
@@ -138,10 +138,10 @@ public class LocalEvent extends ParseObject implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeStringArray(new String[] {getEventName(),
 				getEventType(),
-				sdf.format(getStartDate()),
-				sdf.format(getEndDate()),
-				sdf_time.format(getStartTime()),
-				sdf_time.format(getEndTime()),
+				getStartDate(),
+		//		getEndDate(),
+				getStartTime(),
+		//		getEndTime(),
 				getCost().toString(),
 				getDescription()});
 		getLocation().writeToParcel(dest, flags);
@@ -200,17 +200,36 @@ public class LocalEvent extends ParseObject implements Parcelable {
 	public static ArrayList<LocalEvent> getLocalEvents(){
 		final ArrayList<LocalEvent> events = new ArrayList<LocalEvent>();
 		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("LocalEvent");
-	    query.findInBackground(new FindCallback<ParseObject>() {
+		query.include("location");
+		List<ParseObject> objects;
+		try {
+			objects = query.find();
+			for(int i=0; i<objects.size(); i++){
+	         	LocalEvent ev = (LocalEvent) objects.get(i);
+	         	
+	         	events.add(ev);
+	         }
+		} catch (com.parse.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		 return events;
+	/*    query.find(new FindCallback<ParseObject>() {
 		@Override
 		public void done(List<ParseObject> objects, com.parse.ParseException e) {
 			 if (e == null) {
-		            events.addAll(events);
+		            for(int i=0; i<objects.size(); i++){
+		            	LocalEvent ev = (LocalEvent) objects.get(i);
+		            	events.add(ev);
+		            }
 		        } else {
 		            System.out.println("Error Retrieving Data from Parse");
 		     }
 		}
 	});
 	    return events;
+	    */
 	}
 	
 }

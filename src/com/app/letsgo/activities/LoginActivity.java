@@ -93,21 +93,21 @@ public class LoginActivity extends Activity {
 				} else if (user.isNew()) {
 					Log.d(LetsGoApplication.TAG,
 							"User signed up and logged in through Facebook!");
-					showUserDetailsActivity();
+					showMapViewActivity();
 				} else {
 					Log.d(LetsGoApplication.TAG,
 							"User logged in through Facebook!");
-					showUserDetailsActivity();
+					showMapViewActivity();
 				}
 			}
 		});
 	}
-
+/*
 	private void showUserDetailsActivity() {
 		Intent intent = new Intent(this, UserDetailsActivity.class);
 		startActivity(intent);
 	}
-
+*/
 	private void showMapViewActivity(){
 		Intent intent = new Intent(this, MapActivity.class);
 		startActivity(intent);

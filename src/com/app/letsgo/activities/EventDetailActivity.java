@@ -67,7 +67,7 @@ public class EventDetailActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_detail);
-		LocalEvent event = (LocalEvent) getIntent().getExtras().getParcelable("event");
+		e = (LocalEvent) getIntent().getExtras().getParcelable("event");
 		setUpViews();
 		loadFieldsIntoView();
 		

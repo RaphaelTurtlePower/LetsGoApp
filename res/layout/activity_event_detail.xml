@@ -114,12 +114,12 @@
         android:layout_toRightOf="@id/line5"
         android:text="dummy" />
 
-        <TextView
+    <TextView
         android:id="@+id/line6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"        
-        android:layout_below="@id/line5"       
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/line5"
         android:layout_marginLeft="5dp"
         android:text="cost:" />
 
@@ -128,16 +128,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/line5"
-        android:layout_toRightOf="@id/line6"
         android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/line6"
         android:text="dummy" />
-    
-        <TextView
+
+    <TextView
         android:id="@+id/line7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"        
-        android:layout_below="@id/line6"       
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/line6"
         android:layout_marginLeft="5dp"
         android:text="description:" />
 
@@ -146,7 +146,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/line6"
-        android:layout_toRightOf="@id/line7"
         android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/line7"
         android:text="dummy" />
+
+    <TextView
+        android:id="@+id/line8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/line7"
+        android:layout_marginLeft="5dp"
+        android:text="up/down counts" />
+
+    <TextView
+        android:id="@+id/tvCounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line7"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/line8"
+        android:text="dummy" />
+
 </RelativeLayout>

@@ -26,6 +26,8 @@ public class EventDetailActivity extends Activity {
 	private String location;
 	private Number cost;
 	private String description;
+	private Number upCount;
+	private Number downCount;
 
 	private LocalEvent e;
 	
@@ -35,8 +37,10 @@ public class EventDetailActivity extends Activity {
     private TextView tvEnd;
     private TextView tvCreatedBy;
     private TextView tvLocation;
+    private TextView tvDowncount;
     private TextView tvCost;
     private TextView tvDescription;
+    private TextView tvCounts;
 
 	private void setUpViews() {
 		tvName = (TextView) findViewById(R.id.tvName);
@@ -47,6 +51,7 @@ public class EventDetailActivity extends Activity {
 		tvLocation = (TextView) findViewById(R.id.tvLocation);
 		tvCost = (TextView) findViewById(R.id.tvCost);
 		tvDescription = (TextView) findViewById(R.id.tvDescription);
+		tvCounts = (TextView) findViewById(R.id.tvCounts);
 	}
 	
 	private void loadFieldsIntoView() {
@@ -61,6 +66,7 @@ public class EventDetailActivity extends Activity {
 		Number n = e.getCost();
 		tvCost.setText("put cost here");
 		tvDescription.setText(e.getDescription());
+		tvCounts.setText("put counts here");
 	}	
 
 	@Override
@@ -69,39 +75,7 @@ public class EventDetailActivity extends Activity {
 		setContentView(R.layout.activity_event_detail);
 		e = (LocalEvent) getIntent().getExtras().getParcelable("event");
 		setUpViews();
-		loadFieldsIntoView();
-		
-//		TextView title = (TextView) findViewById(R.id.map_item_title);
-//		title.setText(event.getEventName());
-//		TextView description = (TextView) findViewById(R.id.map_item_description);
-//		description.setText(event.getDescription());
-//		
-//		TextView street_address = (TextView) findViewById(R.id.map_item_street);
-//		street_address.setText(event.getLocation().getAddressLine1());
-//		TextView city_state = (TextView) findViewById(R.id.map_item_city_state);
-//		city_state.setText(event.getLocation().getCityAndState());
-//		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");      
-//
-//
-//		TextView startDate = (TextView) findViewById(R.id.map_item_startDate);
-//		startDate.setText(event.getStartDate());
-		
+		loadFieldsIntoView();		
 	}
 
 }
-
-
-//TextView title = (TextView) findViewById(R.id.map_item_title);
-//title.setText(event.getEventName());
-//TextView description = (TextView) findViewById(R.id.map_item_description);
-//description.setText(event.getDescription());
-//
-//TextView street_address = (TextView) findViewById(R.id.map_item_street);
-//street_address.setText(event.getLocation().getAddressLine1());
-//TextView city_state = (TextView) findViewById(R.id.map_item_city_state);
-//city_state.setText(event.getLocation().getCityAndState());
-//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");      
-//
-//
-//TextView startDate = (TextView) findViewById(R.id.map_item_startDate);
-//startDate.setText(event.getStartDate());

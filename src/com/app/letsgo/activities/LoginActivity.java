@@ -48,18 +48,15 @@ public class LoginActivity extends Activity {
 		// Check if there is a currently logged in user
 		// and they are linked to a Facebook account.
 		ParseUser currentUser = ParseUser.getCurrentUser();
+		int i =0;
+		if (currentUser!=null) i=1;
+		
 		if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
 			// Go to the user info activity
 			//showUserDetailsActivity();
 			showMapViewActivity();
 		}
-		/**
-		 * Test Code to see if Parse communicates with the remote server 
-		 */
-		// ParseObject testObject = new ParseObject("TestObject");
-		// testObject.put("foo", "bar");
-		// testObject.saveInBackground();
-		// Toast.makeText(this, "Parse Test Complete", Toast.LENGTH_SHORT).show();
+		i=2;
 	}
 
 

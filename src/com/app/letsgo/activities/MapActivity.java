@@ -2,24 +2,26 @@ package com.app.letsgo.activities;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Fragment;
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
-import android.app.FragmentManager.OnBackStackChangedListener;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
 import com.app.letsgo.R;
-import com.app.letsgo.fragments.ListFragment;
 import com.app.letsgo.fragments.BaseMapFragment;
+import com.app.letsgo.fragments.ListFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -28,10 +30,8 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import android.view.Menu;
-import android.view.MenuItem;
 
-public class MapActivity extends FragmentActivity implements
+public class MapActivity extends ActionBarActivity implements
 		GooglePlayServicesClient.ConnectionCallbacks,
 		GooglePlayServicesClient.OnConnectionFailedListener,
 		OnBackStackChangedListener{
@@ -50,9 +50,11 @@ public class MapActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
+		
 		mLocationClient = new LocationClient(this, this, this);
 		listFragment = ListFragment.newInstance();
 		mapFragment = BaseMapFragment.newInstance();
+				 
 		//Load Map
 		if (mapFragment != null) {
 			map = mapFragment.getMap();
@@ -86,42 +88,66 @@ public class MapActivity extends FragmentActivity implements
         	
         });
         
-        toggle.setText("List");
+        toggle.setText("List");       
 	}
 
-	 private void flipCard() {
-	        if (mShowingBack) {
-	        	toggle.setText("List");
-	            getFragmentManager().popBackStack();
-	            return;
-	        }
-
-	        mShowingBack = true;
-	        
-	        getFragmentManager()
-	                .beginTransaction()
-	                .setCustomAnimations(
-	                        R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-	                        R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-	                .replace(R.id.container, listFragment)
-	                .addToBackStack(null)
-	                .commit();
-	        toggle.setText("Map");
-	        mHandler.post(new Runnable() {
-	            @Override
-	            public void run() {
-	                invalidateOptionsMenu();
-	            }
-	        });
-	    }
+	private void flipCard() {
+		if (mShowingBack) {
+			toggle.setText("List");
+			getFragmentManager().popBackStack();
+			return;
+		}
+		mShowingBack = true;
+		getFragmentManager().beginTransaction()
+			.setCustomAnimations(
+				R.animator.card_flip_right_in, R.animator.card_flip_right_out,
+				R.animator.card_flip_left_in, R.animator.card_flip_left_out)
+				.replace(R.id.container, listFragment)
+				.addToBackStack(null)
+				.commit();
+			toggle.setText("Map");
+			mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				invalidateOptionsMenu();
+			}
+		});
+	}
 	
 	@Override
     public void onBackStackChanged() {
         mShowingBack = (getFragmentManager().getBackStackEntryCount() > 0);
 	}	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.actions, menu);
+		searchEvents(menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
-	 
-	 
+	/**
+	 * Search local events based on the {@code query} string
+	 * @param query user entered query string
+	 */
+	public void searchEvents(Menu menu) {
+		Log.d("debug", "MapActivity do search...");
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+            	Log.d("debug", "onCreateOptionsMenu(): query = " + query);
+            	// TODO: handle search here
+            	return true;
+			}
+			@Override
+			public boolean onQueryTextChange(String text) {
+				return false;
+			}
+		});
+	}
 	
 	/*
 	 * Called when the Activity becomes visible.
@@ -277,21 +303,4 @@ public class MapActivity extends FragmentActivity implements
 			return mDialog;
 		}
 	}
-	
-	
-	
-	// Inflate the menu; this adds items to the action bar if it is present.
-			@Override
-			public boolean onCreateOptionsMenu(Menu menu) {
-				getMenuInflater().inflate(R.menu.map, menu);
-				return true;
-			}
-
-			@Override
-			public boolean onOptionsItemSelected(MenuItem item) {
-				Intent i = new Intent(this, CreateEventActivity.class);
-				startActivity(i);
-			    return true;
-			}
-	
 }

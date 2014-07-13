@@ -36,7 +36,7 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 	}
 	
 	public void initialize(){
-		loadEvents(LocalEvent.getLocalEvents());
+		// loadEvents(LocalEvent.getLocalEvents());
 	}
 	
 	@Override

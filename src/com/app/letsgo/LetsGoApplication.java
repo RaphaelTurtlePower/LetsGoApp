@@ -13,7 +13,6 @@ import com.parse.ParseUser;
 public class LetsGoApplication extends Application {
 	public static final String TAG = "LETSGO";
 
-	
 	@Override
 	public void onCreate() {
 		super.onCreate();

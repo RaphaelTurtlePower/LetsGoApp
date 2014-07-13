@@ -14,21 +14,18 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.app.letsgo.helpers.Utils;
+import com.app.letsgo.models.Place;
+
 public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
-    private static final String LOG_TAG = "ExampleApp";
 
-    private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-    private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
-    private static final String OUT_JSON = "/json";
-
-    private static final String API_KEY = "AIzaSyDEDV5kZcnb2FkfeXhYq028WU_Y5gYckw0";
-    // private static final String API_KEY = "AIzaSyCH4lqj6EY7zSVf0cLRsiKs947zuS0XrV8";
-
-    private ArrayList<String> resultList;
+    private ArrayList<Place> resultList;
 
 	public PlacesAdapter(Context context, int textViewResourceId) {
 		super(context, textViewResourceId);
@@ -41,9 +38,12 @@ public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
 
 	@Override
 	public String getItem(int index) {
-		return resultList.get(index);
+		return resultList.get(index).getAddress();
 	}
 
+	public Place getPlace(int index) {
+		return resultList.get(index);
+	}
 	
 	@Override
 	public android.widget.Filter getFilter() {
@@ -74,19 +74,20 @@ public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
 			return filter;
 	}
 	
-    private ArrayList<String> autocomplete(String input) {
-        ArrayList<String> resultList = null;
+    private ArrayList<Place> autocomplete(String input) {
+        ArrayList<Place> resultList = null;
 
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
         try {
-            StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
-            sb.append("?key=" + API_KEY);
+            StringBuilder sb = new StringBuilder(Utils.PLACES_API_BASE + 
+            		Utils.TYPE_AUTOCOMPLETE + Utils.OUT_JSON);
+            sb.append("?key=" + Utils.API_KEY);
             sb.append("&components=country:us");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());
-            Log.e(LOG_TAG, "Auto complete URL: " + url);
+            Log.e(Utils.LOG_TAG, "Auto complete URL: " + url);
             conn = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
 
@@ -96,12 +97,12 @@ public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
             while ((read = in.read(buff)) != -1) {
                 jsonResults.append(buff, 0, read);
             }
-            Log.e(LOG_TAG, "Auto complete result: " + jsonResults);
+            Log.e(Utils.LOG_TAG, "Auto complete result: " + jsonResults);
         } catch (MalformedURLException e) {
-            Log.e(LOG_TAG, "Error processing Places API URL", e);
+            Log.e(Utils.LOG_TAG, "Error processing Places API URL", e);
             return resultList;
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error connecting to Places API", e);
+            Log.e(Utils.LOG_TAG, "Error connecting to Places API", e);
             return resultList;
         } finally {
             if (conn != null) {
@@ -115,14 +116,19 @@ public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
 
             // Extract the Place descriptions from the results
-            resultList = new ArrayList<String>(predsJsonArray.length());
+            resultList = new ArrayList<Place>(predsJsonArray.length());
+            Place place = new Place();
             for (int i = 0; i < predsJsonArray.length(); i++) {
-                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+            	place.setAddress(predsJsonArray.getJSONObject(i).getString("description"));
+            	place.setPlaceId(predsJsonArray.getJSONObject(i).getString("place_id"));
+                resultList.add(place);
             }
+            
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "Cannot process JSON results", e);
+            Log.e(Utils.LOG_TAG, "Cannot process JSON results", e);
         }
         return resultList;
     }
+    
 }
 

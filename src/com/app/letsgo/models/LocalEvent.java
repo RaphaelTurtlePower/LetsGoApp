@@ -104,6 +104,21 @@ public class LocalEvent extends ParseObject implements Parcelable {
 		put("cost", cost);
 	}
 	
+	public Number getUpCount() {
+		return getNumber("upCount");		
+	}
+	
+	public void setUpCount(Number up) {
+		put("upCount", up);
+	}
+	public Number getDownCount() {
+		return getNumber("downCount");		
+	}
+	
+	public void setDownCount(Number down) {
+		put("downCount", down);
+	}
+
 	public String getDescription() {
 		return getString("description");
 	}

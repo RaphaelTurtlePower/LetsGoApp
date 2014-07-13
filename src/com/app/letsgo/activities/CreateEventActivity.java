@@ -7,12 +7,14 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -27,6 +29,7 @@ import com.app.letsgo.adapters.PlacesAdapter;
 import com.app.letsgo.helpers.Utils;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.Location;
+import com.app.letsgo.models.Place;
 import com.parse.ParseUser;
 
 public class CreateEventActivity extends FragmentActivity {
@@ -42,7 +45,8 @@ public class CreateEventActivity extends FragmentActivity {
 	static GregorianCalendar startDate;
 	static GregorianCalendar endDate;
 	AutoCompleteTextView etLocation;
-	String address;
+	GeoCodeAsyncTask geoAsyncTask;
+	LocalEvent event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,18 +70,37 @@ public class CreateEventActivity extends FragmentActivity {
 	   	setLocation();
     }
 
+    /** 
+     * call back to get location info from places api
+     */
     private void setLocation() {
-    	etLocation.setAdapter(new PlacesAdapter(this, R.layout.place_list));
+    	final PlacesAdapter adapter = new PlacesAdapter(this, R.layout.place_list);
+    	etLocation.setAdapter(adapter);
+    	
+    	// location = new Location();
         etLocation.setOnItemClickListener(new OnItemClickListener() {
 
         	@Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String str = (String) adapterView.getItemAtPosition(position);
-                etLocation.setText(str);
-                Toast.makeText(CreateEventActivity.this, str, Toast.LENGTH_SHORT).show();
+                Place place = adapter.getPlace(position);
+                geoAsyncTask = new GeoCodeAsyncTask();
+                geoAsyncTask.execute(place);
+                Log.d(Utils.LOG_TAG,  "CreateEvent.setLocation(): " + place.getAddress());
             }
         });
-
+    }
+    
+    public static class GeoCodeAsyncTask extends AsyncTask<Place, Integer, Location> {
+		@Override
+		protected Location doInBackground(Place... params) {
+			Place place = params[0];
+		    return Utils.getGeocode(place);
+		}
+		
+		@Override
+		protected void onPostExecute(Location location) {
+			Log.d(Utils.LOG_TAG, "Location: " + location.toString());
+		}
     }
     
     public static class DatePickerFragment extends DialogFragment
@@ -101,8 +124,7 @@ public class CreateEventActivity extends FragmentActivity {
 			startDate.set(GregorianCalendar.YEAR, year);
 			startDate.set(GregorianCalendar.MONTH, month);
 			startDate.set(GregorianCalendar.DAY_OF_MONTH, day);
-		}
-		
+		}		
 	}
     
     public static class TimePickerFragment extends DialogFragment
@@ -189,13 +211,33 @@ public class CreateEventActivity extends FragmentActivity {
     
     public void onCreateEvent(View v) {
     	
-    	LocalEvent event = new LocalEvent();
-    	event.setEventName(etEventName.getText().toString());
-    	event.setEventType(etEventType.getText().toString());
-    	event.setStartDate(etStartDate.getText().toString());
-    	event.setStartTime(etStartTime.getText().toString());
-    	event.setEndDate(etEndDate.getText().toString());
-    	event.setEndTime(etEndTime.getText().toString());
+    	event = new LocalEvent();
+    	// TODO: add validation later
+    	// for now all fields are set default values if the field is not entered
+    	event.setEventName("party");
+    	if (!Utils.isNull(etEventName)) {
+    		event.setEventName(etEventName.getText().toString());
+    	}
+    	event.setEventType("music");
+    	if (!Utils.isNull(etEventType)) {
+    		event.setEventType(etEventType.getText().toString());
+    	}
+    	event.setStartDate("7/18/14");
+    	if (!Utils.isNull(etStartDate)) {
+    		event.setStartDate(etStartDate.getText().toString());
+    	}
+    	event.setStartTime("16:00");
+    	if (!Utils.isNull(etStartTime)) {
+    		event.setStartTime(etStartTime.getText().toString());
+    	}
+    	event.setEndDate("7/18/14");
+    	if (!Utils.isNull(etEndDate)) {
+    		event.setEndDate(etEndDate.getText().toString());
+    	}
+    	event.setEndTime("22:00");
+    	if (!Utils.isNull(etEndTime)) {
+    		event.setEndTime(etEndTime.getText().toString());
+    	}
     	if (!Utils.isNull(etCost)) {
     		try {
     			Double cost = Double.parseDouble(etCost.getText().toString());
@@ -204,25 +246,30 @@ public class CreateEventActivity extends FragmentActivity {
     			e.printStackTrace();
     			event.setCost(0);
     		}
-    	} else event.setCost(0);
+    	} else event.setCost(0); 
     	
-    	// only set description if it's not entered
+    	// set description if it's entered
+    	event.setDescription("More details...");
     	if (!Utils.isNull(etDescription)) {
     		event.setDescription(etDescription.getText().toString());
     	}
     	
-    	if (!Utils.isNull(etLocation)) {
-        	address = etLocation.getText().toString();
-        	Location loc = new Location();
-	    	loc.setAddress(address);
-	    	// TODO: set latitude and longitude as well
-	    	event.setLocation(loc);
-	    }
-    	
     	ParseUser currentUser = ParseUser.getCurrentUser();
     	event.setCreatedBy(currentUser);
+    	
+    	if (geoAsyncTask != null) {
+    		try {
+        	    event.setLocation(geoAsyncTask.get());
+        	    Log.d(Utils.LOG_TAG,  "Location:" + event.getLocation().toString());
+    		} catch (Exception e) {
+    			Log.d(Utils.LOG_TAG,  "Failed to get location");
+    		}
+    	}
 
+    	// TODO: default to 0 for now
     	event.setCost(0);  // default to free
+    	event.setUpCount(0);
+    	event.setDownCount(0);
     	event.put("public", true); // default to public
     	event.saveInBackground();
     	
@@ -238,7 +285,7 @@ public class CreateEventActivity extends FragmentActivity {
     	intent.setData(CalendarContract.Events.CONTENT_URI);
     	intent.setType("vnd.android.cursor.item/event");
     	intent.putExtra(Events.TITLE, etEventName.getText().toString());
-    	intent.putExtra(Events.EVENT_LOCATION, address);
+    	intent.putExtra(Events.EVENT_LOCATION, etLocation.getText().toString());
     	if (!Utils.isNull(etDescription)) {
     		intent.putExtra(Events.DESCRIPTION, etDescription.getText().toString());
     	}

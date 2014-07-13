@@ -38,7 +38,7 @@
         android:layout_below="@+id/etEventName"
         android:ems="10"
         android:hint="Start Date"
-        android:onClick="showDatePickerDialog"
+        android:onClick="showStartDatePickerDialog"
         android:inputType="date" />
 
     <EditText
@@ -49,7 +49,7 @@
         android:layout_toRightOf="@+id/etStartDate"
         android:ems="10"
         android:hint="Start Time"
-        android:onClick="showTimePickerDialog"
+        android:onClick="showStartTimePickerDialog"
         android:inputType="time" />
 
     <EditText
@@ -60,7 +60,7 @@
         android:layout_below="@+id/etStartDate"
         android:ems="10"
         android:hint="End Date"
-        android:onClick="showDatePickerDialog"
+        android:onClick="showEndDatePickerDialog"
         android:inputType="date" />
 
     <EditText
@@ -72,7 +72,7 @@
         android:layout_toRightOf="@+id/etEndDate"
         android:ems="10"
         android:hint="End Time"
-        android:onClick="showTimePickerDialog"
+        android:onClick="showEndTimePickerDialog"
         android:inputType="time" />
 
    <EditText
@@ -86,13 +86,13 @@
        android:inputType="textMultiLine" />
     
     <Button
-        android:id="@+id/btnSave"
+        android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/etEventName"
         android:layout_alignParentBottom="true"
-        android:onClick="onSaveForLater"
-        android:text="Save for Later" />
+        android:onClick="onCancel"
+        android:text="Cancel" />
 
     <Button
         android:id="@+id/btnCreate"
@@ -108,8 +108,8 @@
         android:id="@+id/ratingBar1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnSave"
-        android:layout_alignLeft="@+id/btnSave"
+        android:layout_above="@+id/btnCancel"
+        android:layout_alignLeft="@+id/btnCanel"
         android:layout_marginBottom="31dp" />
 
     <EditText

@@ -67,7 +67,7 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 	
 	
 	public void initialize(){
-		loadEvents(LocalEvent.getLocalEvents());
+		// loadEvents(LocalEvent.getLocalEvents());
 	}
 	
 	

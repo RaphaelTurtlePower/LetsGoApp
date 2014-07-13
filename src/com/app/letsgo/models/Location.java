@@ -16,6 +16,10 @@ public class Location extends ParseObject implements Parcelable{
 		super();
 	}
 
+	public String getAddress() {
+		return getString("address");
+	}
+	
 	public void setAddress(String addr) {
 		put("address", addr);
 	}
@@ -32,7 +36,26 @@ public class Location extends ParseObject implements Parcelable{
 		put("geoPoint", geoPoint);
 	}
 	
+	public Double getLatitude(){
+		return getDouble("latitude");
+	}
 	
+	public void setLatitude(Double lat) {
+		put("latitude", lat);
+	}
+	
+	public Double getLongitude(){
+		return getDouble("longitude");
+	}
+	
+	public void setLongitude(Double lng) {
+		put("longitude", lng);
+	}
+	
+	@Override
+	public String toString() {
+		return "Location = " + getAddress() + getLatitude() + getLongitude();
+	}
 	
 	public Location(Parcel in){
 		String[] data = new String[3];

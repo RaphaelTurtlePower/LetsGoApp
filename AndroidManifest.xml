@@ -7,72 +7,80 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
-    
+
     <permission android:name="com.example.mapdemo.permission.MAPS_RECEIVE" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.READ_CALENDAR"/>
-	<uses-permission android:name="android.permission.WRITE_CALENDAR"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> 
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.example.mapdemo.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
- 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
- 	<uses-feature
+    <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
- 	
+        android:required="true" />
+
     <application
+        android:name=".LetsGoApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name="com.app.letsgo.LetsGoApplication" >
+        android:theme="@style/AppTheme" >
         <activity
-            android:name="com.app.letsgo.activities.CreateEventActivity"
+            android:name=".activities.CreateEventActivity"
             android:label="New Event" >
         </activity>
-            
-        <activity            
-            android:name="com.app.letsgo.activities.MapActivity"
-            android:label="@string/app_name" >
-        </activity>
-        
         <activity
-            android:name="com.app.letsgo.activities.LoginActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTop" >
+            android:name=".activities.MapActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        
+            </activity>
         <activity
-            android:name="com.app.letsgo.activities.UserDetailsActivity"
-            android:label="@string/app_name"/>
+            android:name=".activities.LoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
+        </activity>
+        <activity
+            android:name=".activities.UserDetailsActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name" />
 
-        <activity android:name="com.facebook.LoginActivity"
-                  android:label="@string/app_name" />
-        
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/fb_app_id"/>
-        
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/fb_app_id" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCH4lqj6EY7zSVf0cLRsiKs947zuS0XrV8" />
-        
-     	  <meta-data
+
+        <meta-data
             android:name="com.google.android.gms.version"
- 	      	android:value="@integer/google_play_services_version" />
-      
-        <activity
-            android:name="com.app.letsgo.activities.EventDetailActivity"
+            android:value="@integer/google_play_services_version" />
+           <activity
+            android:name=".activities.EventDetailActivity"
             android:label="@string/title_activity_event_detail" >
         </activity>
+        <activity
+            android:name=".activities.PrefActivity"
+            android:label="Preferences"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog" >
+        </activity>
+        <activity
+            android:name=".activities.ActionBarActivity" 
+            android:label="@string/title_activity_action_bar" >                       
+            
+        </activity>
     </application>
+
 </manifest>

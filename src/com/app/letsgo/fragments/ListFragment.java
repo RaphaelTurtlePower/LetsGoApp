@@ -34,8 +34,6 @@ public class ListFragment extends Fragment {
 	      // Defines the xml file for the fragment
 		 View view = inflater.inflate(R.layout.fragment_map_list_view, container, false);
 		 items = (ListView) view.findViewById(R.id.map_list_view);
-		 // Setup handles to view objects here
-	      // etFoo = (EditText) v.findViewById(R.id.etFoo);
 	 	 itemList = LocalEvent.getLocalEvents();
 	 	 itemsAdapter = new ListEventsAdapter(getActivity(), itemList);
 	 	 items.setAdapter(itemsAdapter);

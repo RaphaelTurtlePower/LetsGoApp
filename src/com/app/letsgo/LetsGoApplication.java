@@ -33,7 +33,7 @@ public class LetsGoApplication extends Application {
 		ParseACL.setDefaultACL(defaultACL, true);
 		
 		 // the Facebook App Id 
-        ParseFacebookUtils.initialize("1515642955331816");//"629002607207382");
+        ParseFacebookUtils.initialize("629002607207382");
 
 	}
 

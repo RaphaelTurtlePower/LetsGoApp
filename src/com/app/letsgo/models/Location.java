@@ -16,10 +16,6 @@ public class Location extends ParseObject implements Parcelable{
 		super();
 	}
 
-	public String getAddress() {
-		return getString("address");
-	}
-	
 	public void setAddress(String addr) {
 		put("address", addr);
 	}

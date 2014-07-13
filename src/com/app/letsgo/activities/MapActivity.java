@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +19,6 @@ import android.widget.Button;
 
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
-import android.widget.Toast;
 
 import com.app.letsgo.R;
 import com.app.letsgo.fragments.BaseMapFragment;
@@ -26,8 +26,6 @@ import com.app.letsgo.fragments.ListFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class MapActivity extends FragmentActivity implements
 		OnBackStackChangedListener{

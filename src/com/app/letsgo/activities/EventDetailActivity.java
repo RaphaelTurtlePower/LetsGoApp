@@ -76,6 +76,7 @@ public class EventDetailActivity extends Activity {
 		e = (LocalEvent) getIntent().getExtras().getParcelable("event");
 		setUpViews();
 		loadFieldsIntoView();		
+
 	}
 
 }

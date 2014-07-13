@@ -20,48 +20,12 @@ public class Location extends ParseObject implements Parcelable{
 		put("address", addr);
 	}
 	
-	public String getAddressLine1(){
-		return getString("addressLine1");
-	}
-	
-	public String getAddressLine2(){
-		return getString("addressLine2");
-	}
-	
-	public String getCity(){
-		return getString("city");
-	}
-	
-	public String getState(){
-		return getString("state");
-	}
-	
-	public String getZipCode(){
-		return getString("zipCode");
+	public String getAddress(){
+		return getString("address");
 	}
 	
 	public ParseGeoPoint getGeoPoint(){
 		return getParseGeoPoint("geoPoint");
-	}
-	
-	public void setAddressLine1(String line1) {
-		put("addressLine1", line1);
-	}
-	
-	public void setAddressLine2(String line2) {
-		put("addressLine2", line2);
-	}
-	
-	public void setCity(String city) {
-		put("city", city);
-	}
-	
-	public void setState(String state) {
-		put("state", state);
-	}
-	
-	public void setZipCode(String zip) {
-		put("zipCode", zip);
 	}
 	
 	public void setGeoPoint(ParseGeoPoint geoPoint) {
@@ -71,15 +35,11 @@ public class Location extends ParseObject implements Parcelable{
 	
 	
 	public Location(Parcel in){
-		String[] data = new String[6];
+		String[] data = new String[3];
 		in.readStringArray(data);
-		setAddressLine1(data[0]);
-	//	setAddressLine2(data[1]);
-		setCity(data[1]);
-		setState(data[2]);
-		setZipCode(data[3]);
-		Double lat = new Double(data[4]);
-		Double lon = new Double(data[5]);
+		setAddress(data[0]);
+		Double lat = new Double(data[1]);
+		Double lon = new Double(data[2]);
 		setGeoPoint(new ParseGeoPoint(lat, lon));
 	}
 	
@@ -92,11 +52,7 @@ public class Location extends ParseObject implements Parcelable{
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
-		dest.writeStringArray(new String[] {getAddressLine1(),
-		//		getAddressLine2(),
-				getCity(),
-				getState(),
-				getZipCode(),
+		dest.writeStringArray(new String[] {getAddress(),
 				new Double(getGeoPoint().getLatitude()).toString(),
 				new Double(getGeoPoint().getLongitude()).toString()});
 				
@@ -111,8 +67,5 @@ public class Location extends ParseObject implements Parcelable{
 		}
 	};
 	
-	public String getCityAndState(){
-		return getCity() + "," + getState();
-	}
 	
 }

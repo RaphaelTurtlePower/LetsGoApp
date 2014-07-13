@@ -36,11 +36,7 @@ import com.app.letsgo.models.LocalEvent;
 			description.setText(event.getDescription());
 			
 			TextView street_address = (TextView) v.findViewById(R.id.map_item_street);
-			street_address.setText(event.getLocation().getAddressLine1());
-			TextView city_state = (TextView) v.findViewById(R.id.map_item_city_state);
-			city_state.setText(event.getLocation().getCityAndState());
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");      
-
+			street_address.setText(event.getLocation().getAddress());
 
 			TextView startDate = (TextView) v.findViewById(R.id.map_item_startDate);
 			startDate.setText(event.getStartDate());

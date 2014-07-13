@@ -114,16 +114,16 @@ public class LocalEvent extends ParseObject implements Parcelable {
 	
 	
 	public LocalEvent(Parcel in){
-		String[] data = new String[6];
+		String[] data = new String[8];
 		in.readStringArray(data);
 		setEventName(data[0]);
 		setEventType(data[1]);
 		setStartDate(data[2]);
 		setEndDate(data[3]);
-		setStartTime(data[3]);
+		setStartTime(data[4]);
 		setEndTime(data[5]);
-		setCost(Double.parseDouble(data[4]));
-		setDescription(data[5]);
+		setCost(Double.parseDouble(data[6]));
+		setDescription(data[7]);
 		Location location = (Location) Location.CREATOR.createFromParcel(in);
 		setLocation(location);
 	}

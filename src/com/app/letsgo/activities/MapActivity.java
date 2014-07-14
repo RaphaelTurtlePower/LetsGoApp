@@ -1,5 +1,7 @@
 package com.app.letsgo.activities;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.Dialog;
 
@@ -23,6 +25,7 @@ import android.widget.SearchView.OnQueryTextListener;
 import com.app.letsgo.R;
 import com.app.letsgo.fragments.BaseMapFragment;
 import com.app.letsgo.fragments.ListFragment;
+import com.app.letsgo.models.LocalEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
@@ -35,13 +38,15 @@ public class MapActivity extends FragmentActivity implements
 	private Handler mHandler = new Handler();
 	private boolean mShowingBack = false;
 	private Button toggle;
+	ArrayList<LocalEvent> events;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-		listFragment = ListFragment.newInstance();
-		mapFragment = BaseMapFragment.newInstance();
+		events = LocalEvent.getLocalEvents();
+		listFragment = ListFragment.newInstance(events);
+		mapFragment = BaseMapFragment.newInstance(events);
 		if (savedInstanceState == null) {
 			getFragmentManager()
                     .beginTransaction()
@@ -71,11 +76,11 @@ public class MapActivity extends FragmentActivity implements
 	        if (mShowingBack) {
 	        	toggle.setText("List");
 	            getFragmentManager().popBackStack();
+	            mapFragment.loadEvents(events);
 	            return;
 	        }
-
 	        mShowingBack = true;
-	        
+	        listFragment = ListFragment.newInstance(events);
 	        getFragmentManager()
 	                .beginTransaction()
 	                .setCustomAnimations(
@@ -118,7 +123,13 @@ public class MapActivity extends FragmentActivity implements
 			@Override
 			public boolean onQueryTextSubmit(String query) {
             	Log.d("debug", "onCreateOptionsMenu(): query = " + query);
-            	// TODO: handle search here
+            	events = LocalEvent.search(query);
+            	if(mShowingBack){
+            		listFragment.setList(events);
+            	}else{
+            		
+            		mapFragment.loadEvents(events);
+            	}
             	return true;
 			}
 			@Override

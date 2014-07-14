@@ -98,7 +98,7 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 				TextView title = (TextView) v.findViewById(R.id.map_item_title);
 				title.setText(event.getEventName());
 				TextView description = (TextView) v.findViewById(R.id.map_item_description);
-				description.setText(event.getDescription());
+				description.setText(event.getItemShortDescription());
 				
 				TextView street_address = (TextView) v.findViewById(R.id.map_item_street);
 				street_address.setText(event.getLocation().getAddress());

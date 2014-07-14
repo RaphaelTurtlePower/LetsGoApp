@@ -30,7 +30,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 
-public class MapActivity extends FragmentActivity implements
+public class MapActivity extends ActionBarActivity implements
 		OnBackStackChangedListener{
 
 	private BaseMapFragment mapFragment;
@@ -118,16 +118,16 @@ public class MapActivity extends FragmentActivity implements
 		Log.d("debug", "MapActivity do search...");
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 		SearchView searchView = (SearchView) searchItem.getActionView();
+		searchView.setQueryHint("Search events");
 		
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-            	Log.d("debug", "onCreateOptionsMenu(): query = " + query);
+            	Log.d("debug", "searchEvents(): query = " + query);
             	events = LocalEvent.search(query);
-            	if(mShowingBack){
+            	if (mShowingBack) {
             		listFragment.setList(events);
-            	}else{
-            		
+            	} else {            		
             		mapFragment.loadEvents(events);
             	}
             	return true;

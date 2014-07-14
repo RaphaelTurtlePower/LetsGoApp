@@ -192,7 +192,6 @@ public class SettingsActivity extends FragmentActivity {
 			endDate.set(GregorianCalendar.MONTH, month);
 			endDate.set(GregorianCalendar.DAY_OF_MONTH, day);
 		}
-
 	}
 
 	// TODO: need to refactor this!
@@ -267,6 +266,5 @@ public class SettingsActivity extends FragmentActivity {
 			event.setEndTime(etEndTime.getText().toString());
 		}
 	}
-
 
 }

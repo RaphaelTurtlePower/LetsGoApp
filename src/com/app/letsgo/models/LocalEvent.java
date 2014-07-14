@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import com.app.letsgo.R;
@@ -129,16 +130,16 @@ public class LocalEvent extends ParseObject implements Parcelable {
 	
 	
 	public LocalEvent(Parcel in){
-		String[] data = new String[6];
+		String[] data = new String[8];
 		in.readStringArray(data);
 		setEventName(data[0]);
 		setEventType(data[1]);
 		setStartDate(data[2]);
-		// setEndDate(data[3]);
-		setStartTime(data[3]);
-		//setEndTime(data[5]);
-		setCost(Double.parseDouble(data[4]));
-		setDescription(data[5]);
+		setEndDate(data[3]);
+		setStartTime(data[4]);
+		setEndTime(data[5]);
+		setCost(Double.parseDouble(data[6]));
+		setDescription(data[7]);
 		Location location = (Location) Location.CREATOR.createFromParcel(in);
 		setLocation(location);
 	}
@@ -230,21 +231,39 @@ public class LocalEvent extends ParseObject implements Parcelable {
 		}
 		 
 		 return events;
-	/*    query.find(new FindCallback<ParseObject>() {
-		@Override
-		public void done(List<ParseObject> objects, com.parse.ParseException e) {
-			 if (e == null) {
-		            for(int i=0; i<objects.size(); i++){
-		            	LocalEvent ev = (LocalEvent) objects.get(i);
-		            	events.add(ev);
-		            }
-		        } else {
-		            System.out.println("Error Retrieving Data from Parse");
-		     }
+	}
+	
+	public static ArrayList<LocalEvent> search(String query){
+		final ArrayList<LocalEvent> events = new ArrayList<LocalEvent>();
+		List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+		
+		ParseQuery<ParseObject> name = ParseQuery.getQuery("LocalEvent");
+		name.whereContains("eventName", query);
+		
+		ParseQuery<ParseObject> description = ParseQuery.getQuery("LocalEvent");
+		description.whereContains("description", query);
+		queries.add(name);
+		queries.add(description);
+		 
+		ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+		mainQuery.include("location");
+		List<ParseObject> objects;
+		HashSet<String> ids = new HashSet<String>();
+		try {
+			objects = mainQuery.find();
+			for(int i=0; i<objects.size(); i++){
+				LocalEvent ev = (LocalEvent) objects.get(i);
+				//remove duplicates
+	         	if(!ids.contains(ev.getObjectId())){
+	         		events.add(ev);
+	         		ids.add(ev.getObjectId());
+	         	}
+	         }
+		} catch (com.parse.ParseException e) {
+			e.printStackTrace();
 		}
-	});
-	    return events;
-	    */
+		 
+		 return events;
 	}
 	
 }

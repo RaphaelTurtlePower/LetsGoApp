@@ -19,5 +19,13 @@
     <string name="title_activity_action_bar">ActionBarActivity</string>
     <string name="search_hint">Search Events</string>
     <string name="title_activity_settings">Preferences</string>
+    
+    <string name="invite_friends">invite friends</string>
+    <string name="EXTRA_SUBJECT">Invitation for you ...</string>
+    <string name="eventName">Event name: </string>
+    <string name="eventDescription">Event description: </string>
+    <string name="eventAddress">Event address: </string>
+    <string name="eventStart">Event start: </string>
+    <string name="eventInvitation">Would you like to attend this event with me?\n\n</string>
 
 </resources>

@@ -23,9 +23,26 @@ public class ListFragment extends Fragment {
 	private ListEventsAdapter itemsAdapter;
 	private ListView items;
 	
-	public static ListFragment newInstance(){
+	public static ListFragment newInstance(ArrayList<LocalEvent> events){
 		ListFragment listFragment = new ListFragment();
+		Bundle args = new Bundle();
+		args.putParcelableArrayList("events", events);
+		listFragment.setArguments(args);
 		return listFragment;
+	}
+	
+	public void setList(ArrayList<LocalEvent> events){
+		itemList.clear();
+		itemList.addAll(events);
+		itemsAdapter.notifyDataSetChanged();
+		System.out.println("Test");
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		Bundle args = getArguments();
+		itemList = args.getParcelableArrayList("events");
 	}
 	
 	 @Override
@@ -34,9 +51,6 @@ public class ListFragment extends Fragment {
 	      // Defines the xml file for the fragment
 		 View view = inflater.inflate(R.layout.fragment_map_list_view, container, false);
 		 items = (ListView) view.findViewById(R.id.map_list_view);
-		 // Setup handles to view objects here
-	      // etFoo = (EditText) v.findViewById(R.id.etFoo);
-	 	 itemList = LocalEvent.getLocalEvents();
 	 	 itemsAdapter = new ListEventsAdapter(getActivity(), itemList);
 	 	 items.setAdapter(itemsAdapter);
 	 	 items.setOnItemClickListener(new OnItemClickListener() {

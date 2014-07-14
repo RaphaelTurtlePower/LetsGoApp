@@ -104,13 +104,6 @@
         android:onClick="onCreateEvent"
         android:text="Create" />
 
-    <RatingBar
-        android:id="@+id/ratingBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnCancel"
-        android:layout_alignLeft="@+id/btnCanel"
-        android:layout_marginBottom="31dp" />
 
     <EditText
         android:id="@+id/etCost"

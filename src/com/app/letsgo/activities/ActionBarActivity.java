@@ -20,8 +20,7 @@ public class ActionBarActivity extends FragmentActivity {
  
         super.onOptionsItemSelected(item); 
         Intent i;
-        switch (item.getItemId()) {
-        
+        switch (item.getItemId()) {        
             case R.id.action_create:
             	Log.d("debug", "selected Create...");
         		i = new Intent(this, CreateEventActivity.class);
@@ -29,7 +28,7 @@ public class ActionBarActivity extends FragmentActivity {
                 break; 
             case R.id.action_settings:
             	Log.d("debug", "selected Preference...");
-            	i = new Intent(this, PrefActivity.class);
+            	i = new Intent(this, SettingsActivity.class);
             	startActivity(i);
                 break;
             case R.id.action_search:
@@ -37,6 +36,5 @@ public class ActionBarActivity extends FragmentActivity {
             	break;
         }
         return true;
- 
     }
 }

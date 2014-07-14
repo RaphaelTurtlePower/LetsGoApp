@@ -17,6 +17,7 @@
     <string name="relationship">Relationship</string>
     <string name="title_activity_preference">PreferenceActivity</string>
     <string name="title_activity_action_bar">ActionBarActivity</string>
-
     <string name="search_hint">Search Events</string>
+    <string name="title_activity_settings">Preferences</string>
+
 </resources>

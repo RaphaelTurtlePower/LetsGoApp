@@ -44,7 +44,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name"
@@ -75,14 +75,13 @@
             android:label="@string/title_activity_event_detail" >
         </activity>
         <activity
-            android:name=".activities.PrefActivity"
-            android:label="Preferences"
-            android:theme="@android:style/Theme.DeviceDefault.Dialog" >
+            android:name=".activities.ActionBarActivity"
+            android:label="@string/title_activity_action_bar" >
         </activity>
         <activity
-            android:name=".activities.ActionBarActivity" 
-            android:label="@string/title_activity_action_bar" >                       
-            
+            android:name="com.app.letsgo.activities.SettingsActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="event_types">
+        <item>Music</item>
+        <item>Food &#038; Drink</item>
+        <item>Performing &#038; Visual Arts</item>
+        <item>Business &#038; Professional</item>
+        <item>Film, Media &#038; Entertainment</item>
+        <item>Sports &#038; Fitness</item>
+        <item>Community</item>
+        <item>Health &#038; Wellness</item>
+        <item>Science &#038; Technology</item>
+        <item>Travel &#038; Outdoor</item>
+        <item>Family &#038;  Education</item>                
+    </string-array>    
+</resources>

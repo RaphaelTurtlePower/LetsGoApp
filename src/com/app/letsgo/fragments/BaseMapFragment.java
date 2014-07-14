@@ -40,13 +40,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class BaseMapFragment extends MapFragment implements OnMarkerClickListener,
 GooglePlayServicesClient.ConnectionCallbacks,
 GooglePlayServicesClient.OnConnectionFailedListener{
+	private ArrayList<LocalEvent> events;
 	private HashMap<Marker, LocalEvent> markerMap = new HashMap<Marker, LocalEvent>();
 	private LocationClient mLocationClient;
 	
 	public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-	public static BaseMapFragment newInstance(){
+	public static BaseMapFragment newInstance(ArrayList<LocalEvent> events){
 		BaseMapFragment mapFragment = new BaseMapFragment();
+		Bundle args = new Bundle();
+		args.putParcelableArrayList("events", events);
+		mapFragment.setArguments(args);
 		return mapFragment;
 	}
 	
@@ -58,7 +62,8 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		mLocationClient = new LocationClient(getActivity(), this, this);
-		
+		Bundle args = getArguments();
+		events = args.getParcelableArrayList("events");
 	}
 	@Override
 	public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -67,7 +72,7 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 	
 	
 	public void initialize(){
-		// loadEvents(LocalEvent.getLocalEvents());
+		 loadEvents(events);
 	}
 	
 	
@@ -125,6 +130,10 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 	}
 	
 	public void loadEvents(ArrayList<LocalEvent> events){
+		this.events = events;
+		if(getMap() != null){
+			getMap().clear();
+		}
 		for(int i=0; i<events.size(); i++){
 			addEvent(events.get(i));
 		}
@@ -222,4 +231,5 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 	public void disconnect(){
 		mLocationClient.disconnect();
 	}
+	
 }

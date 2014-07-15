@@ -25,7 +25,8 @@ import com.parse.ParseUser;
 
 @ParseClassName("LocalEvent")
 public class LocalEvent extends ParseObject implements Parcelable {
-	
+	public static final int SHORT_DESCRIPTION_LENGTH = 140;
+
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
 	SimpleDateFormat sdf_time = new SimpleDateFormat("h:mm a");
 	
@@ -231,6 +232,14 @@ public class LocalEvent extends ParseObject implements Parcelable {
 		}
 		 
 		 return events;
+	}
+	
+	public String getItemShortDescription(){
+		String descriptionText = getDescription();
+		if(descriptionText != null && descriptionText.length() > SHORT_DESCRIPTION_LENGTH){
+			descriptionText = descriptionText.substring(0, SHORT_DESCRIPTION_LENGTH) + "...";
+		}
+		return descriptionText;
 	}
 	
 	public static ArrayList<LocalEvent> search(String query){

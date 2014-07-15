@@ -35,6 +35,7 @@ public class MapActivity extends ActionBarActivity implements
 	private boolean mShowingBack = false;
 	private Button toggle;
 	ArrayList<LocalEvent> events;
+	Menu menu;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) { 
@@ -110,6 +111,7 @@ public class MapActivity extends ActionBarActivity implements
 	 */
 	public void searchEvents(Menu menu) {
 		Log.d("debug", "MapActivity do search...");
+		this.menu = menu;
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 		SearchView searchView = (SearchView) searchItem.getActionView();
 		searchView.setQueryHint("Search events");
@@ -169,15 +171,35 @@ public class MapActivity extends ActionBarActivity implements
 		switch (requestCode) {
 
 		case BaseMapFragment.CONNECTION_FAILURE_RESOLUTION_REQUEST:
-			/*
-			 * If the result code is Activity.RESULT_OK, try to connect again
-			 */
-			switch (resultCode) {
-			case Activity.RESULT_OK:
+			if(resultCode == Activity.RESULT_OK){
 				mapFragment.connect();
-				break;
 			}
-
+			break;
+		case ActionBarActivity.CREATE_EVENT_REQUEST_CODE:
+			if(resultCode == Activity.RESULT_OK){
+				LocalEvent event = data.getParcelableExtra("event");
+				events.add(event);	//add local event
+				if (mShowingBack) {
+            		listFragment.addEvent(event);
+            	} else {            		
+            		mapFragment.addEvent(event, false);
+            	}
+			}
+			break;
+		case ActionBarActivity.SETTINGS_REQUEST_CODE:
+			if(resultCode == Activity.RESULT_OK){
+				//re-run the query
+				MenuItem searchItem = menu.findItem(R.id.action_search);
+				SearchView sView = (SearchView) searchItem.getActionView();
+				String query = (String) sView.getQuery().toString();
+				events = LocalEvent.search(query);
+            	if (mShowingBack) {
+            		listFragment.setList(events);
+            	} else {            		
+            		mapFragment.loadEvents(events);
+            	}
+			}
+			break;
 		}
 	}
 

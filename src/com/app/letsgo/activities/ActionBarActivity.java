@@ -52,6 +52,9 @@ public class ActionBarActivity extends FragmentActivity implements
     private String nearByArea;
     private ProgressBar mActivityIndicator;
     
+	public static final int CREATE_EVENT_REQUEST_CODE = 5;
+	public static final int SETTINGS_REQUEST_CODE = 10;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,12 +79,12 @@ public class ActionBarActivity extends FragmentActivity implements
             case R.id.action_create:
             	Log.d("debug", "selected Create...");
         		i = new Intent(this, CreateEventActivity.class);
-        		startActivity(i);
+        		startActivityForResult(i, CREATE_EVENT_REQUEST_CODE);
                 break; 
             case R.id.action_settings:
             	Log.d("debug", "selected Preference...");
             	i = new Intent(this, SettingsActivity.class);
-            	startActivity(i);
+            	startActivityForResult(i, SETTINGS_REQUEST_CODE);
                 break;
             case R.id.action_search:
             	Log.d("debug", "selected Search...");            	
@@ -139,7 +142,6 @@ public class ActionBarActivity extends FragmentActivity implements
      * Called by Location Services when the request to connect the
      * client finishes successfully. At this point, you can
      * request the current location or start periodic updates
-     * minecraft is awesome!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      */
     @Override
     public void onConnected(Bundle dataBundle) {

@@ -35,9 +35,12 @@ public class ListFragment extends Fragment {
 		itemList.clear();
 		itemList.addAll(events);
 		itemsAdapter.notifyDataSetChanged();
-		System.out.println("Test");
 	}
 	
+	public void addEvent(LocalEvent event){
+		itemList.add(event);
+		itemsAdapter.notifyDataSetChanged();
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

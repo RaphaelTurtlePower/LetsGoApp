@@ -82,7 +82,7 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 		initialize();
 	}
 	
-	public void addEvent(LocalEvent event){
+	public void addEvent(LocalEvent event, Boolean updateCamera){
 		Marker mapMarker = getMap().addMarker( new MarkerOptions()
 	    .position(event.getMapPosition())					 								    
 	   .icon(BitmapDescriptorFactory.fromResource(event.getMarkerType())));
@@ -97,7 +97,7 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 				TextView title = (TextView) v.findViewById(R.id.map_item_title);
 				title.setText(event.getEventName());
 				TextView description = (TextView) v.findViewById(R.id.map_item_description);
-				description.setText(event.getDescription());
+				description.setText(event.getItemShortDescription());
 				
 				TextView street_address = (TextView) v.findViewById(R.id.map_item_street);
 				street_address.setText(event.getLocation().getAddress());
@@ -126,6 +126,9 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 			}
 			
 		});
+		if(updateCamera){
+			updateCamera(event.getLocation().getLatitude(), event.getLocation().getLongitude());
+		}
 	}
 	
 	public void loadEvents(ArrayList<LocalEvent> events){
@@ -134,7 +137,7 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 			getMap().clear();
 		}
 		for(int i=0; i<events.size(); i++){
-			addEvent(events.get(i));
+			addEvent(events.get(i), false);
 		}
 	}
 
@@ -160,6 +163,7 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 		if (getMap() != null) {
 			Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
 			getMap().setMyLocationEnabled(true);
+			getMap().setPadding(10, 10, 10, 100);
 		} else {
 			Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
 		}
@@ -201,16 +205,20 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 		Location location = mLocationClient.getLastLocation();
 		if (location != null) {
 			Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
-			LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-			CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-			if(getMap()!=null){
-				getMap().animateCamera(cameraUpdate);
-			}
+			updateCamera(location.getLatitude(), location.getLongitude());
 		} else {
 			Toast.makeText(getActivity(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
 		}
 	}
 
+	public void updateCamera(Double latitude, Double longitude){
+		LatLng latLng = new LatLng(latitude, longitude);
+		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+		if(getMap()!=null){
+			getMap().animateCamera(cameraUpdate);
+		}
+	}
+	
 
 	/*
 	 * Called by Location Services if the connection to the location client

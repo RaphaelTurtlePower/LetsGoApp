@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -115,6 +116,8 @@ public class SettingsActivity extends FragmentActivity {
 		editor.putInt("eventTypePos", spEventType.getSelectedItemPosition());
 		Log.d("debug", "SettingsActivity.onSave(): cost = " + sbCost.getProgress());
 		editor.commit();
+		Intent data = new Intent();
+		setResult(RESULT_OK, data);
 		finish();
 	}
 	

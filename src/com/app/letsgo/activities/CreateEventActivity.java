@@ -29,7 +29,9 @@ import com.app.letsgo.helpers.Utils;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.Location;
 import com.app.letsgo.models.Place;
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class CreateEventActivity extends FragmentActivity {
 	EditText etEventName;
@@ -153,10 +155,26 @@ public class CreateEventActivity extends FragmentActivity {
 		event.setUpCount(0);
 		event.setDownCount(0);
 		event.put("public", true); // default to public
-		event.saveInBackground();
+		event.saveInBackground(new SaveCallback(){
 
-		addToCalendar();
-		finish();
+			@Override
+			public void done(ParseException e) {
+				if(e == null){
+					Log.d("OBJECT_SAVE", "Event successfully saved.");
+					addToCalendar();
+					Intent data = new Intent();
+					data.putExtra("event", event);
+					setResult(RESULT_OK, data);
+					finish();
+				}else{
+					Log.d("OBJECT NOT SAVED", "Event not successfully saved");
+				}
+				
+			}
+			
+		});
+
+		
 	}
 
 	/**

@@ -85,7 +85,7 @@ public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());
-            Log.e(Utils.LOG_TAG, "Auto complete URL: " + url);
+          //  Log.e(Utils.LOG_TAG, "Auto complete URL: " + url);
             conn = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
 
@@ -95,7 +95,7 @@ public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
             while ((read = in.read(buff)) != -1) {
                 jsonResults.append(buff, 0, read);
             }
-            Log.e(Utils.LOG_TAG, "Auto complete result: " + jsonResults);
+         //   Log.e(Utils.LOG_TAG, "Auto complete result: " + jsonResults);
         } catch (MalformedURLException e) {
             Log.e(Utils.LOG_TAG, "Error processing Places API URL", e);
             return resultList;

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.Dialog;
-
 import android.app.FragmentManager.OnBackStackChangedListener;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
@@ -28,7 +25,6 @@ import com.app.letsgo.fragments.ListFragment;
 import com.app.letsgo.models.LocalEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-
 
 public class MapActivity extends ActionBarActivity implements
 		OnBackStackChangedListener{
@@ -64,13 +60,11 @@ public class MapActivity extends ActionBarActivity implements
 			public void onClick(View v) {
 				//flips the card view
 				flipCard();
-			}
-        	
+			}        	
         });
         
         toggle.setText("List");       
 	}
-	
 	
 	 private void flipCard() {
 	        if (mShowingBack) {
@@ -120,6 +114,8 @@ public class MapActivity extends ActionBarActivity implements
 		SearchView searchView = (SearchView) searchItem.getActionView();
 		searchView.setQueryHint("Search events");
 		
+		super.showNearByLocation(searchView);
+		
 		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
@@ -138,6 +134,8 @@ public class MapActivity extends ActionBarActivity implements
 			}
 		});
 	}
+	
+	
 	
 	/*
 	 * Called when the Activity becomes visible.

@@ -64,18 +64,17 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 		mLocationClient = new LocationClient(getActivity(), this, this);
 		Bundle args = getArguments();
 		events = args.getParcelableArrayList("events");
+		
 	}
 	@Override
 	public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
-	
-	
+		
 	public void initialize(){
 		 loadEvents(events);
 	}
-	
-	
+		
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);

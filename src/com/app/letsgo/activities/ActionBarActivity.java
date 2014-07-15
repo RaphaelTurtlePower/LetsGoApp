@@ -7,9 +7,12 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.app.letsgo.R;
+import com.app.letsgo.models.LocalEvent;
 
 public class ActionBarActivity extends FragmentActivity {
 
+	public static final int CREATE_EVENT_REQUEST_CODE = 5;
+	public static final int SETTINGS_REQUEST_CODE = 10;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,12 +27,12 @@ public class ActionBarActivity extends FragmentActivity {
             case R.id.action_create:
             	Log.d("debug", "selected Create...");
         		i = new Intent(this, CreateEventActivity.class);
-        		startActivity(i);
+        		startActivityForResult(i, CREATE_EVENT_REQUEST_CODE);
                 break; 
             case R.id.action_settings:
             	Log.d("debug", "selected Preference...");
             	i = new Intent(this, SettingsActivity.class);
-            	startActivity(i);
+            	startActivityForResult(i, SETTINGS_REQUEST_CODE);
                 break;
             case R.id.action_search:
             	Log.d("debug", "selected Search...");            	
@@ -37,4 +40,7 @@ public class ActionBarActivity extends FragmentActivity {
         }
         return true;
     }
+	
+	
+	
 }

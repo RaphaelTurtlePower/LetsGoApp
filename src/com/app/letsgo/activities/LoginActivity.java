@@ -47,16 +47,11 @@ public class LoginActivity extends Activity {
 
 		// Check if there is a currently logged in user
 		// and they are linked to a Facebook account.
-		ParseUser currentUser = ParseUser.getCurrentUser();
-		int i =0;
-		if (currentUser!=null) i=1;
-		
+		ParseUser currentUser = ParseUser.getCurrentUser();		
 		if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
 			// Go to the user info activity
-			//showUserDetailsActivity();
-			showMapViewActivity();
+			showUserDetailsActivity();
 		}
-		i=2;
 	}
 
 	@Override
@@ -82,23 +77,19 @@ public class LoginActivity extends Activity {
 				} else if (user.isNew()) {
 					Log.d(LetsGoApplication.TAG,
 							"User signed up and logged in through Facebook!");
-					showMapViewActivity();
+					showUserDetailsActivity();
 				} else {
 					Log.d(LetsGoApplication.TAG,
 							"User logged in through Facebook!");
-					showMapViewActivity();
+					showUserDetailsActivity();
 				}
 			}
 		});
 	}
-/*
+
 	private void showUserDetailsActivity() {
 		Intent intent = new Intent(this, UserDetailsActivity.class);
 		startActivity(intent);
 	}
-*/
-	private void showMapViewActivity(){
-		Intent intent = new Intent(this, MapActivity.class);
-		startActivity(intent);
-	}
+
 }

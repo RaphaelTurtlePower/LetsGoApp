@@ -132,7 +132,7 @@
         android:layout_toRightOf="@id/line6"
         android:text="dummy" />
 
-    <TextView
+        <TextView
         android:id="@+id/line7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,6 +140,7 @@
         android:layout_below="@id/line6"
         android:layout_marginLeft="5dp"
         android:text="description:" />
+    
 
     <TextView
         android:id="@+id/tvDescription"
@@ -150,32 +151,52 @@
         android:layout_toRightOf="@id/line7"
         android:text="dummy" />
 
-    <TextView
-        android:id="@+id/line8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/line7"
-        android:layout_marginLeft="5dp"
-        android:text="" />
-
-    <TextView
-        android:id="@+id/tvCounts"
+    <LinearLayout
+        android:id="@+id/line8LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/line7"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/line8"
-        android:text="dummy" />
-
-    <Button
-        android:id="@+id/bInvite"
-        android:onClick="onClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
-        android:text="@string/invite_friends" />
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/txtDownCountXX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="5dp"
+            android:text="7"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/imageUp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/contentDescription"
+            android:src="@drawable/checkup" />
+
+        <TextView
+            android:id="@+id/txtGoing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="going?"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/line7A"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@string/contentDescription"
+            android:src="@drawable/checkdown" />
+
+        <TextView
+            android:id="@+id/txtDownCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:text="3"
+            android:textSize="20sp" />
+    </LinearLayout>
 
 </RelativeLayout>

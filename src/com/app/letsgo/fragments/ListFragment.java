@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.os.Bundle;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,12 +17,17 @@ import android.widget.ListView;
 import com.app.letsgo.R;
 import com.app.letsgo.activities.EventDetailActivity;
 import com.app.letsgo.adapters.ListEventsAdapter;
+import com.app.letsgo.interfaces.RefreshListener;
 import com.app.letsgo.models.LocalEvent;
 
-public class ListFragment extends Fragment {
+import eu.erikw.PullToRefreshListView;
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
+
+public class ListFragment extends Fragment implements RefreshListener{
 	private ArrayList<LocalEvent> itemList;
 	private ListEventsAdapter itemsAdapter;
-	private ListView items;
+	private PullToRefreshListView items;
+	private RefreshListener refreshListener;
 	
 	public static ListFragment newInstance(ArrayList<LocalEvent> events){
 		ListFragment listFragment = new ListFragment();
@@ -29,6 +35,12 @@ public class ListFragment extends Fragment {
 		args.putParcelableArrayList("events", events);
 		listFragment.setArguments(args);
 		return listFragment;
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		refreshListener = (RefreshListener) (this);
 	}
 	
 	public void setList(ArrayList<LocalEvent> events){
@@ -53,7 +65,7 @@ public class ListFragment extends Fragment {
 	      Bundle savedInstanceState) {
 	      // Defines the xml file for the fragment
 		 View view = inflater.inflate(R.layout.fragment_map_list_view, container, false);
-		 items = (ListView) view.findViewById(R.id.map_list_view);
+		 items = (PullToRefreshListView) view.findViewById(R.id.map_list_view);
 	 	 itemsAdapter = new ListEventsAdapter(getActivity(), itemList);
 	 	 items.setAdapter(itemsAdapter);
 	 	 items.setOnItemClickListener(new OnItemClickListener() {
@@ -70,6 +82,20 @@ public class ListFragment extends Fragment {
 			
 			
 		});
+	 	 
+	 	 items.setOnRefreshListener(new OnRefreshListener(){
+				@Override
+				public void onRefresh() {
+					System.out.println("Pull to Refresh's OnRefresh is firing.");
+					refreshListener.onRefresh(new Long(1));
+				}
+			});
 		 return view;
-	 }	
+	 }
+
+	@Override
+	public void onRefresh(Long since_id) {
+	
+		
+	}	
 }

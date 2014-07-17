@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.letsgo.R;
 import com.app.letsgo.activities.EventDetailActivity;
@@ -161,11 +160,11 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 	
 	public void loadMap(){
 		if (getMap() != null) {
-			Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
 			getMap().setMyLocationEnabled(true);
 			getMap().setPadding(10, 10, 10, 100);
 		} else {
-			Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -193,8 +192,8 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 				e.printStackTrace();
 			}
 		} else {
-			Toast.makeText(getActivity(),
-					"Sorry. Location services not available to you", Toast.LENGTH_LONG).show();
+		//	Toast.makeText(getActivity(),
+			//		"Sorry. Location services not available to you", Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -204,16 +203,16 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 		// Display the connection status
 		Location location = mLocationClient.getLastLocation();
 		if (location != null) {
-			Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
 			updateCamera(location.getLatitude(), location.getLongitude());
 		} else {
-			Toast.makeText(getActivity(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(getActivity(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	public void updateCamera(Double latitude, Double longitude){
 		LatLng latLng = new LatLng(latitude, longitude);
-		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
 		if(getMap()!=null){
 			getMap().animateCamera(cameraUpdate);
 		}
@@ -227,7 +226,7 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 	@Override
 	public void onDisconnected() {
 		// Display the connection status
-		Toast.makeText(getActivity(), "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+	//	Toast.makeText(getActivity(), "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
 	}
 
 	

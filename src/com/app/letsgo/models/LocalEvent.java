@@ -186,7 +186,7 @@ public class LocalEvent extends ParseObject implements Parcelable {
 	}
 	
 	public int getMarkerType(){
-		return R.drawable.ic_map_marker;
+		return R.drawable.ic_pink_flag;
 	}
 	
 	public LatLng getMapPosition(){

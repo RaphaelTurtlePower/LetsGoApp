@@ -50,16 +50,16 @@ public class EventDetailActivity extends Activity {
     private Button bInvite;
 
 	private void setUpViews() {
-		tvName = (TextView) findViewById(R.id.tvName);
-		tvType = (TextView) findViewById(R.id.tvType);
-		tvStart = (TextView) findViewById(R.id.tvStart);
-		tvEnd = (TextView) findViewById(R.id.tvEnd);
-		tvCreatedBy = (TextView) findViewById(R.id.tvCreatedBy);
-		tvLocation = (TextView) findViewById(R.id.tvLocation);
-		tvCost = (TextView) findViewById(R.id.tvCost);
-		tvDescription = (TextView) findViewById(R.id.tvDescription);
-		tvCounts = (TextView) findViewById(R.id.tvCounts);
-		bInvite = (Button) findViewById(R.id.bInvite);
+//		tvName = (TextView) findViewById(R.id.tvName);
+//		tvType = (TextView) findViewById(R.id.tvType);
+//		tvStart = (TextView) findViewById(R.id.tvStart);
+//		tvEnd = (TextView) findViewById(R.id.tvEnd);
+//		tvCreatedBy = (TextView) findViewById(R.id.tvCreatedBy);
+//		tvLocation = (TextView) findViewById(R.id.tvLocation);
+//		tvCost = (TextView) findViewById(R.id.tvCost);
+//		tvDescription = (TextView) findViewById(R.id.tvDescription);
+//		//tvCounts = (TextView) findViewById(R.id.tvCounts);
+//		bInvite = (Button) findViewById(R.id.bInvite);
 	}
 	
 	static Format df = new DecimalFormat("0.00");

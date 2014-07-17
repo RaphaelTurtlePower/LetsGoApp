@@ -1,5 +1,6 @@
 package com.app.letsgo.activities;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,15 +13,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.FacebookRequestError;
+import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
+
 import com.app.letsgo.R;
 import com.app.letsgo.LetsGoApplication;
+import com.app.letsgo.LetsGoApplication.*;
+import com.app.letsgo.models.User;
+
 
 public class UserDetailsActivity extends Activity {
 	private ProfilePictureView userProfilePictureView;
@@ -56,8 +63,16 @@ public class UserDetailsActivity extends Activity {
 		Session session = ParseFacebookUtils.getSession();
 		if (session != null && session.isOpened()) {
 			makeMeRequest();
+			makeFriendsRequest();
+			startMapViewActivity();
 		}
 	}
+	
+	private void startMapViewActivity(){
+		Intent intent = new Intent(this, MapActivity.class);
+		startActivity(intent);
+	}
+
 
 	@Override
 	public void onResume() {
@@ -137,6 +152,44 @@ public class UserDetailsActivity extends Activity {
 		request.executeAsync();
 	}
 
+    
+	private void makeFriendsRequest() {
+		// retrieve your friends ids from facebook.
+		// alas, fb only gives you friends who have already logged into this app.
+		// not "all your friends" as you would want.
+        String fqlQuery = "SELECT uid, name, pic_square FROM user WHERE uid IN " +
+        		"(SELECT uid2 FROM friend WHERE uid1 = me() LIMIT 25)";
+        Bundle params = new Bundle();
+        params.putString("q", fqlQuery);
+        Session session = Session.getActiveSession();
+        Request request = new Request(session,
+        		"/fql",                         
+        		params,                         
+        		HttpMethod.GET,                 
+        		new Request.Callback(){         
+        	public void onCompleted(Response response) {
+        		JSONObject json;
+        		try {
+        			GraphObject go = response.getGraphObject();
+        			JSONObject jo = go.getInnerJSONObject();
+        			JSONArray jarray = jo.getJSONArray("data");
+        			
+        			for(int i = 0; i < jarray.length(); i++){
+        				JSONObject obj = jarray.getJSONObject(i);
+        				//get your values
+        				String name = obj.getString("name");
+        				String uid = obj.getString("uid"); 
+        				User.addToFriendsList(uid, name, "-1");
+        			}
+        		} catch (JSONException e) {
+        			e.printStackTrace();
+        			Log.e("letsgo", "makeFriendRequest in Login failed: "+e.getMessage());
+        		}
+        	}
+        	
+        }); 
+          Request.executeBatchAsync(request);         
+	}
 	private void updateViewsWithProfileInfo() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if (currentUser.get("profile") != null) {
@@ -155,33 +208,38 @@ public class UserDetailsActivity extends Activity {
 				} else {
 					userNameView.setText("");
 				}
-				if (userProfile.getString("location") != null) {
-					userLocationView.setText(userProfile.getString("location"));
-				} else {
-					userLocationView.setText("");
-				}
-				if (userProfile.getString("gender") != null) {
-					userGenderView.setText(userProfile.getString("gender"));
-				} else {
-					userGenderView.setText("");
-				}
-				if (userProfile.getString("birthday") != null) {
-					userDateOfBirthView.setText(userProfile
-							.getString("birthday"));
-				} else {
-					userDateOfBirthView.setText("");
-				}
-				if (userProfile.getString("relationship_status") != null) {
-					userRelationshipView.setText(userProfile
-							.getString("relationship_status"));
-				} else {
-					userRelationshipView.setText("");
-				}
+				userLocationView.setText("");
+				userGenderView.setText("");
+				userDateOfBirthView.setText("");
+				userRelationshipView.setText("");
+
+//				if (userProfile.getString("location") != null) {
+//					userLocationView.setText(userProfile.getString("location"));
+//				} else {
+//					userLocationView.setText("");
+//				}
+//				if (userProfile.getString("gender") != null) {
+//					userGenderView.setText(userProfile.getString("gender"));
+//				} else {
+//					userGenderView.setText("");
+//				}
+//				if (userProfile.getString("birthday") != null) {
+//					userDateOfBirthView.setText(userProfile
+//							.getString("birthday"));
+//				} else {
+//					userDateOfBirthView.setText("");
+//				}
+//				if (userProfile.getString("relationship_status") != null) {
+//					userRelationshipView.setText(userProfile
+//							.getString("relationship_status"));
+//				} else {
+//					userRelationshipView.setText("");
+//				}
 			} catch (JSONException e) {
 				Log.d(LetsGoApplication.TAG,
-						"Error parsing saved user data.");
+						"Error parsing in uVwithP in UserDetailsActivity. Excpn e="
+				        +e.getMessage());
 			}
-
 		}
 	}
 
@@ -192,14 +250,13 @@ public class UserDetailsActivity extends Activity {
 		// Go to the login view
 		startLoginActivity();
 	}
+	
 	private void startLoginActivity() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}
-
-
-
+	
 }
 

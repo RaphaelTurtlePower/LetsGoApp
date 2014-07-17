@@ -19,6 +19,7 @@
     <string name="title_activity_action_bar">ActionBarActivity</string>
     <string name="search_hint">Search Events</string>
     <string name="title_activity_settings">Preferences</string>
+    <string name="contentDescription">content description n/a</string>
     
     <string name="invite_friends">invite friends</string>
     <string name="EXTRA_SUBJECT">Invitation for you ...</string>

@@ -3,28 +3,23 @@ package com.app.letsgo.activities;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.provider.CalendarContract.Events;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import com.app.letsgo.R;
 import com.app.letsgo.adapters.PlacesAdapter;
+import com.app.letsgo.fragments.DatePickerFragment;
+import com.app.letsgo.fragments.TimePickerFragment;
 import com.app.letsgo.helpers.Utils;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.Location;
@@ -106,6 +101,10 @@ public class CreateEventActivity extends FragmentActivity {
 		}
 	}
 
+	public Activity getContext() {
+		return this;
+	}
+	
 	public void onCreateEvent(View v) {
 
 		event = new LocalEvent();
@@ -161,26 +160,29 @@ public class CreateEventActivity extends FragmentActivity {
 			public void done(ParseException e) {
 				if(e == null){
 					Log.d("OBJECT_SAVE", "Event successfully saved.");
-					addToCalendar();
+					
+					/*Utils.addToCalendar(getContext(), 
+							etEventName.getText().toString(), 
+							etLocation.getText().toString(), 
+							etDescription.getText().toString(), 
+							etStartDate, 
+							etEndDate); */
+					
 					Intent data = new Intent();
 					data.putExtra("event", event);
 					setResult(RESULT_OK, data);
 					finish();
-				}else{
-					Log.d("OBJECT NOT SAVED", "Event not successfully saved");
-				}
-				
-			}
-			
-		});
-
-		
+				} else {
+					Log.e("OBJECT NOT SAVED", "Event not successfully saved");
+				}				
+			}			
+		});		
 	}
 
 	/**
 	 *  Add the newly created event into calendar
 	 */
-	public void addToCalendar() {
+	/* public void addToCalendar() {
 		Intent intent = new Intent(Intent.ACTION_INSERT);
 		intent.setData(CalendarContract.Events.CONTENT_URI);
 		intent.setType("vnd.android.cursor.item/event");
@@ -194,16 +196,26 @@ public class CreateEventActivity extends FragmentActivity {
 		intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDate);
 		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDate);
 		startActivity(intent);     	
-	}
+	} */
 
-	// TODO: return to Map view
+	/**
+	 *  Returns to Map view when click on Cancel button
+	 * @param v
+	 */
 	public void onCancel(View v) {
 		finish();  	
 	}
 
-	public class DatePickerFragment extends DialogFragment
-	implements DatePickerDialog.OnDateSetListener {
+	/*public class DatePickerFragment extends DialogFragment
+		implements DatePickerDialog.OnDateSetListener {
+		EditText etDate;
+		Calendar date;
 
+		public DatePickerFragment(EditText etDate, Calendar date) {
+			this.etDate = etDate;
+			this.date = date;
+		}
+		
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			// Use the current date as the default date in the picker
@@ -218,16 +230,24 @@ public class CreateEventActivity extends FragmentActivity {
 
 		@Override
 		public void onDateSet(DatePicker view, int year, int month, int day) {
-			showDate(etStartDate, year, month, day);
-			startDate.set(GregorianCalendar.YEAR, year);
-			startDate.set(GregorianCalendar.MONTH, month);
-			startDate.set(GregorianCalendar.DAY_OF_MONTH, day);
+			showDate(etDate, year, month, day);
+			date.set(GregorianCalendar.YEAR, year);
+			date.set(GregorianCalendar.MONTH, month);
+			date.set(GregorianCalendar.DAY_OF_MONTH, day);
 		}		
 	}
 
 	public class TimePickerFragment extends DialogFragment
-	implements TimePickerDialog.OnTimeSetListener {
+		implements TimePickerDialog.OnTimeSetListener {
 
+		EditText etTime;
+		Calendar date;
+		
+		public TimePickerFragment(EditText etTime, Calendar date) {
+			this.etTime = etTime;
+			this.date = date;
+		}
+		
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			// Use the current time as the default values for the picker
@@ -242,13 +262,13 @@ public class CreateEventActivity extends FragmentActivity {
 
 		@Override
 		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			showTime(etStartTime, hourOfDay, minute);
-			startDate.set(GregorianCalendar.HOUR, hourOfDay);
-			startDate.set(GregorianCalendar.MINUTE, minute);
+			showTime(etTime, hourOfDay, minute);
+			date.set(GregorianCalendar.HOUR, hourOfDay);
+			date.set(GregorianCalendar.MINUTE, minute);
 		}
-	}
+	} */
 
-	// TODO: need to refactor this!
+	/* TODO: need to refactor this!
 	public class EndDatePickerFragment extends DialogFragment
 	implements DatePickerDialog.OnDateSetListener {
 
@@ -296,7 +316,7 @@ public class CreateEventActivity extends FragmentActivity {
 			endDate.set(GregorianCalendar.HOUR, hourOfDay);
 			endDate.set(GregorianCalendar.MINUTE, minute);
 		}
-	}
+	} */
 
 	public void showDate(EditText date, int year, int month, int day) {
 		date.setText(new StringBuilder().append(month + 1)
@@ -307,26 +327,32 @@ public class CreateEventActivity extends FragmentActivity {
 		time.setText(new StringBuilder().append(hour).append(":").append(minute));
 	}
 
+	public void showDatePickerDialog(EditText etDate, Calendar date) {
+		DialogFragment newFragment = new DatePickerFragment(etDate, date);
+		newFragment.show(getSupportFragmentManager(), "datePicker");			
+	}
+	
+	public void showTimePickerDialog(EditText etTime, Calendar date) {
+		DialogFragment newFragment = new TimePickerFragment(etTime, date);
+		newFragment.show(getSupportFragmentManager(), "timePicker");	
+	}
+	
 	public void showStartDatePickerDialog(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "datePicker");	
+		showDatePickerDialog(etStartDate, startDate);
 	}
 
 	public void showStartTimePickerDialog(View v) {
-		DialogFragment newFragment = new TimePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "timePicker");
+		showTimePickerDialog(etStartTime, startDate);
 	}
 
-	// TODO: refactor this
+	// show datepicker for end date
 	public void showEndDatePickerDialog(View v) {
-		DialogFragment newFragment = new EndDatePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "datePicker");	
+		showDatePickerDialog(etEndDate, endDate);
 	}
 
 	public void showEndTimePickerDialog(View v) {
-		DialogFragment newFragment = new EndTimePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "timePicker");
-	}
+		showTimePickerDialog(etEndTime, endDate);
+	} 
 
 	public void saveDates() {
 		event.setStartDate("7/18/14");
@@ -349,3 +375,4 @@ public class CreateEventActivity extends FragmentActivity {
 
 
 }
+///////////////////////////////////////////minecraft is aswesome\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

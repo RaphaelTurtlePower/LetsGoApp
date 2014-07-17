@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -15,20 +14,18 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.letsgo.R;
+import com.app.letsgo.fragments.BaseMapFragment;
+import com.app.letsgo.helpers.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -37,23 +34,19 @@ import com.google.android.gms.location.LocationClient;
 public class ActionBarActivity extends FragmentActivity implements
 	GooglePlayServicesClient.ConnectionCallbacks,
 	GooglePlayServicesClient.OnConnectionFailedListener {
-	
-	LocationClient mLocationClient;
-	
+
     // Global variable to hold the current location
     Location mCurrentLocation;
+	LocationClient mLocationClient;    
+    private String nearByArea;
+    
+	public static final int CREATE_EVENT_REQUEST_CODE = 5;
+	public static final int SETTINGS_REQUEST_CODE = 10;
 	/*
 	 * Define a request code to send to Google Play services
 	 * This code is returned in Activity.onActivityResult
 	 */
-	private final static int
-	CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-	    
-    private String nearByArea;
-    private ProgressBar mActivityIndicator;
-    
-	public static final int CREATE_EVENT_REQUEST_CODE = 5;
-	public static final int SETTINGS_REQUEST_CODE = 10;
+	public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +54,11 @@ public class ActionBarActivity extends FragmentActivity implements
 		Log.d("debug", "ActionBarActivity.onCreate(): ....");
 		
 		/*
-		 * Create a new location client, using the enclosing class to
-		 * handle callbacks.
+		 * Create a new location client, using callbacks.
 		 */
-		mLocationClient = new LocationClient(this, this, this);
-		mLocationClient.connect();
-		// mCurrentLocation = mLocationClient.getLastLocation();
-		Log.d("debug", "ActionBarActivity.onCreate(): current location = " + mCurrentLocation);
+		Log.d("debug", "ActionBarActivity.onCreate(): get locationClient");
+		
+		mLocationClient = new LocationClient(this, this, this);		
 	}
 
 	@Override
@@ -93,26 +84,6 @@ public class ActionBarActivity extends FragmentActivity implements
         return true;
     } 
 	
-	// Define a DialogFragment that displays the error dialog
-	public static class ErrorDialogFragment extends DialogFragment {
-		// Global field to contain the error dialog
-		private Dialog mDialog;
-		// Default constructor. Sets the dialog field to null
-		public ErrorDialogFragment() {
-			super();
-			mDialog = null;
-		}
-		// Set the dialog to display
-		public void setDialog(Dialog dialog) {
-			mDialog = dialog;
-		}
-		// Return a Dialog to the DialogFragment.
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			return mDialog;
-		}
-	}
-
 	/*
 	 * Handle results returned to the FragmentActivity
 	 * by Google Play services
@@ -137,7 +108,30 @@ public class ActionBarActivity extends FragmentActivity implements
 			}			
 		}
 	}
-		
+
+    /**
+     * Called when the Activity becomes visible.
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Connect the client
+        if (isGooglePlayServicesAvailable()) {
+        	mLocationClient.connect();
+            Log.d("debug", "ActionBarActivity.onStart(): connecting...");
+        }
+    }
+    
+    /*
+     * Called when the Activity is no longer visible.
+     */
+    @Override
+    protected void onStop() {
+        // Disconnecting the client invalidates it.
+        mLocationClient.disconnect();
+        super.onStop();
+    }
+
     /*
      * Called by Location Services when the request to connect the
      * client finishes successfully. At this point, you can
@@ -145,16 +139,14 @@ public class ActionBarActivity extends FragmentActivity implements
      */
     @Override
     public void onConnected(Bundle dataBundle) {
-    	
     	mCurrentLocation = mLocationClient.getLastLocation();  
+        Log.d("debug", "LocationService.onConnected(): Connected, location = " + mCurrentLocation);   
     	if (mCurrentLocation != null) {    		
     		AsyncTask<Location, Void, String> nearByTask = new GetAddressTask(getContext());
     		Log.d("debug", "onConnected(): calling nearByTask...");
     		nearByTask.execute(mCurrentLocation);
     		Log.d("debug", "onConnected(): calling nearByTask...end");
     	}
-        // Display the connection status
-        Log.d("debug", "ActionBarActivity.onConnected(): Connected, location = " + mCurrentLocation);        
     }
     
     /*
@@ -164,7 +156,7 @@ public class ActionBarActivity extends FragmentActivity implements
     @Override
     public void onDisconnected() {
         // Display the connection status
-        Toast.makeText(this, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+        Log.e(Utils.LOG_TAG, "Disconnected. Please re-connect.");
     }
     
     /*
@@ -183,8 +175,7 @@ public class ActionBarActivity extends FragmentActivity implements
             try {
                 // Start an Activity that tries to resolve the error
                 connectionResult.startResolutionForResult(
-                        this,
-                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                        this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
                 /*
                  * Thrown if Google Play services canceled the original
                  * PendingIntent
@@ -195,32 +186,60 @@ public class ActionBarActivity extends FragmentActivity implements
             }
         } else {
              // If no resolution is available, display a dialog to the user with the error.
-        	Log.d("debug", "ActionBarActivity.onConnectionFailed..." + 
+        	Log.e(Utils.LOG_TAG, "ActionBarActivity.onConnectionFailed..." + 
         			connectionResult.getErrorCode());
         }
     }
+    
+	private boolean isGooglePlayServicesAvailable() {
+		// Check that Google Play services is available
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		// If Google Play services is available
+		if (ConnectionResult.SUCCESS == resultCode) {
+			// In debug mode, log the status
+			Log.d("Location Updates", "Google Play services is available.");
+			return true;
+		} else {
+			// Get the error dialog from Google Play services
+			Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+					BaseMapFragment.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+
+			// If Google Play services can provide an error dialog
+			if (errorDialog != null) {
+				// Create a new DialogFragment for the error dialog
+				ErrorDialogFragment errorFragment = new ErrorDialogFragment();
+				errorFragment.setDialog(errorDialog);
+				errorFragment.show(getSupportFragmentManager(), "Location Updates");
+			}
+			return false;
+		}
+	}
+		
+	// Define a DialogFragment that displays the error dialog
+	public static class ErrorDialogFragment extends DialogFragment {
+
+		// Global field to contain the error dialog
+		private Dialog mDialog;
+
+		// Default constructor. Sets the dialog field to null
+		public ErrorDialogFragment() {
+			super();
+			mDialog = null;
+		}
+
+		// Set the dialog to display
+		public void setDialog(Dialog dialog) {
+			mDialog = dialog;
+		}
+
+		// Return a Dialog to the DialogFragment.
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return mDialog;
+		}
+	}
+
        
-    /**
-     * Called when the Activity becomes visible.
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Connect the client.
-        mLocationClient.connect();
-        Log.d("debug", "ActionBarActivity.onStart(): connecting...");
-    }
-    
-    /*
-     * Called when the Activity is no longer visible.
-     */
-    @Override
-    protected void onStop() {
-        // Disconnecting the client invalidates it.
-        mLocationClient.disconnect();
-        super.onStop();
-    }
-    
     /**
     * A subclass of AsyncTask that calls getFromLocation() in the
     * background. The class definition has these generic types:
@@ -229,14 +248,16 @@ public class ActionBarActivity extends FragmentActivity implements
     * String   - An address passed to onPostExecute()
     */
     private class GetAddressTask extends AsyncTask<Location, Void, String> {
+    	
         Context mContext;
+        
         public GetAddressTask(Context context) {
             super();
             mContext = context;
         }
         
         /**
-         * Get a Geocoder instance, get the latitude and longitude
+         * Get a Geocoder instance, get the latitude and longitude,
          * look up the address, and return it
          *
          * @params params One or more Location objects
@@ -257,7 +278,7 @@ public class ActionBarActivity extends FragmentActivity implements
                 addresses = geocoder.getFromLocation(loc.getLatitude(),
                         loc.getLongitude(), 1);
             } catch (IOException e1) {
-	            Log.e("LocationSampleActivity",
+	            Log.e("LocationService",
 	                    "IO Exception in getFromLocation()");
 	            e1.printStackTrace();
 	            return ("IO Exception trying to get address");
@@ -268,7 +289,7 @@ public class ActionBarActivity extends FragmentActivity implements
 	                    " , " +
 	                    Double.toString(loc.getLongitude()) +
 	                    " passed to address service";
-	            Log.e("LocationSampleActivity", errorString);
+	            Log.e("LocationService", errorString);
 	            e2.printStackTrace();
 	            return errorString;
             }
@@ -304,15 +325,40 @@ public class ActionBarActivity extends FragmentActivity implements
     	return (Context)this;
     }
     
-	public void showNearByLocation(SearchView searchView) {
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.actions, menu);
+		searchEvents(menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/**
+	 * Search local events based on the {@code query} string
+	 * @param query user entered query string
+	 */
+	public void searchEvents(Menu menu) {
+		Log.d("debug", "MapActivity do search...");
+		//this.menu = menu;
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		setOnSearchClickListener(searchView);
+		searchView.setQueryHint("Search events");
+	}
+		
+    
+	public void setOnSearchClickListener(SearchView searchView) {
 		searchView.setOnSearchClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				Log.d("debug", "ActionBarActivity.showNearByLocation().onClick()");
-				createLocationText();
+				Log.d("debug", "ActionBarActivity.showNearByLocation().onClick()");				
+				setLocationText();
 			}
-			public void createLocationText() {
+			
+			public void setLocationText() {
+				Log.d("debug", "Location Text: " + nearByArea);
+				/*
+				// show a text box with current location info (only city, state)
 				TextView tvLocation = new TextView(getContext());
 				tvLocation.setTextSize(10);
 				tvLocation.setGravity(Gravity.TOP);
@@ -324,7 +370,7 @@ public class ActionBarActivity extends FragmentActivity implements
 				ll.setGravity(Gravity.TOP);
 				ll.addView(tvLocation);
 				setContentView(ll);
-
+				*/
 			}
 		});		
 	}

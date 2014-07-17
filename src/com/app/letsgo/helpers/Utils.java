@@ -10,6 +10,10 @@ import java.net.URLEncoder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.provider.CalendarContract;
+import android.provider.CalendarContract.Events;
 import android.util.Log;
 import android.widget.EditText;
 
@@ -91,5 +95,24 @@ public class Utils {
         return loc;
     } 
 
+	/**
+	 *  Add the newly created event into calendar
+	 */
+	public static void addToCalendar(Activity activity, String eventName, String location, String description, 
+			String startDate, String endDate) {
+		Intent intent = new Intent(Intent.ACTION_INSERT);
+		intent.setData(CalendarContract.Events.CONTENT_URI);
+		intent.setType("vnd.android.cursor.item/event");
+		intent.putExtra(Events.TITLE, eventName);
+		intent.putExtra(Events.EVENT_LOCATION, location);
+		if (description != null) {
+			intent.putExtra(Events.DESCRIPTION, description);
+		}
+
+		// Setting dates    	
+		intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDate);
+		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDate);
+		activity.startActivity(intent);     	
+	}
 
 }

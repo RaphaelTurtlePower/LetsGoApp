@@ -28,4 +28,7 @@
     <string name="eventStart">Event start: </string>
     <string name="eventInvitation">Would you like to attend this event with me?\n\n</string>
 
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    
 </resources>

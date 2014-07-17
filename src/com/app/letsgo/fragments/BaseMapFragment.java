@@ -37,12 +37,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class BaseMapFragment extends MapFragment implements OnMarkerClickListener,
-GooglePlayServicesClient.ConnectionCallbacks,
-GooglePlayServicesClient.OnConnectionFailedListener{
+public class BaseMapFragment extends MapFragment implements OnMarkerClickListener {
 	private ArrayList<LocalEvent> events;
 	private HashMap<Marker, LocalEvent> markerMap = new HashMap<Marker, LocalEvent>();
-	private LocationClient mLocationClient;
+	// private LocationClient mLocationClient;
 	
 	public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
@@ -61,7 +59,7 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		mLocationClient = new LocationClient(getActivity(), this, this);
+		// mLocationClient = new LocationClient(getActivity(), this, this);
 		Bundle args = getArguments();
 		events = args.getParcelableArrayList("events");
 		
@@ -169,40 +167,8 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 		}
 	}
 	
-	/*
-	 * Called by Location Services if the attempt to Location Services fails.
-	 */
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
-		/*
-		 * Google Play services can resolve some errors it detects. If the error
-		 * has a resolution, try sending an Intent to start a Google Play
-		 * services activity that can resolve error.
-		 */
-		if (connectionResult.hasResolution()) {
-			try {
-				// Start an Activity that tries to resolve the error
-				connectionResult.startResolutionForResult(getActivity(),
-						CONNECTION_FAILURE_RESOLUTION_REQUEST);
-				/*
-				 * Thrown if Google Play services canceled the original
-				 * PendingIntent
-				 */
-			} catch (IntentSender.SendIntentException e) {
-				// Log the error
-				e.printStackTrace();
-			}
-		} else {
-			Toast.makeText(getActivity(),
-					"Sorry. Location services not available to you", Toast.LENGTH_LONG).show();
-		}
-	}
-
-
-	@Override
-	public void onConnected(Bundle dataBundle) {
+	public void setCurrentLocation(Location location) {
 		// Display the connection status
-		Location location = mLocationClient.getLastLocation();
 		if (location != null) {
 			Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
 			updateCamera(location.getLatitude(), location.getLongitude());
@@ -218,25 +184,4 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 			getMap().animateCamera(cameraUpdate);
 		}
 	}
-	
-
-	/*
-	 * Called by Location Services if the connection to the location client
-	 * drops because of an error.
-	 */
-	@Override
-	public void onDisconnected() {
-		// Display the connection status
-		Toast.makeText(getActivity(), "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
-	}
-
-	
-	public void connect(){
-		mLocationClient.connect();
-	}
-	
-	public void disconnect(){
-		mLocationClient.disconnect();
-	}
-	
 }

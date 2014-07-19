@@ -67,10 +67,15 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-           <activity
+        <activity
             android:name=".activities.EventDetailActivity"
-            android:label="@string/title_activity_event_detail" >
-        </activity>
+            android:label="@string/title_activity_event_detail"
+         	android:parentActivityName=".activities.MapActivity" >
+        <!-- Parent activity meta-data to support API level 7+ -->
+		        <meta-data
+		            android:name="android.support.PARENT_ACTIVITY"
+		            android:value=".activities.MapActivity" />
+	    </activity>
         <activity
             android:name=".activities.ActionBarActivity"
             android:label="@string/title_activity_action_bar" >

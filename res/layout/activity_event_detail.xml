@@ -160,19 +160,19 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/txtDownCountXX"
+            android:id="@+id/txtUpCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="5dp"
             android:text="7"
             android:textSize="20sp" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageUp"
             android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_height="27dp"
             android:contentDescription="@string/contentDescription"
-            android:src="@drawable/checkup" />
+            android:src="@drawable/voteup" />
 
         <TextView
             android:id="@+id/txtGoing"
@@ -182,13 +182,13 @@
             android:text="going?"
             android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/line7A"
+        <ImageButton
+            android:id="@+id/imageDown"
             android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_height="27dp"
             android:layout_marginLeft="10dp"
             android:contentDescription="@string/contentDescription"
-            android:src="@drawable/checkdown" />
+            android:src="@drawable/votedown" />
 
         <TextView
             android:id="@+id/txtDownCount"

@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+
 import android.widget.TextView;
 
 public class EventDetailActivity extends Activity {
@@ -47,19 +49,24 @@ public class EventDetailActivity extends Activity {
     private TextView tvCost;
     private TextView tvDescription;
     private TextView tvCounts;
+    private ImageButton ibimageUp;
+    private ImageButton ibimageDown;
     private Button bInvite;
 
 	private void setUpViews() {
-//		tvName = (TextView) findViewById(R.id.tvName);
-//		tvType = (TextView) findViewById(R.id.tvType);
-//		tvStart = (TextView) findViewById(R.id.tvStart);
-//		tvEnd = (TextView) findViewById(R.id.tvEnd);
-//		tvCreatedBy = (TextView) findViewById(R.id.tvCreatedBy);
-//		tvLocation = (TextView) findViewById(R.id.tvLocation);
-//		tvCost = (TextView) findViewById(R.id.tvCost);
-//		tvDescription = (TextView) findViewById(R.id.tvDescription);
-//		//tvCounts = (TextView) findViewById(R.id.tvCounts);
-//		bInvite = (Button) findViewById(R.id.bInvite);
+		tvName = (TextView) findViewById(R.id.tvName);
+		tvType = (TextView) findViewById(R.id.tvType);
+		tvStart = (TextView) findViewById(R.id.tvStart);
+		tvEnd = (TextView) findViewById(R.id.tvEnd);
+		tvCreatedBy = (TextView) findViewById(R.id.tvCreatedBy);
+		tvLocation = (TextView) findViewById(R.id.tvLocation);
+		tvCost = (TextView) findViewById(R.id.tvCost);
+		tvDescription = (TextView) findViewById(R.id.tvDescription);
+		ibimageUp = (ImageButton) findViewById(R.id.imageUp);
+		ibimageDown = (ImageButton) findViewById(R.id.imageDown);
+		tvCounts = (TextView) findViewById(R.id.txtUpCount);
+		tvCounts = (TextView) findViewById(R.id.txtDownCount);
+		// bInvite = (Button) findViewById(R.id.bInvite);
 	}
 	
 	static Format df = new DecimalFormat("0.00");
@@ -81,7 +88,7 @@ public class EventDetailActivity extends Activity {
 		int up = (n==null? 0 : n.intValue());
 		n = e.getDownCount();
 		int down = (n==null? 0 : n.intValue());		
-		tvCounts.setText("     Up votes: " + up + ", down votes: "+down);
+		// tvCounts.setText("     Up votes: " + up + ", down votes: "+down);
 	}	
 
 	public void onClick(View v) {

@@ -1,6 +1,5 @@
 package com.app.letsgo.adapters;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.content.Context;
@@ -12,16 +11,18 @@ import android.widget.TextView;
 
 import com.app.letsgo.R;
 import com.app.letsgo.models.LocalEvent;
+import com.app.letsgo.models.LocalEventParcel;
 
-	public class ListEventsAdapter extends ArrayAdapter<LocalEvent> {
+	public class ListEventsAdapter extends ArrayAdapter<LocalEventParcel> {
 		
-		public ListEventsAdapter(Context context, List<LocalEvent> items){
+		public ListEventsAdapter(Context context, List<LocalEventParcel> items){
 			super(context, 0, items);
 		}
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent ){
-			LocalEvent event = getItem(position);
+			LocalEventParcel parcel = getItem(position);
+			LocalEvent event = parcel.getEvent();
 			View v;
 			if(convertView == null){
 				LayoutInflater inflator = LayoutInflater.from(getContext());

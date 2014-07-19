@@ -20,6 +20,7 @@ import com.app.letsgo.R;
 import com.app.letsgo.fragments.BaseMapFragment;
 import com.app.letsgo.fragments.ListFragment;
 import com.app.letsgo.models.LocalEvent;
+import com.app.letsgo.models.LocalEventParcel;
 
 public class MapActivity extends ActionBarActivity implements
 		OnBackStackChangedListener{
@@ -29,14 +30,14 @@ public class MapActivity extends ActionBarActivity implements
 	private Handler mHandler = new Handler();
 	private boolean mShowingBack = false;
 	private Button toggle;
-	ArrayList<LocalEvent> events;
+	ArrayList<LocalEventParcel> events;
 	Menu menu;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-		events = LocalEvent.getLocalEvents();
+	    events = LocalEventParcel.getLocalEvents();
 		listFragment = ListFragment.newInstance(events);
 		mapFragment = BaseMapFragment.newInstance(events);
 		if (savedInstanceState == null) {
@@ -115,7 +116,7 @@ public class MapActivity extends ActionBarActivity implements
 			@Override
 			public boolean onQueryTextSubmit(String query) {
             	Log.d("debug", "searchEvents(): query = " + query);
-            	events = LocalEvent.search(query);
+            	events = LocalEventParcel.search(MapActivity.this, query);
             	if (mShowingBack) {
             		listFragment.setList(events);
             	} else {            		
@@ -146,7 +147,7 @@ public class MapActivity extends ActionBarActivity implements
 		case ActionBarActivity.CREATE_EVENT_REQUEST_CODE:
 			if(resultCode == Activity.RESULT_OK){
 				LocalEvent event = data.getParcelableExtra("event");
-				events.add(event);	//add local event
+				events.add(new LocalEventParcel(event));	//add local event
 				if (mShowingBack) {
             		listFragment.addEvent(event);
             	} else {            		
@@ -160,7 +161,7 @@ public class MapActivity extends ActionBarActivity implements
 				MenuItem searchItem = menu.findItem(R.id.action_search);
 				SearchView sView = (SearchView) searchItem.getActionView();
 				String query = (String) sView.getQuery().toString();
-				events = LocalEvent.search(query);
+				events = LocalEventParcel.search(MapActivity.this, query);
             	if (mShowingBack) {
             		listFragment.setList(events);
             	} else {            		

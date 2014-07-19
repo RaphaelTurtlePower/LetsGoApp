@@ -15,12 +15,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.letsgo.R;
 import com.app.letsgo.activities.EventDetailActivity;
 import com.app.letsgo.dialogs.MapItemDialog;
 import com.app.letsgo.models.LocalEvent;
+import com.app.letsgo.models.LocalEventParcel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
@@ -38,13 +38,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class BaseMapFragment extends MapFragment implements OnMarkerClickListener {
-	private ArrayList<LocalEvent> events;
-	private HashMap<Marker, LocalEvent> markerMap = new HashMap<Marker, LocalEvent>();
+	private ArrayList<LocalEventParcel> events;
+	private HashMap<Marker, LocalEventParcel> markerMap = new HashMap<Marker, LocalEventParcel>();
 	// private LocationClient mLocationClient;
 	
 	public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-	public static BaseMapFragment newInstance(ArrayList<LocalEvent> events){
+	public static BaseMapFragment newInstance(ArrayList<LocalEventParcel> events){
 		BaseMapFragment mapFragment = new BaseMapFragment();
 		Bundle args = new Bundle();
 		args.putParcelableArrayList("events", events);
@@ -84,12 +84,12 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 		Marker mapMarker = getMap().addMarker( new MarkerOptions()
 	    .position(event.getMapPosition())					 								    
 	   .icon(BitmapDescriptorFactory.fromResource(event.getMarkerType())));
-		markerMap.put(mapMarker, event);
+		markerMap.put(mapMarker, new LocalEventParcel(event));
 		getMap().setInfoWindowAdapter(new InfoWindowAdapter(){
 
 			@Override
 			public View getInfoContents(Marker marker) {
-				LocalEvent event = markerMap.get(marker);
+				LocalEvent event = markerMap.get(marker).getEvent();
 				LayoutInflater mInflater = getActivity().getLayoutInflater();
 				View v = mInflater.inflate(R.layout.map_item, null);
 				TextView title = (TextView) v.findViewById(R.id.map_item_title);
@@ -117,7 +117,7 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 
 			@Override
 			public void onInfoWindowClick(Marker marker) {
-				LocalEvent event = markerMap.get(marker);
+				LocalEventParcel event = markerMap.get(marker);
 				Intent i = new Intent(getActivity(), EventDetailActivity.class);
 				i.putExtra("event", event);
 				startActivity(i);
@@ -129,19 +129,19 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 		}
 	}
 	
-	public void loadEvents(ArrayList<LocalEvent> events){
+	public void loadEvents(ArrayList<LocalEventParcel> events){
 		this.events = events;
 		if(getMap() != null){
 			getMap().clear();
 		}
 		for(int i=0; i<events.size(); i++){
-			addEvent(events.get(i), false);
+			addEvent(events.get(i).getEvent(), false);
 		}
 	}
 
 	@Override
 	public boolean onMarkerClick(Marker marker) {
-		LocalEvent eventDetails = markerMap.get(marker);
+		LocalEvent eventDetails = markerMap.get(marker).getEvent();
 		MapItemDialog dialog = new MapItemDialog(eventDetails);
 		Window window = getActivity().getWindow();
 		WindowManager.LayoutParams lp = window.getAttributes();
@@ -159,29 +159,30 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 	
 	public void loadMap(){
 		if (getMap() != null) {
-			Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
 			getMap().setMyLocationEnabled(true);
 			getMap().setPadding(10, 10, 10, 100);
 		} else {
-			Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(getActivity(), "Error - Map was null!!", Toast.LENGTH_SHORT).show();
 		}
 	}
-	
+
 	public void setCurrentLocation(Location location) {
 		// Display the connection status
 		if (location != null) {
-			Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
 			updateCamera(location.getLatitude(), location.getLongitude());
 		} else {
-			Toast.makeText(getActivity(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(getActivity(), "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	public void updateCamera(Double latitude, Double longitude){
 		LatLng latLng = new LatLng(latitude, longitude);
-		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
 		if(getMap()!=null){
 			getMap().animateCamera(cameraUpdate);
 		}
 	}
+	
 }

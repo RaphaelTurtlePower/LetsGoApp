@@ -8,27 +8,30 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import com.app.letsgo.R;
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.app.letsgo.R;
 import com.google.android.gms.maps.model.LatLng;
-import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 @ParseClassName("LocalEvent")
-public class LocalEvent extends ParseObject implements Parcelable {
+public class LocalEvent extends ParseObject {
 	public static final int SHORT_DESCRIPTION_LENGTH = 140;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
 	SimpleDateFormat sdf_time = new SimpleDateFormat("h:mm a");
+	
+	public String localEventId; //check this if objectId is null
 	
 	public LocalEvent() {
 		super();
@@ -129,51 +132,6 @@ public class LocalEvent extends ParseObject implements Parcelable {
 		put("description", desc);
 	}
 	
-	
-	public LocalEvent(Parcel in){
-		String[] data = new String[8];
-		in.readStringArray(data);
-		setEventName(data[0]);
-		setEventType(data[1]);
-		setStartDate(data[2]);
-		setEndDate(data[3]);
-		setStartTime(data[4]);
-		setEndTime(data[5]);
-		setCost(Double.parseDouble(data[6]));
-		setDescription(data[7]);
-		Location location = (Location) Location.CREATOR.createFromParcel(in);
-		setLocation(location);
-	}
-	
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeStringArray(new String[] {getEventName(),
-				getEventType(),
-				getStartDate(),
-				getEndDate(),
-				getStartTime(),
-				getEndTime(),
-				getCost().toString(),
-				getDescription()});
-		getLocation().writeToParcel(dest, flags);
-		
-	}
-	
-	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-		public LocalEvent createFromParcel(Parcel in){
-			return new LocalEvent(in);
-		}
-		public LocalEvent[] newArray(int size){
-			return new LocalEvent[size];
-		}
-	};
-	
 	public static Date parseDate(String date, String format)
 	{
 		SimpleDateFormat formatter = new SimpleDateFormat(format);
@@ -186,7 +144,7 @@ public class LocalEvent extends ParseObject implements Parcelable {
 	}
 	
 	public int getMarkerType(){
-		return R.drawable.ic_map_marker;
+		return R.drawable.ic_pink_flag;
 	}
 	
 	public LatLng getMapPosition(){
@@ -214,26 +172,6 @@ public class LocalEvent extends ParseObject implements Parcelable {
 		}
 	}
 	
-	public static ArrayList<LocalEvent> getLocalEvents(){
-		final ArrayList<LocalEvent> events = new ArrayList<LocalEvent>();
-		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("LocalEvent");
-		query.include("location");
-		List<ParseObject> objects;
-		try {
-			objects = query.find();
-			for(int i=0; i<objects.size(); i++){
-	         	LocalEvent ev = (LocalEvent) objects.get(i);
-	         	
-	         	events.add(ev);
-	         }
-		} catch (com.parse.ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 
-		 return events;
-	}
-	
 	public String getItemShortDescription(){
 		String descriptionText = getDescription();
 		if(descriptionText != null && descriptionText.length() > SHORT_DESCRIPTION_LENGTH){
@@ -241,39 +179,25 @@ public class LocalEvent extends ParseObject implements Parcelable {
 		}
 		return descriptionText;
 	}
+	/**
+	mSettings = getSharedPreferences("LetsGoSettings", 0);	
+	spEventType = (Spinner) findViewById(R.id.spEventType);
+
+	sbCost = (SeekBar) findViewById(R.id.sbCost);
+	tvCostValue = (TextView) findViewById(R.id.tvCostValue);		
 	
-	public static ArrayList<LocalEvent> search(String query){
-		final ArrayList<LocalEvent> events = new ArrayList<LocalEvent>();
-		List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
-		
-		ParseQuery<ParseObject> name = ParseQuery.getQuery("LocalEvent");
-		name.whereContains("eventName", query);
-		
-		ParseQuery<ParseObject> description = ParseQuery.getQuery("LocalEvent");
-		description.whereContains("description", query);
-		queries.add(name);
-		queries.add(description);
-		 
-		ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
-		mainQuery.include("location");
-		List<ParseObject> objects;
-		HashSet<String> ids = new HashSet<String>();
-		try {
-			objects = mainQuery.find();
-			for(int i=0; i<objects.size(); i++){
-				LocalEvent ev = (LocalEvent) objects.get(i);
-				//remove duplicates
-	         	if(!ids.contains(ev.getObjectId())){
-	         		events.add(ev);
-	         		ids.add(ev.getObjectId());
-	         	}
-	         }
-		} catch (com.parse.ParseException e) {
-			e.printStackTrace();
-		}
-		 
-		 return events;
-	}
+	if (mSettings != null) {
+		String type = mSettings.getString("eventType", "missing");			
+		int cost = mSettings.getInt("cost",  0);
+		sbCost.setProgress(cost);
+		tvCostValue.setText(String.valueOf(cost));
+		etStartDate.setText(mSettings.getString("startDate", "7/18/2014"));
+		etStartTime.setText(mSettings.getString("startTime", "16:00"));
+		etEndDate.setText(mSettings.getString("endDate", "7/28/2014"));
+		etEndTime.setText(mSettings.getString("endTime", "20:00"));
+	}			
+	*/
 	
+
 }
 

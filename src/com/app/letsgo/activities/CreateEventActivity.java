@@ -22,6 +22,7 @@ import com.app.letsgo.fragments.DatePickerFragment;
 import com.app.letsgo.fragments.TimePickerFragment;
 import com.app.letsgo.helpers.Utils;
 import com.app.letsgo.models.LocalEvent;
+import com.app.letsgo.models.LocalEventParcel;
 import com.app.letsgo.models.Location;
 import com.app.letsgo.models.Place;
 import com.parse.ParseException;
@@ -169,7 +170,8 @@ public class CreateEventActivity extends FragmentActivity {
 							etEndDate); */
 					
 					Intent data = new Intent();
-					data.putExtra("event", event);
+					LocalEventParcel parcel = new LocalEventParcel(event);
+					data.putExtra("event", parcel);
 					setResult(RESULT_OK, data);
 					finish();
 				} else {

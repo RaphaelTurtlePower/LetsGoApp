@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.app.letsgo.R;
+import com.app.letsgo.fragments.BaseMapFragment;
+import com.app.letsgo.fragments.MiniMapFragment;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
 import com.parse.GetCallback;
@@ -37,8 +39,9 @@ public class EventDetailActivity extends Activity {
 	private String description;
 	private Number upCount;
 	private Number downCount;
-
+	private MiniMapFragment miniMapFragment;
 	private LocalEvent e;
+	private LocalEventParcel lp;
 	
     private TextView tvName;
     private TextView tvType;
@@ -102,7 +105,7 @@ public class EventDetailActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_detail);
-		LocalEventParcel lp = (LocalEventParcel) getIntent().getExtras().getParcelable("event");
+		lp = (LocalEventParcel) getIntent().getExtras().getParcelable("event");
 		e = lp.getEvent();
 		setUpViews();
 		loadFieldsIntoView();
@@ -166,6 +169,14 @@ public class EventDetailActivity extends Activity {
 			}
 			
 		});
+		
+		miniMapFragment = MiniMapFragment.newInstance(lp);
+		if (savedInstanceState == null) {
+			getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.miniMap, miniMapFragment)
+                    .commit();
+			getFragmentManager().executePendingTransactions();
+		}
 	}
-
 }

@@ -1,5 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+<RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
@@ -155,7 +160,7 @@
         android:id="@+id/line8LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line7"
+        android:layout_below="@id/tvDescription"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal" >
 
@@ -207,3 +212,4 @@
     android:layout_below="@id/line8LL"/>
     
 </RelativeLayout>
+</ScrollView>

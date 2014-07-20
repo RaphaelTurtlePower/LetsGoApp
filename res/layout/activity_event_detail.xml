@@ -1,5 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:scrollbars="vertical">
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
@@ -155,40 +161,43 @@
         android:id="@+id/line8LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line7"
+        android:layout_below="@id/tvDescription"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/txtDownCountXX"
+            android:id="@+id/txtUpCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="5dp"
             android:text="7"
-            android:textSize="20sp" />
+            />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageUp"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_height="27dp"
             android:contentDescription="@string/contentDescription"
-            android:src="@drawable/checkup" />
+            android:src="@drawable/voteup" />
 
         <TextView
             android:id="@+id/txtGoing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
             android:text="going?"
-            android:textSize="20sp" />
+             />
 
-        <ImageView
-            android:id="@+id/line7A"
+        <ImageButton
+            android:id="@+id/imageDown"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_height="27dp"
             android:layout_marginLeft="10dp"
             android:contentDescription="@string/contentDescription"
-            android:src="@drawable/checkdown" />
+            android:src="@drawable/votedown" />
 
         <TextView
             android:id="@+id/txtDownCount"
@@ -196,7 +205,15 @@
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
             android:text="3"
-            android:textSize="20sp" />
+            />
     </LinearLayout>
-
+<FrameLayout
+    android:id="@+id/miniMap"
+    android:layout_width="match_parent"
+    android:layout_height="250dp" 
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_below="@id/line8LL"/>
+    
 </RelativeLayout>
+</ScrollView>

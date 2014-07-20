@@ -34,7 +34,11 @@
                  android:layout_height="wrap_content"
                  android:layout_alignParentLeft="true"
                  android:layout_below="@+id/map_item_city_state"
-                 android:text="Description" />
+               	 android:maxLines="1"
+               	 android:ellipsize="end"
+               	 android:singleLine="true"
+               	 android:scrollHorizontally="false"
+                 android:layout_gravity="center"/>
 
              <TextView
                  android:id="@+id/map_item_startDate"

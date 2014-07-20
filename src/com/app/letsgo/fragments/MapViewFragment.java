@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.app.letsgo.R;
 import com.app.letsgo.models.LocalEvent;
+import com.app.letsgo.models.LocalEventParcel;
 
 public class MapViewFragment extends Fragment implements OnBackStackChangedListener{
 
@@ -25,14 +26,14 @@ public class MapViewFragment extends Fragment implements OnBackStackChangedListe
 	private boolean mShowingBack = false;
 	private Button toggle;
 	Menu menu;
-	ArrayList<LocalEvent> events;	
+	ArrayList<LocalEventParcel> events;	
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
       // Defines the xml file for the fragment
       View view = inflater.inflate(R.layout.fragment_map, container, false);
       
-      events = LocalEvent.getLocalEvents();
+      events = LocalEventParcel.getLocalEvents();
       
       listFragment = ListFragment.newInstance(events);
       mapFragment = BaseMapFragment.newInstance(events);

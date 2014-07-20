@@ -26,6 +26,7 @@ import com.app.letsgo.fragments.MapViewFragment;
 import com.app.letsgo.fragments.NotificationFragment;
 import com.app.letsgo.fragments.SystemSettingFragment;
 import com.app.letsgo.models.LocalEvent;
+import com.app.letsgo.models.LocalEventParcel;
 
 public class MapActivity extends ActionBarActivity {
 
@@ -33,8 +34,8 @@ public class MapActivity extends ActionBarActivity {
 	private Handler mHandler = new Handler();
 	private boolean mShowingBack = false;
 	private Button toggle;
+	ArrayList<LocalEventParcel> events;
 	Menu menu;
-	ArrayList<LocalEvent> events;	
 
 	private FragmentNavigationDrawer dlDrawer;
 
@@ -43,9 +44,34 @@ public class MapActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		
-		events = LocalEvent.getLocalEvents();		
+		events = LocalEventParcel.getLocalEvents();		
 		setupNavDrawer(savedInstanceState);
 		Log.d("debug", "MapActivity.onCreate(): setupNavDrawer. ");
+
+		/*events = LocalEventParcel.getLocalEvents();
+		listFragment = ListFragment.newInstance(events);
+		mapFragment = BaseMapFragment.newInstance(events);
+		if (savedInstanceState == null) {
+			getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, mapFragment)
+                    .commit();
+			getFragmentManager().executePendingTransactions();
+        } else {
+            mShowingBack = (getFragmentManager().getBackStackEntryCount() > 0);
+        }
+	    getFragmentManager().addOnBackStackChangedListener(this);
+        toggle = (Button) findViewById(R.id.toggle);
+        toggle.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				//flips the card view
+				flipCard();
+			}        	
+        });
+        
+        toggle.setText("List");       */
 	}
 	
 	@Override
@@ -71,7 +97,7 @@ public class MapActivity extends ActionBarActivity {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
             	Log.d("debug", "searchEvents(): query = " + query);
-            	events = LocalEvent.search(query);
+            	events = LocalEventParcel.search(MapActivity.this, query);
             	if (mShowingBack) {
             		getListFragment().setList(events);
             	} else {            		
@@ -135,7 +161,7 @@ public class MapActivity extends ActionBarActivity {
 		case ActionBarActivity.CREATE_EVENT_REQUEST_CODE:
 			if(resultCode == Activity.RESULT_OK){
 				LocalEvent event = data.getParcelableExtra("event");
-				events.add(event);	//add local event
+				events.add(new LocalEventParcel(event));	//add local event
 				if (mShowingBack) {
 					getListFragment().addEvent(event);
             	} else {            		
@@ -149,7 +175,7 @@ public class MapActivity extends ActionBarActivity {
 				MenuItem searchItem = menu.findItem(R.id.action_search);
 				SearchView sView = (SearchView) searchItem.getActionView();
 				String query = (String) sView.getQuery().toString();
-				events = LocalEvent.search(query);
+				events = LocalEventParcel.search(MapActivity.this, query);
             	if (mShowingBack) {
             		getListFragment().setList(events);
             	} else {            		

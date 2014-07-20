@@ -151,8 +151,6 @@ public class ActionBarActivity extends FragmentActivity implements
     }
     
     /*
-     * minecraft is awesome
-     * wynncraft is awesome
      * Called by Location Services if the connection to the
      * location client drops because of an error.
      */

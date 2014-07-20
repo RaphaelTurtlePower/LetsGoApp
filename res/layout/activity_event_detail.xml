@@ -6,8 +6,8 @@
     android:scrollbars="vertical">
 
 <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context="${relativePackage}.${activityClass}" >
 
     <TextView
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/line1"
+        android:layout_below="@id/tvName"
         android:layout_marginLeft="5dp"
         android:text="eventtype:" />
 
@@ -42,7 +42,7 @@
         android:id="@+id/tvType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line1"
+        android:layout_below="@id/tvName"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/line2"
         android:text="dummy" />
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/line2"
+        android:layout_below="@id/tvType"
         android:layout_marginLeft="5dp"
         android:text="start date/time:" />
 
@@ -60,7 +60,7 @@
         android:id="@+id/tvStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line2"
+        android:layout_below="@id/tvType"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/line3"
         android:text="dummy" />

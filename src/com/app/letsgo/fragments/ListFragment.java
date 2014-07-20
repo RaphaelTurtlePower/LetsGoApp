@@ -20,6 +20,7 @@ import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
 
 public class ListFragment extends Fragment {
+
 	private ArrayList<LocalEventParcel> itemList;
 	private ListEventsAdapter itemsAdapter;
 	private ListView items;
@@ -72,13 +73,9 @@ public class ListFragment extends Fragment {
 				Intent i = new Intent(getActivity(), EventDetailActivity.class);
 				i.putExtra("event", event);
 				startActivity(i);
-
 			}
-
-
-		});
-	 	 
-		 return view;
+	 	 });
+	 	 return view;
 	 }
 
 }

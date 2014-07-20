@@ -185,7 +185,7 @@ public class CreateEventActivity extends FragmentActivity {
 
 
 	/**
-	 *  Returns to Map view when click on Cancel button
+	 *  Returns t/o Map view when click on Cancel button
 	 * @param v
 	 */
 	public void onCancel(View v) {

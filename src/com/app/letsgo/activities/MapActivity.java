@@ -30,13 +30,9 @@ import com.app.letsgo.models.LocalEventParcel;
 
 public class MapActivity extends ActionBarActivity {
 
-	// private MapViewFragment parentMapFragment;
-	private Handler mHandler = new Handler();
 	private boolean mShowingBack = false;
-	private Button toggle;
 	ArrayList<LocalEventParcel> events;
 	Menu menu;
-
 	private FragmentNavigationDrawer dlDrawer;
 
 	@Override
@@ -47,31 +43,6 @@ public class MapActivity extends ActionBarActivity {
 		events = LocalEventParcel.getLocalEvents();		
 		setupNavDrawer(savedInstanceState);
 		Log.d("debug", "MapActivity.onCreate(): setupNavDrawer. ");
-
-		/*events = LocalEventParcel.getLocalEvents();
-		listFragment = ListFragment.newInstance(events);
-		mapFragment = BaseMapFragment.newInstance(events);
-		if (savedInstanceState == null) {
-			getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.container, mapFragment)
-                    .commit();
-			getFragmentManager().executePendingTransactions();
-        } else {
-            mShowingBack = (getFragmentManager().getBackStackEntryCount() > 0);
-        }
-	    getFragmentManager().addOnBackStackChangedListener(this);
-        toggle = (Button) findViewById(R.id.toggle);
-        toggle.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				//flips the card view
-				flipCard();
-			}        	
-        });
-        
-        toggle.setText("List");       */
 	}
 	
 	@Override
@@ -146,7 +117,6 @@ public class MapActivity extends ActionBarActivity {
 		
 	/*
 	 * Handle results returned to the FragmentActivity by Google Play services
-	 * wynncraft is awesome
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

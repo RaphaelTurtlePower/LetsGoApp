@@ -116,7 +116,7 @@ public class MapActivity extends ActionBarActivity implements
 			@Override
 			public boolean onQueryTextSubmit(String query) {
             	Log.d("debug", "searchEvents(): query = " + query);
-            	events = LocalEventParcel.search(MapActivity.this, query);
+            	events = LocalEventParcel.search(mCurrentLocation, MapActivity.this, query);
             	if (mShowingBack) {
             		listFragment.setList(events);
             	} else {            		
@@ -161,7 +161,7 @@ public class MapActivity extends ActionBarActivity implements
 				MenuItem searchItem = menu.findItem(R.id.action_search);
 				SearchView sView = (SearchView) searchItem.getActionView();
 				String query = (String) sView.getQuery().toString();
-				events = LocalEventParcel.search(MapActivity.this, query);
+				events = LocalEventParcel.search(mCurrentLocation, MapActivity.this, query);
             	if (mShowingBack) {
             		listFragment.setList(events);
             	} else {            		

@@ -11,30 +11,58 @@
 	   android:layout_height="match_parent"/>
 	   
 	 </RelativeLayout>
--->
-   <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" >
-<FrameLayout
-    android:id="@+id/container"
+    
+	    
+		<FrameLayout
+		    android:id="@+id/container"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" />
+		    
+	    <Button
+	        android:id="@+id/toggle"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentRight="true"
+	        android:textColor="#FFFFFF"
+	        android:textStyle="bold"     
+	        android:background="#79000000"
+	        android:text="Toggle" />
+	    
+</RelativeLayout>	    
+    
+-->
+
+<com.app.letsgo.activities.FragmentNavigationDrawer
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
-
-    <Button
-        android:id="@+id/toggle"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"     
-        android:background="#79000000"
-        android:text="Toggle" />
-
-</RelativeLayout>
+    android:layout_height="match_parent">
+    
+    <!-- The main content view -->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+ 	<!-- The navigation drawer -->
+    <ListView android:id="@+id/lvDrawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="0dp"
+        android:background="@android:color/background_light"
+     />
+</com.app.letsgo.activities.FragmentNavigationDrawer>
    
 

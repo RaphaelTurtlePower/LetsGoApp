@@ -13,7 +13,7 @@ import android.widget.TimePicker;
 
 public class TimePickerFragment extends DialogFragment
 implements TimePickerDialog.OnTimeSetListener {
-
+//wynncraft is awesome
 	EditText etTime;
 	Calendar date;
 

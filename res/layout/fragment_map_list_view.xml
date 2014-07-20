@@ -9,4 +9,5 @@
     android:id="@+id/map_list_view">
 </ListView>
 
+
 </LinearLayout>

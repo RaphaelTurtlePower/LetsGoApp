@@ -15,7 +15,8 @@
 
     <item android:id="@+id/action_settings"
           android:orderInCategory="5"
-          android:title="Preference"
+          android:title="Preferences"
           android:icon="@drawable/ic_settings"
           android:showAsAction="ifRoom|collapseActionView" />
+    
 </menu>

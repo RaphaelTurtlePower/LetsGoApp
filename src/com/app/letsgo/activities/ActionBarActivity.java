@@ -38,10 +38,11 @@ public class ActionBarActivity extends FragmentActivity implements
     // Global variable to hold the current location
     Location mCurrentLocation;
 	LocationClient mLocationClient;    
-    private String nearByArea;
+    String nearByArea;
     
 	public static final int CREATE_EVENT_REQUEST_CODE = 5;
 	public static final int SETTINGS_REQUEST_CODE = 10;
+	
 	/*
 	 * Define a request code to send to Google Play services
 	 * This code is returned in Activity.onActivityResult
@@ -116,7 +117,7 @@ public class ActionBarActivity extends FragmentActivity implements
     protected void onStart() {
         super.onStart();
         // Connect the client
-        if (isGooglePlayServicesAvailable()) {
+        if (mCurrentLocation == null && isGooglePlayServicesAvailable()) {
         	mLocationClient.connect();
             Log.d("debug", "ActionBarActivity.onStart(): connecting...");
         }
@@ -140,7 +141,7 @@ public class ActionBarActivity extends FragmentActivity implements
     @Override
     public void onConnected(Bundle dataBundle) {
     	mCurrentLocation = mLocationClient.getLastLocation();  
-        Log.d("debug", "LocationService.onConnected(): Connected, location = " + mCurrentLocation);   
+        Log.d("debug", "ActionBarActivity.onConnected(): Connected, location = " + mCurrentLocation);   
     	if (mCurrentLocation != null) {    		
     		AsyncTask<Location, Void, String> nearByTask = new GetAddressTask(getContext());
     		Log.d("debug", "onConnected(): calling nearByTask...");
@@ -150,6 +151,8 @@ public class ActionBarActivity extends FragmentActivity implements
     }
     
     /*
+     * minecraft is awesome
+     * wynncraft is awesome
      * Called by Location Services if the connection to the
      * location client drops because of an error.
      */

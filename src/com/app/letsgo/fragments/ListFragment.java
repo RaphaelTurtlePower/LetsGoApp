@@ -22,7 +22,7 @@ public class ListFragment extends Fragment {
 	private ArrayList<LocalEvent> itemList;
 	private ListEventsAdapter itemsAdapter;
 	private ListView items;
-	
+
 	public static ListFragment newInstance(ArrayList<LocalEvent> events){
 		ListFragment listFragment = new ListFragment();
 		Bundle args = new Bundle();
@@ -30,13 +30,13 @@ public class ListFragment extends Fragment {
 		listFragment.setArguments(args);
 		return listFragment;
 	}
-	
+
 	public void setList(ArrayList<LocalEvent> events){
 		itemList.clear();
 		itemList.addAll(events);
 		itemsAdapter.notifyDataSetChanged();
 	}
-	
+
 	public void addEvent(LocalEvent event){
 		itemList.add(event);
 		itemsAdapter.notifyDataSetChanged();
@@ -47,16 +47,16 @@ public class ListFragment extends Fragment {
 		Bundle args = getArguments();
 		itemList = args.getParcelableArrayList("events");
 	}
-	
-	 @Override
-	 public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	      Bundle savedInstanceState) {
-	      // Defines the xml file for the fragment
-		 View view = inflater.inflate(R.layout.fragment_map_list_view, container, false);
-		 items = (ListView) view.findViewById(R.id.map_list_view);
-	 	 itemsAdapter = new ListEventsAdapter(getActivity(), itemList);
-	 	 items.setAdapter(itemsAdapter);
-	 	 items.setOnItemClickListener(new OnItemClickListener() {
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// Defines the xml file for the fragment
+		View view = inflater.inflate(R.layout.fragment_map_list_view, container, false);
+		items = (ListView) view.findViewById(R.id.map_list_view);
+		itemsAdapter = new ListEventsAdapter(getActivity(), itemList);
+		items.setAdapter(itemsAdapter);
+		items.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -65,11 +65,11 @@ public class ListFragment extends Fragment {
 				Intent i = new Intent(getActivity(), EventDetailActivity.class);
 				i.putExtra("event", event);
 				startActivity(i);
-				
+
 			}
-			
-			
+
+
 		});
-		 return view;
-	 }	
+		return view;
+	}	
 }

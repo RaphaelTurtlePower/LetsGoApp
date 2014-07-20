@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
+///////minecraft is awesome
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 	
 	EditText etDate;
@@ -46,3 +46,4 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 	}
 
 }
+//minecraft is awesome

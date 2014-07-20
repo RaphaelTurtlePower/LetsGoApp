@@ -56,53 +56,56 @@
         android:inputType="time"
         android:onClick="showEndTimePickerDialog" />
 
+    <TextView
+        android:id="@+id/tvCostValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEndDate"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@+id/tvCost"
+        android:ems="3"
+        android:text="0" />
+
     <SeekBar
         android:id="@+id/sbCost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/etEndDate"
-        android:layout_marginTop="36dp"
+        android:layout_toRightOf="@+id/tvCostValue"
+        android:layout_alignRight="@+id/spEventType"
+        android:layout_marginTop="30dp"
         android:max="200"
         android:progress="1" />
-
-    <TextView
-        android:id="@+id/tvCost"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spEventType"
-        android:layout_below="@+id/sbCost"
-        android:ems="10"
-        android:text="Cost: " />
-
-    <TextView
-        android:id="@+id/tvCostValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sbCost"
-        android:layout_toRightOf="@+id/tvCost"
-        android:ems="10"
-        android:text="0" />
-
-
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvCost"
-        android:layout_marginLeft="38dp"
-        android:layout_marginTop="60dp"
-        android:onClick="cancelSettings"
-        android:text="Cancel" />
 
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnCancel"
-        android:layout_alignBottom="@+id/btnCancel"
-        android:layout_alignRight="@+id/tvCostValue"
+        android:layout_below="@+id/sbCost"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="80dp"
+        android:layout_toRightOf="@+id/btnCancel"
         android:onClick="saveSettings"
         android:text="Save" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sbCost"
+        android:layout_marginTop="80dp"
+        android:layout_alignLeft="@+id/tvCostValue"
+        android:onClick="cancelSettings"
+        android:text="Cancel" />
+
+    <TextView
+        android:id="@+id/tvCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEndDate"
+        android:layout_marginTop="30dp"
+        android:layout_alignLeft="@+id/spEventType"
+        android:ems="2"
+        android:text="$$ " />
 
 </RelativeLayout>

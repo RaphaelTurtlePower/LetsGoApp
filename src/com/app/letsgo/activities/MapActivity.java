@@ -3,101 +3,53 @@ package com.app.letsgo.activities;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.FragmentManager.OnBackStackChangedListener;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.TextView;
 
 import com.app.letsgo.R;
 import com.app.letsgo.fragments.BaseMapFragment;
 import com.app.letsgo.fragments.ListFragment;
+import com.app.letsgo.fragments.LogoutFragment;
+import com.app.letsgo.fragments.MapViewFragment;
+import com.app.letsgo.fragments.NotificationFragment;
+import com.app.letsgo.fragments.SystemSettingFragment;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
 
-public class MapActivity extends ActionBarActivity implements
-		OnBackStackChangedListener{
+public class MapActivity extends ActionBarActivity {
 
-	private BaseMapFragment mapFragment;
-	private com.app.letsgo.fragments.ListFragment listFragment;
-	private Handler mHandler = new Handler();
 	private boolean mShowingBack = false;
-	private Button toggle;
 	ArrayList<LocalEventParcel> events;
 	Menu menu;
-	
+	private FragmentNavigationDrawer dlDrawer;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-	    events = LocalEventParcel.getLocalEvents();
-		listFragment = ListFragment.newInstance(events);
-		mapFragment = BaseMapFragment.newInstance(events);
-		if (savedInstanceState == null) {
-			getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.container, mapFragment)
-                    .commit();
-			getFragmentManager().executePendingTransactions();
-        } else {
-            mShowingBack = (getFragmentManager().getBackStackEntryCount() > 0);
-        }
-	    getFragmentManager().addOnBackStackChangedListener(this);
-        toggle = (Button) findViewById(R.id.toggle);
-        toggle.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				//flips the card view
-				flipCard();
-			}        	
-        });
-        
-        toggle.setText("List");       
+		
+		events = LocalEventParcel.getLocalEvents();		
+		setupNavDrawer(savedInstanceState);
+		Log.d("debug", "MapActivity.onCreate(): setupNavDrawer. ");
 	}
-	
-	 private void flipCard() {
-	        if (mShowingBack) {
-	        	toggle.setText("List");
-	            getFragmentManager().popBackStack();
-	            mapFragment.loadEvents(events);
-	            return;
-	        }
-	        mShowingBack = true;
-	        listFragment = ListFragment.newInstance(events);
-	        getFragmentManager()
-	                .beginTransaction()
-	                .setCustomAnimations(
-	                        R.animator.card_flip_right_in, R.animator.card_flip_right_out,
-	                        R.animator.card_flip_left_in, R.animator.card_flip_left_out)
-	                .replace(R.id.container, listFragment)
-	                .addToBackStack(null)
-	                .commit();
-	        toggle.setText("Map");
-	        mHandler.post(new Runnable() {
-	            @Override
-	            public void run() {
-	                invalidateOptionsMenu();
-	            }
-	        });
-	    }
-	
-	@Override
-    public void onBackStackChanged() {
-        mShowingBack = (getFragmentManager().getBackStackEntryCount() > 0);
-	}	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean value = super.onCreateOptionsMenu(menu);
 		setQueryTextListener(menu);
+		setupNearbyLocationListener(menu);
 		return value;
 	}
 
@@ -118,10 +70,11 @@ public class MapActivity extends ActionBarActivity implements
             	Log.d("debug", "searchEvents(): query = " + query);
             	events = LocalEventParcel.search(mCurrentLocation, MapActivity.this, query);
             	if (mShowingBack) {
-            		listFragment.setList(events);
+            		getListFragment().setList(events);
             	} else {            		
-            		mapFragment.loadEvents(events);
+            		getBaseMapFragment().loadEvents(events);
             	}
+            	setNearByLocationInvisible();
             	return true;
 			}
 			@Override
@@ -129,6 +82,37 @@ public class MapActivity extends ActionBarActivity implements
 				return false;
 			}
 		});
+	}
+	
+	public void setupNearbyLocationListener(Menu menu) {
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+
+		searchItem.setOnActionExpandListener(new OnActionExpandListener() {
+			
+			@Override
+			public boolean onMenuItemActionExpand(MenuItem item) {
+				setNearByLocationVisible();
+				return true;
+			}
+			
+			@Override
+			public boolean onMenuItemActionCollapse(MenuItem item) {
+				setNearByLocationInvisible();
+				return true;
+			}
+		});
+	}
+	
+	private void setNearByLocationVisible() {
+		TextView tvNearBy = (TextView) findViewById(R.id.tvNearByLocation);
+		
+		tvNearBy.setText(nearByArea);
+		tvNearBy.setVisibility(View.VISIBLE);		
+	}
+	
+	private void setNearByLocationInvisible() {
+		TextView tvNearBy = (TextView) findViewById(R.id.tvNearByLocation);		
+		tvNearBy.setVisibility(View.INVISIBLE);		
 	}
 		
 	/*
@@ -149,9 +133,9 @@ public class MapActivity extends ActionBarActivity implements
 				LocalEvent event = data.getParcelableExtra("event");
 				events.add(new LocalEventParcel(event));	//add local event
 				if (mShowingBack) {
-            		listFragment.addEvent(event);
+					getListFragment().addEvent(event);
             	} else {            		
-            		mapFragment.addEvent(event, false);
+            		getBaseMapFragment().addEvent(event, false);
             	}
 			}
 			break;
@@ -163,9 +147,9 @@ public class MapActivity extends ActionBarActivity implements
 				String query = (String) sView.getQuery().toString();
 				events = LocalEventParcel.search(mCurrentLocation, MapActivity.this, query);
             	if (mShowingBack) {
-            		listFragment.setList(events);
+            		getListFragment().setList(events);
             	} else {            		
-            		mapFragment.loadEvents(events);
+            		getBaseMapFragment().loadEvents(events);
             	}
 			}
 			break;
@@ -175,7 +159,75 @@ public class MapActivity extends ActionBarActivity implements
 	@Override
 	public void onConnected(Bundle bundle) {
 		super.onConnected(bundle);
-		mapFragment.setCurrentLocation(mCurrentLocation);
+		// setNearByLocation();
+		Log.d("debug", "MapActivity.OnConnected: " + mCurrentLocation);
+		getBaseMapFragment().setCurrentLocation(mCurrentLocation);
+	}
+	
+	void setupNavDrawer(Bundle savedInstanceState) {        
+        // for Navigation Drawer, find our drawer view
+		dlDrawer = (FragmentNavigationDrawer) findViewById(R.id.drawer_layout);
+		// Setup drawer view
+		dlDrawer.setupDrawerConfiguration((ListView) findViewById(R.id.lvDrawer), 
+                     R.layout.drawer_nav_item, R.id.fragmentContainer);
+		
+		// Add nav items
+		dlDrawer.addNavItem("Local Events", "Local Event", MapViewFragment.class);
+		// dlDrawer.addNavItem("New Event", "New Event", NewEventFragment.class);
+		dlDrawer.addNavItem("Settings", "Settings", SystemSettingFragment.class);
+		dlDrawer.addNavItem("Notifications", "Notifications", NotificationFragment.class);
+		dlDrawer.addNavItem("Logout", "Log Out", LogoutFragment.class);
+		
+		// Select default
+		if (savedInstanceState == null) {
+			dlDrawer.selectDrawerItem(0);	
+		}
+		
+	} 
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// If the nav drawer is open, hide action items related to the content
+		if (dlDrawer.isDrawerOpen()) {
+			// menu.findItem(R.id.mi_test).setVisible(false);
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// The action bar home/up action should open or close the drawer.
+		// ActionBarDrawerToggle will take care of this.
+		if (dlDrawer.getDrawerToggle().onOptionsItemSelected(item)) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		dlDrawer.getDrawerToggle().syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggles
+		dlDrawer.getDrawerToggle().onConfigurationChanged(newConfig);
+	}
+	
+	private BaseMapFragment getBaseMapFragment() {
+		return getMapViewFragment().getBaseMapFragment();
+	}
+	
+	private ListFragment getListFragment() {
+		return getMapViewFragment().getListFragment();
+	}
+	
+	private MapViewFragment getMapViewFragment() {
+		return (MapViewFragment) dlDrawer.getFragment(0);
 	}
  
 }

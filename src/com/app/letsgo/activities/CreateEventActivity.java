@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.app.letsgo.R;
 import com.app.letsgo.adapters.PlacesAdapter;
@@ -31,7 +32,7 @@ import com.parse.SaveCallback;
 
 public class CreateEventActivity extends FragmentActivity {
 	EditText etEventName;
-	EditText etEventType;
+	Spinner spEventType;
 	EditText etDescription;
 	EditText etCost;
 	EditText etStartDate;
@@ -54,7 +55,7 @@ public class CreateEventActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		etEventName = (EditText) findViewById(R.id.etEventName);
-		etEventType = (EditText) findViewById(R.id.etEventType);
+		spEventType = (Spinner) findViewById(R.id.spEventType);
 		etDescription = (EditText) findViewById(R.id.etDescription);
 		etCost = (EditText) findViewById(R.id.etCost);
 		etStartDate = (EditText) findViewById(R.id.etStartDate);
@@ -66,6 +67,7 @@ public class CreateEventActivity extends FragmentActivity {
 		endDate = new GregorianCalendar();	   	
 
 		etLocation = (AutoCompleteTextView) findViewById(R.id.etLocation);
+		Utils.setupEventType(this, spEventType);
 
 		setLocation();
 	}
@@ -116,8 +118,8 @@ public class CreateEventActivity extends FragmentActivity {
 			event.setEventName(etEventName.getText().toString());
 		}
 		event.setEventType("music");
-		if (!Utils.isNull(etEventType)) {
-			event.setEventType(etEventType.getText().toString());
+		if (spEventType != null) {
+			event.setEventType(spEventType.getSelectedItem().toString());
 		}
 
 		saveDates();
@@ -155,19 +157,19 @@ public class CreateEventActivity extends FragmentActivity {
 		event.setUpCount(0);
 		event.setDownCount(0);
 		event.put("public", true); // default to public
+		
 		event.saveInBackground(new SaveCallback(){
-
 			@Override
 			public void done(ParseException e) {
 				if(e == null){
 					Log.d("OBJECT_SAVE", "Event successfully saved.");
 					
-					/*Utils.addToCalendar(getContext(), 
+					Utils.addToCalendar(getContext(), 
 							etEventName.getText().toString(), 
 							etLocation.getText().toString(), 
 							etDescription.getText().toString(), 
-							etStartDate, 
-							etEndDate); */
+							etStartDate.getText().toString(), 
+							etEndDate.getText().toString()); 
 					
 					Intent data = new Intent();
 					LocalEventParcel parcel = new LocalEventParcel(event);
@@ -181,144 +183,14 @@ public class CreateEventActivity extends FragmentActivity {
 		});		
 	}
 
-	/**
-	 *  Add the newly created event into calendar
-	 */
-	/* public void addToCalendar() {
-		Intent intent = new Intent(Intent.ACTION_INSERT);
-		intent.setData(CalendarContract.Events.CONTENT_URI);
-		intent.setType("vnd.android.cursor.item/event");
-		intent.putExtra(Events.TITLE, etEventName.getText().toString());
-		intent.putExtra(Events.EVENT_LOCATION, etLocation.getText().toString());
-		if (!Utils.isNull(etDescription)) {
-			intent.putExtra(Events.DESCRIPTION, etDescription.getText().toString());
-		}
-
-		// Setting dates    	
-		intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDate);
-		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDate);
-		startActivity(intent);     	
-	} */
 
 	/**
-	 *  Returns to Map view when click on Cancel button
+	 *  Returns t/o Map view when click on Cancel button
 	 * @param v
 	 */
 	public void onCancel(View v) {
 		finish();  	
 	}
-
-	/*public class DatePickerFragment extends DialogFragment
-		implements DatePickerDialog.OnDateSetListener {
-		EditText etDate;
-		Calendar date;
-
-		public DatePickerFragment(EditText etDate, Calendar date) {
-			this.etDate = etDate;
-			this.date = date;
-		}
-		
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current date as the default date in the picker
-			final Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DAY_OF_MONTH);
-
-			// Create a new instance of DatePickerDialog and return it
-			return new DatePickerDialog(getActivity(), this, year, month, day);
-		}
-
-		@Override
-		public void onDateSet(DatePicker view, int year, int month, int day) {
-			showDate(etDate, year, month, day);
-			date.set(GregorianCalendar.YEAR, year);
-			date.set(GregorianCalendar.MONTH, month);
-			date.set(GregorianCalendar.DAY_OF_MONTH, day);
-		}		
-	}
-
-	public class TimePickerFragment extends DialogFragment
-		implements TimePickerDialog.OnTimeSetListener {
-
-		EditText etTime;
-		Calendar date;
-		
-		public TimePickerFragment(EditText etTime, Calendar date) {
-			this.etTime = etTime;
-			this.date = date;
-		}
-		
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current time as the default values for the picker
-			final Calendar c = Calendar.getInstance();
-			int hour = c.get(Calendar.HOUR_OF_DAY);
-			int minute = c.get(Calendar.MINUTE);
-
-			// Create a new instance of TimePickerDialog and return it
-			return new TimePickerDialog(getActivity(), this, hour, minute,
-					DateFormat.is24HourFormat(getActivity()));
-		}
-
-		@Override
-		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			showTime(etTime, hourOfDay, minute);
-			date.set(GregorianCalendar.HOUR, hourOfDay);
-			date.set(GregorianCalendar.MINUTE, minute);
-		}
-	} */
-
-	/* TODO: need to refactor this!
-	public class EndDatePickerFragment extends DialogFragment
-	implements DatePickerDialog.OnDateSetListener {
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current date as the default date in the picker
-			final Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DAY_OF_MONTH);
-
-			// Create a new instance of DatePickerDialog and return it
-			return new DatePickerDialog(getActivity(), this, year, month, day);
-		}
-
-		@Override
-		public void onDateSet(DatePicker view, int year, int month, int day) {
-			showDate(etEndDate, year, month, day);
-			endDate.set(GregorianCalendar.YEAR, year);
-			endDate.set(GregorianCalendar.MONTH, month);
-			endDate.set(GregorianCalendar.DAY_OF_MONTH, day);
-		}
-
-	}
-
-	// TODO: need to refactor this!
-	public class EndTimePickerFragment extends DialogFragment
-	implements TimePickerDialog.OnTimeSetListener {
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current time as the default values for the picker
-			final Calendar c = Calendar.getInstance();
-			int hour = c.get(Calendar.HOUR_OF_DAY);
-			int minute = c.get(Calendar.MINUTE);
-
-			// Create a new instance of TimePickerDialog and return it
-			return new TimePickerDialog(getActivity(), this, hour, minute,
-					DateFormat.is24HourFormat(getActivity()));
-		}
-
-		@Override
-		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			showTime(etEndTime, hourOfDay, minute);
-			endDate.set(GregorianCalendar.HOUR, hourOfDay);
-			endDate.set(GregorianCalendar.MINUTE, minute);
-		}
-	} */
 
 	public void showDate(EditText date, int year, int month, int day) {
 		date.setText(new StringBuilder().append(month + 1)
@@ -377,4 +249,3 @@ public class CreateEventActivity extends FragmentActivity {
 
 
 }
-///////////////////////////////////////////minecraft is aswesome\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

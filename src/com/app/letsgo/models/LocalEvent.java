@@ -147,8 +147,7 @@ public class LocalEvent extends ParseObject {
 		LatLng mapPosition = new LatLng(getLocation().getGeoPoint().getLatitude(), getLocation().getGeoPoint().getLongitude());
 		return mapPosition;
 	}
-	
-	
+		
 	public static Address convertAddress(Context context, String address){
 		Geocoder coder = new Geocoder(context);
 		try {

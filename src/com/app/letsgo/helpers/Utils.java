@@ -15,8 +15,11 @@ import android.content.Intent;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.app.letsgo.R;
 import com.app.letsgo.models.Location;
 import com.app.letsgo.models.Place;
 import com.parse.ParseGeoPoint;
@@ -114,5 +117,16 @@ public class Utils {
 		intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDate);
 		activity.startActivity(intent);     	
 	}
+	
+	public static void setupEventType(Activity activity, Spinner spEventType) {
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
+				R.array.event_types, android.R.layout.simple_spinner_item);
+		// Specify the layout to use when the list of choices appears
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		// Apply the adapter to the spinner
+		spEventType.setAdapter(adapter);
+
+	}
+
 
 }

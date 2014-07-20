@@ -16,11 +16,11 @@ import android.widget.ListView;
 import com.app.letsgo.R;
 import com.app.letsgo.activities.EventDetailActivity;
 import com.app.letsgo.adapters.ListEventsAdapter;
-import com.app.letsgo.interfaces.RefreshListener;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
 
-public class ListFragment extends Fragment{
+public class ListFragment extends Fragment {
+
 	private ArrayList<LocalEventParcel> itemList;
 	private ListEventsAdapter itemsAdapter;
 	private ListView items;
@@ -43,11 +43,12 @@ public class ListFragment extends Fragment{
 		itemList.addAll(events);
 		itemsAdapter.notifyDataSetChanged();
 	}
-	
+
 	public void addEvent(LocalEvent event){
 		itemList.add(new LocalEventParcel(event));
 		itemsAdapter.notifyDataSetChanged();
 	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -72,13 +73,9 @@ public class ListFragment extends Fragment{
 				Intent i = new Intent(getActivity(), EventDetailActivity.class);
 				i.putExtra("event", event);
 				startActivity(i);
-				
 			}
-			
-			
-		});
-	
-		 return view;
+	 	 });
+	 	 return view;
 	 }
 
 }

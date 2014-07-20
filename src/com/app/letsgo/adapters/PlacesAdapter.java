@@ -85,7 +85,7 @@ public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());
-          //  Log.e(Utils.LOG_TAG, "Auto complete URL: " + url);
+            Log.e(Utils.LOG_TAG, "Auto complete URL: " + url);
             conn = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
 
@@ -95,7 +95,7 @@ public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
             while ((read = in.read(buff)) != -1) {
                 jsonResults.append(buff, 0, read);
             }
-         //   Log.e(Utils.LOG_TAG, "Auto complete result: " + jsonResults);
+         	// Log.e(Utils.LOG_TAG, "Auto complete result: " + jsonResults);
         } catch (MalformedURLException e) {
             Log.e(Utils.LOG_TAG, "Error processing Places API URL", e);
             return resultList;
@@ -112,16 +112,18 @@ public class PlacesAdapter extends ArrayAdapter<String> implements Filterable {
             // Create a JSON object hierarchy from the results
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
+            Log.d("debug", "PlacesAdapter.autoComplete(): result size = " + predsJsonArray.length());
 
             // Extract the Place descriptions from the results
             resultList = new ArrayList<Place>(predsJsonArray.length());
-            Place place = new Place();
+            Place place;
             for (int i = 0; i < predsJsonArray.length(); i++) {
+            	place = new Place();
             	place.setAddress(predsJsonArray.getJSONObject(i).getString("description"));
             	place.setPlaceId(predsJsonArray.getJSONObject(i).getString("place_id"));
                 resultList.add(place);
             }
-            
+            Log.d("debug", "PlacesAdapter.autoComplete(): resultList size = " + resultList.size());
         } catch (JSONException e) {
             Log.e(Utils.LOG_TAG, "Cannot process JSON results", e);
         }

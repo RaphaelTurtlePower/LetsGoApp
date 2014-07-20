@@ -94,12 +94,7 @@ public class SettingsActivity extends FragmentActivity {
 	}
 	
 	public void setupEventType() {
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-				R.array.event_types, android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-		spEventType.setAdapter(adapter);
+		Utils.setupEventType(this,  spEventType);
 
 		int pos = mSettings.getInt("eventTypePos", 0);
 		spEventType.setSelection(pos);

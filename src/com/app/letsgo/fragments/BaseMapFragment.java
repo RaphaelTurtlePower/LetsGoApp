@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,17 +21,16 @@ import com.app.letsgo.activities.EventDetailActivity;
 import com.app.letsgo.dialogs.MapItemDialog;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 
 public class BaseMapFragment extends MapFragment implements OnMarkerClickListener {
 	private ArrayList<LocalEventParcel> events;
@@ -44,6 +44,7 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 		Bundle args = new Bundle();
 		args.putParcelableArrayList("events", events);
 		mapFragment.setArguments(args);
+		Log.d("debug", "MapFragment.newInstance(): events size = " + events.size());;
 		return mapFragment;
 	}
 	
@@ -55,7 +56,9 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		// mLocationClient = new LocationClient(getActivity(), this, this);
+		
 		Bundle args = getArguments();
+		// Log.d("debug", "BaseMapFragment.onCreate(): args = " + args);
 		events = args.getParcelableArrayList("events");
 		
 	}
@@ -65,7 +68,7 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 	}
 		
 	public void initialize(){
-		 loadEvents(events);
+		loadEvents(events);
 	}
 		
 	@Override
@@ -76,12 +79,10 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 	}
 	
 	public void addEvent(LocalEvent event, Boolean updateCamera){
-		Marker mapMarker = getMap().addMarker( new MarkerOptions()
-	    .position(event.getMapPosition())					 								    
-	   .icon(BitmapDescriptorFactory.fromResource(event.getMarkerType())));
+		Marker mapMarker = getMap().addMarker( new MarkerOptions().position(event.getMapPosition()).icon(BitmapDescriptorFactory.fromResource(event.getMarkerType())));
 		markerMap.put(mapMarker, new LocalEventParcel(event));
+		
 		getMap().setInfoWindowAdapter(new InfoWindowAdapter(){
-
 			@Override
 			public View getInfoContents(Marker marker) {
 				LocalEvent event = markerMap.get(marker).getEvent();
@@ -109,7 +110,6 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 		});
 		
 		getMap().setOnInfoWindowClickListener(new OnInfoWindowClickListener(){
-
 			@Override
 			public void onInfoWindowClick(Marker marker) {
 				LocalEventParcel event = markerMap.get(marker);

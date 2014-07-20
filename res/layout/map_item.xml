@@ -18,22 +18,14 @@
         android:layout_below="@+id/map_item_title"
         android:text="Street" />
 
-             <TextView
-                 android:id="@+id/map_item_city_state"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentLeft="true"
-                 android:layout_below="@+id/map_item_street"
-                 android:text="CityState" />
-
-           
+      
 
              <TextView
                  android:id="@+id/map_item_description"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_alignParentLeft="true"
-                 android:layout_below="@+id/map_item_city_state"
+                 android:layout_below="@+id/map_item_street"
                	 android:maxLines="1"
                	 android:ellipsize="end"
                	 android:singleLine="true"
@@ -45,13 +37,14 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_alignParentRight="true"
-                 android:layout_below="@+id/map_item_title"
+                 android:layout_below="@+id/map_item_description"
                  android:text="StartDate" />
 
 <LinearLayout
+    android:id="@+id/map_item_recommend_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_above="@+id/map_item_description"
+    android:layout_below="@+id/map_item_startDate"
     android:layout_alignParentRight="true"
     android:orientation="horizontal" >
 
@@ -60,25 +53,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
-        android:layout_above="@+id/map_item_description"
-        android:layout_alignLeft="@+id/map_item_startDate"
-        android:text="Thumbs Up" />
+        android:text="" />
 
     <TextView
         android:id="@+id/map_item_thumbs_down"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/map_item_description"
-        android:layout_alignParentRight="true"
-        android:text="Thumbs Down" />
+        android:text="" />
 </LinearLayout>
 
 <TextView
     android:id="@+id/map_item_cost"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_above="@+id/map_item_startDate"
+    android:layout_below="@+id/map_item_recommend_container"
     android:layout_alignParentRight="true"
-    android:text="$100.00" />
+    android:text="" />
 
 </RelativeLayout>

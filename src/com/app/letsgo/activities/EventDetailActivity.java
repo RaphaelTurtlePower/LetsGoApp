@@ -3,18 +3,22 @@ package com.app.letsgo.activities;
 import java.text.DecimalFormat;
 import java.text.Format;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.app.letsgo.R;
-import com.app.letsgo.fragments.BaseMapFragment;
 import com.app.letsgo.fragments.MiniMapFragment;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
@@ -43,6 +47,8 @@ public class EventDetailActivity extends Activity {
 	private LocalEvent e;
 	private LocalEventParcel lp;
 	
+	private ShareActionProvider mShareActionProvider;
+
     private TextView tvName;
     private TextView tvType;
     private TextView tvStart;
@@ -105,6 +111,8 @@ public class EventDetailActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_detail);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		lp = (LocalEventParcel) getIntent().getExtras().getParcelable("event");
 		e = lp.getEvent();
 		setUpViews();
@@ -178,5 +186,36 @@ public class EventDetailActivity extends Activity {
                     .commit();
 			getFragmentManager().executePendingTransactions();
 		}
+	}
+	
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case android.R.id.home:
+	            this.finish();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.detail_activity_actions, menu);
+	    MenuItem item = menu.findItem(R.id.action_share);
+
+	    mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+	    Intent myIntent = new Intent();
+	    myIntent.setAction(Intent.ACTION_SEND);
+	    myIntent.putExtra(Intent.EXTRA_TEXT, "I would like to invite you at " + 
+	    				e.getLocation().getAddress() + " for " +
+	    				e.getEventName() + " on " + e.getStartDate() + " at " + 
+	    				e.getStartTime() + ". See you there!");
+	    myIntent.setType("text/plain");
+	    mShareActionProvider.setShareIntent(myIntent);
+	    return super.onCreateOptionsMenu(menu);
 	}
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/action_share"
+          android:orderInCategory="5"
+          android:title="Share"
+          android:icon="@drawable/ic_action_share"
+          android:showAsAction="ifRoom|collapseActionView"
+          android:actionProviderClass="android.widget.ShareActionProvider" />
+
+    <item android:id="@+id/action_calendar"
+          android:orderInCategory="5"
+          android:title="Calendar"
+          android:icon="@drawable/ic_action_calendar"
+          android:showAsAction="ifRoom|collapseActionView" />
+
+</menu>

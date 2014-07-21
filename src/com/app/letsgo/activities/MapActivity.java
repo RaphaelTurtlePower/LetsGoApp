@@ -40,10 +40,12 @@ public class MapActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		
-		events = LocalEventParcel.getLocalEvents();		
 		setupNavDrawer(savedInstanceState);
 		Log.d("debug", "MapActivity.onCreate(): setupNavDrawer. ");
 	}
+	
+	
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -162,6 +164,8 @@ public class MapActivity extends ActionBarActivity {
 		// setNearByLocation();
 		Log.d("debug", "MapActivity.OnConnected: " + mCurrentLocation);
 		getBaseMapFragment().setCurrentLocation(mCurrentLocation);
+		events = LocalEventParcel.search(mCurrentLocation, this, null);		
+		
 	}
 	
 	void setupNavDrawer(Bundle savedInstanceState) {        

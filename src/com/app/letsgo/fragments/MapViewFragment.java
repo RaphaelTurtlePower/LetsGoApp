@@ -32,8 +32,7 @@ public class MapViewFragment extends Fragment implements OnBackStackChangedListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
       // Defines the xml file for the fragment
       View view = inflater.inflate(R.layout.fragment_map, container, false);
-      
-      events = LocalEventParcel.getLocalEvents();
+      events = LocalEventParcel.search(null, getActivity(), null);
       
       listFragment = ListFragment.newInstance(events);
       mapFragment = BaseMapFragment.newInstance(events);
@@ -60,7 +59,8 @@ public class MapViewFragment extends Fragment implements OnBackStackChangedListe
       });
       toggle.setText("List");  
       Log.d("debug", "MapViewFragment.onCreateView(): events = " + events.size());
-      return view;
+  
+    return view;
     }
 	
 	private void flipCard() {

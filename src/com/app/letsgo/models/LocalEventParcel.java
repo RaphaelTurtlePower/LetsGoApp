@@ -58,27 +58,8 @@ public class LocalEventParcel implements Parcelable {
 			return new LocalEvent[size];
 		}
 	};
-	
-	
-	
-	public static ArrayList<LocalEventParcel> getLocalEvents(){
-		final ArrayList<LocalEventParcel> events = new ArrayList<LocalEventParcel>();
-		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("LocalEvent");
-		query.include("location");
-		List<ParseObject> objects;
-		try {
-			objects = query.find();
-			for(int i=0; i<objects.size(); i++){
-	         	LocalEvent ev = (LocalEvent) objects.get(i);
-	         	events.add(new LocalEventParcel(ev));
-	         }
-		} catch (com.parse.ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 return events;
-	}
 
+	
 	
 	public static ArrayList<LocalEventParcel> search(android.location.Location location, Activity activity, String query){
 		final ArrayList<LocalEventParcel> events = new ArrayList<LocalEventParcel>();
@@ -86,20 +67,25 @@ public class LocalEventParcel implements Parcelable {
 		SharedPreferences mSettings = activity.getSharedPreferences("LetsGoSettings", 0);
 		
 		//pull data from SharedPreferences and default values to the right
-		double maxDistance = mSettings.getLong("max_distance", 50);
-		double cost  = mSettings.getLong("cost", 1000000000);
+		Double maxDistance = Double.valueOf(mSettings.getLong("max_distance", 50));
+		Double cost  = Double.valueOf(mSettings.getLong("cost", 1000000000));
 		
 		//Search criteria looking at the name
 		ParseQuery<ParseObject> name = ParseQuery.getQuery("LocalEvent");
-		name.whereContains("eventName", query);
-		name.whereLessThanOrEqualTo("cost", cost);
-		
-		//Search criteria looking at the description
 		ParseQuery<ParseObject> description = ParseQuery.getQuery("LocalEvent");
-		description.whereContains("description", query);
-		description.whereLessThanOrEqualTo("cost", cost);
 		
-		//Define the Location Query	
+		//filter by name
+		if(query != null){
+			name.whereContains("eventName", query);
+			description.whereContains("description", query);
+		}
+		
+		//filter by cost
+		if(cost != null){
+			name.whereLessThanOrEqualTo("cost", cost);
+			description.whereLessThanOrEqualTo("cost", cost);
+		}
+		
 		if(location != null){
 			ParseQuery<ParseObject> locationQuery = ParseQuery.getQuery("Location");
 			ParseGeoPoint point = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
@@ -109,11 +95,6 @@ public class LocalEventParcel implements Parcelable {
 			description.whereMatchesQuery("location", locationQuery);
 		}
 			
-		if(mSettings!=null){
-			String date = mSettings.getString("startDate", "7/18/2014");
-			
-		}
-		
 		queries.add(name);
 		queries.add(description);
 		ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);

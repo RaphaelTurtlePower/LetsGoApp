@@ -14,8 +14,6 @@ import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -25,6 +23,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.app.letsgo.R;
+import com.app.letsgo.fragments.DatePickerFragment;
+import com.app.letsgo.fragments.TimePickerFragment;
 import com.app.letsgo.helpers.Utils;
 import com.app.letsgo.models.LocalEvent;
 
@@ -119,131 +119,22 @@ public class SettingsActivity extends FragmentActivity {
 	public void cancelSettings(View v) {
 		finish();
 	}
-
-	public class DatePickerFragment extends DialogFragment
-		implements DatePickerDialog.OnDateSetListener {
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current date as the default date in the picker
-			final Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DAY_OF_MONTH);
-
-			// Create a new instance of DatePickerDialog and return it
-			return new DatePickerDialog(getActivity(), this, year, month, day);
-		}
-
-		@Override
-		public void onDateSet(DatePicker view, int year, int month, int day) {
-			showDate(etStartDate, year, month, day);
-			startDate.set(GregorianCalendar.YEAR, year);
-			startDate.set(GregorianCalendar.MONTH, month);
-			startDate.set(GregorianCalendar.DAY_OF_MONTH, day);
-		}		
-	}
-
-	public class TimePickerFragment extends DialogFragment
-		implements TimePickerDialog.OnTimeSetListener {
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current time as the default values for the picker
-			final Calendar c = Calendar.getInstance();
-			int hour = c.get(Calendar.HOUR_OF_DAY);
-			int minute = c.get(Calendar.MINUTE);
-
-			// Create a new instance of TimePickerDialog and return it
-			return new TimePickerDialog(getActivity(), this, hour, minute,
-					DateFormat.is24HourFormat(getActivity()));
-		}
-
-		@Override
-		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			showTime(etStartTime, hourOfDay, minute);
-			startDate.set(GregorianCalendar.HOUR, hourOfDay);
-			startDate.set(GregorianCalendar.MINUTE, minute);
-		}
-	}
-
-	// TODO: need to refactor this!
-	public class EndDatePickerFragment extends DialogFragment
-		implements DatePickerDialog.OnDateSetListener {
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current date as the default date in the picker
-			final Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DAY_OF_MONTH);
-
-			// Create a new instance of DatePickerDialog and return it
-			return new DatePickerDialog(getActivity(), this, year, month, day);
-		}
-
-		@Override
-		public void onDateSet(DatePicker view, int year, int month, int day) {
-			showDate(etEndDate, year, month, day);
-			endDate.set(GregorianCalendar.YEAR, year);
-			endDate.set(GregorianCalendar.MONTH, month);
-			endDate.set(GregorianCalendar.DAY_OF_MONTH, day);
-		}
-	}
-
-	// TODO: need to refactor this!
-	public class EndTimePickerFragment extends DialogFragment
-		implements TimePickerDialog.OnTimeSetListener {
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			// Use the current time as the default values for the picker
-			final Calendar c = Calendar.getInstance();
-			int hour = c.get(Calendar.HOUR_OF_DAY);
-			int minute = c.get(Calendar.MINUTE);
-
-			// Create a new instance of TimePickerDialog and return it
-			return new TimePickerDialog(getActivity(), this, hour, minute,
-					DateFormat.is24HourFormat(getActivity()));
-		}
-
-		@Override
-		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			showTime(etEndTime, hourOfDay, minute);
-			endDate.set(GregorianCalendar.HOUR, hourOfDay);
-			endDate.set(GregorianCalendar.MINUTE, minute);
-		}
-	}
-
-	public void showDate(EditText date, int year, int month, int day) {
-		date.setText(new StringBuilder().append(month + 1)
-				.append("/").append(day).append("/").append(year));
-	}
-
-	public void showTime(EditText time, int hour, int minute) {
-		time.setText(new StringBuilder().append(hour).append(":").append(minute));
-	}
-
+	
 	public void showStartDatePickerDialog(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "datePicker");	
+		Utils.showDatePickerDialog(this, etStartDate, startDate);
 	}
 
 	public void showStartTimePickerDialog(View v) {
-		DialogFragment newFragment = new TimePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "timePicker");
+		Utils.showTimePickerDialog(this, etStartTime, startDate);
 	}
 
-	// TODO: refactor this
+	// show datepicker for end date
 	public void showEndDatePickerDialog(View v) {
-		DialogFragment newFragment = new EndDatePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "datePicker");	
+		Utils.showDatePickerDialog(this, etEndDate, endDate);
 	}
 
 	public void showEndTimePickerDialog(View v) {
-		DialogFragment newFragment = new EndTimePickerFragment();
-		newFragment.show(getSupportFragmentManager(), "timePicker");
+		Utils.showTimePickerDialog(this, etEndTime, endDate);
 	} 
 
 	public void saveDates(LocalEvent event) {

@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Calendar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,12 +15,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.app.letsgo.R;
+import com.app.letsgo.fragments.DatePickerFragment;
+import com.app.letsgo.fragments.TimePickerFragment;
 import com.app.letsgo.models.Location;
 import com.app.letsgo.models.Place;
 import com.parse.ParseGeoPoint;
@@ -128,5 +133,14 @@ public class Utils {
 
 	}
 
+	public static void showDatePickerDialog(FragmentActivity activity, EditText etDate, Calendar date) {
+		DialogFragment newFragment = new DatePickerFragment(etDate, date);
+		newFragment.show(activity.getSupportFragmentManager(), "datePicker");		
+	}
+	
+	public static void showTimePickerDialog(FragmentActivity activity, EditText etTime, Calendar date) {
+		DialogFragment newFragment = new TimePickerFragment(etTime, date);
+		newFragment.show(activity.getSupportFragmentManager(), "timePicker");	
+	}
 
 }

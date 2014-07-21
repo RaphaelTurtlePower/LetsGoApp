@@ -191,41 +191,22 @@ public class CreateEventActivity extends FragmentActivity {
 	public void onCancel(View v) {
 		finish();  	
 	}
-
-	public void showDate(EditText date, int year, int month, int day) {
-		date.setText(new StringBuilder().append(month + 1)
-				.append("/").append(day).append("/").append(year));
-	}
-
-	public void showTime(EditText time, int hour, int minute) {
-		time.setText(new StringBuilder().append(hour).append(":").append(minute));
-	}
-
-	public void showDatePickerDialog(EditText etDate, Calendar date) {
-		DialogFragment newFragment = new DatePickerFragment(etDate, date);
-		newFragment.show(getSupportFragmentManager(), "datePicker");			
-	}
-	
-	public void showTimePickerDialog(EditText etTime, Calendar date) {
-		DialogFragment newFragment = new TimePickerFragment(etTime, date);
-		newFragment.show(getSupportFragmentManager(), "timePicker");	
-	}
 	
 	public void showStartDatePickerDialog(View v) {
-		showDatePickerDialog(etStartDate, startDate);
+		Utils.showDatePickerDialog(this, etStartDate, startDate);
 	}
 
 	public void showStartTimePickerDialog(View v) {
-		showTimePickerDialog(etStartTime, startDate);
+		Utils.showTimePickerDialog(this, etStartTime, startDate);
 	}
 
 	// show datepicker for end date
 	public void showEndDatePickerDialog(View v) {
-		showDatePickerDialog(etEndDate, endDate);
+		Utils.showDatePickerDialog(this, etEndDate, endDate);
 	}
 
 	public void showEndTimePickerDialog(View v) {
-		showTimePickerDialog(etEndTime, endDate);
+		Utils.showTimePickerDialog(this, etEndTime, endDate);
 	} 
 
 	public void saveDates() {

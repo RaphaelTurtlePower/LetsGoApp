@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.app.letsgo.R;
 import com.app.letsgo.fragments.BaseMapFragment;
-import com.app.letsgo.fragments.ListFragment;
+import com.app.letsgo.fragments.CardListFragment;
 import com.app.letsgo.fragments.LogoutFragment;
 import com.app.letsgo.fragments.MapViewFragment;
 import com.app.letsgo.fragments.NotificationFragment;
@@ -226,7 +226,7 @@ public class MapActivity extends ActionBarActivity {
 		return getMapViewFragment().getBaseMapFragment();
 	}
 	
-	private ListFragment getListFragment() {
+	private CardListFragment getListFragment() {
 		return getMapViewFragment().getListFragment();
 	}
 	

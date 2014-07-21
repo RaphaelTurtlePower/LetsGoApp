@@ -172,7 +172,9 @@ public class LocalEvent extends ParseObject {
 		return descriptionText;
 	}
 	
-	
+	public int getTypeImage(){
+		return R.id.action_calendar;
+	}
 
 }
 

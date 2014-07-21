@@ -9,8 +9,8 @@ import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -58,45 +58,43 @@ public class LocalEventParcel implements Parcelable {
 			return new LocalEvent[size];
 		}
 	};
-	
-	
-	
-	public static ArrayList<LocalEventParcel> getLocalEvents(){
-		final ArrayList<LocalEventParcel> events = new ArrayList<LocalEventParcel>();
-		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("LocalEvent");
-		query.include("location");
-		List<ParseObject> objects;
-		try {
-			objects = query.find();
-			for(int i=0; i<objects.size(); i++){
-	         	LocalEvent ev = (LocalEvent) objects.get(i);
-	         	events.add(new LocalEventParcel(ev));
-	         }
-		} catch (com.parse.ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 
-		 return events;
-	}
 
 	
-	public static ArrayList<LocalEventParcel> search(Activity activity, String query){
+	
+	public static ArrayList<LocalEventParcel> search(android.location.Location location, Activity activity, String query){
 		final ArrayList<LocalEventParcel> events = new ArrayList<LocalEventParcel>();
 		List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
 		SharedPreferences mSettings = activity.getSharedPreferences("LetsGoSettings", 0);
 		
-		ParseQuery<ParseObject> name = ParseQuery.getQuery("LocalEvent");
-		name.whereContains("eventName", query);
+		//pull data from SharedPreferences and default values to the right
+		Double maxDistance = Double.valueOf(mSettings.getLong("max_distance", 50));
+		Double cost  = Double.valueOf(mSettings.getLong("cost", 1000000000));
 		
+		//Search criteria looking at the name
+		ParseQuery<ParseObject> name = ParseQuery.getQuery("LocalEvent");
 		ParseQuery<ParseObject> description = ParseQuery.getQuery("LocalEvent");
-		description.whereContains("description", query);
-
-		if(mSettings!=null){
-			String date = mSettings.getString("startDate", "7/18/2014");
-			
+		
+		//filter by name
+		if(query != null){
+			name.whereContains("eventName", query);
+			description.whereContains("description", query);
 		}
 		
+		//filter by cost
+		if(cost != null){
+			name.whereLessThanOrEqualTo("cost", cost);
+			description.whereLessThanOrEqualTo("cost", cost);
+		}
+		
+		if(location != null){
+			ParseQuery<ParseObject> locationQuery = ParseQuery.getQuery("Location");
+			ParseGeoPoint point = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+			locationQuery.whereWithinMiles("geoPoint",  point, maxDistance);
+		
+			name.whereMatchesQuery("location", locationQuery);
+			description.whereMatchesQuery("location", locationQuery);
+		}
+			
 		queries.add(name);
 		queries.add(description);
 		ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
@@ -120,6 +118,23 @@ public class LocalEventParcel implements Parcelable {
 		 return events;
 	}
 	
+	/**
+	mSettings = getSharedPreferences("LetsGoSettings", 0);	
+	spEventType = (Spinner) findViewById(R.id.spEventType);
+
+	sbCost = (SeekBar) findViewById(R.id.sbCost);
+	tvCostValue = (TextView) findViewById(R.id.tvCostValue);		
 	
+	if (mSettings != null) {
+		String type = mSettings.getString("eventType", "missing");			
+		int cost = mSettings.getInt("cost",  0);
+		sbCost.setProgress(cost);
+		tvCostValue.setText(String.valueOf(cost));
+		etStartDate.setText(mSettings.getString("startDate", "7/18/2014"));
+		etStartTime.setText(mSettings.getString("startTime", "16:00"));
+		etEndDate.setText(mSettings.getString("endDate", "7/28/2014"));
+		etEndTime.setText(mSettings.getString("endTime", "20:00"));
+	}			
+	**/
 	
 }

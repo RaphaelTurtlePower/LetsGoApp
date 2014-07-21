@@ -21,7 +21,7 @@ import com.app.letsgo.models.LocalEventParcel;
 public class MapViewFragment extends Fragment implements OnBackStackChangedListener{
 
 	private BaseMapFragment mapFragment;
-	private ListFragment listFragment;
+	private CardListFragment listFragment;
 	private Handler mHandler = new Handler();
 	private boolean mShowingBack = false;
 	private Button toggle;
@@ -32,10 +32,9 @@ public class MapViewFragment extends Fragment implements OnBackStackChangedListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
       // Defines the xml file for the fragment
       View view = inflater.inflate(R.layout.fragment_map, container, false);
+      events = LocalEventParcel.search(null, getActivity(), null);
       
-      events = LocalEventParcel.getLocalEvents();
-      
-      listFragment = ListFragment.newInstance(events);
+      listFragment = CardListFragment.newInstance(events);
       mapFragment = BaseMapFragment.newInstance(events);
       
       if (savedInstanceState == null) {
@@ -60,7 +59,8 @@ public class MapViewFragment extends Fragment implements OnBackStackChangedListe
       });
       toggle.setText("List");  
       Log.d("debug", "MapViewFragment.onCreateView(): events = " + events.size());
-      return view;
+  
+    return view;
     }
 	
 	private void flipCard() {
@@ -71,7 +71,7 @@ public class MapViewFragment extends Fragment implements OnBackStackChangedListe
 			return;
 		}
 		mShowingBack = true;
-		listFragment = ListFragment.newInstance(events);
+		listFragment = CardListFragment.newInstance(events);
 		getChildFragmentManager()
 		.beginTransaction()
 		.setCustomAnimations(
@@ -100,7 +100,7 @@ public class MapViewFragment extends Fragment implements OnBackStackChangedListe
 		return mapFragment;
 	}
 	
-	public ListFragment getListFragment() {
+	public CardListFragment getListFragment() {
 		return listFragment;
 	}
 

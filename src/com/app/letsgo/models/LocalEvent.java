@@ -3,25 +3,18 @@ package com.app.letsgo.models;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import com.app.letsgo.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 @ParseClassName("LocalEvent")
@@ -31,7 +24,7 @@ public class LocalEvent extends ParseObject {
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
 	SimpleDateFormat sdf_time = new SimpleDateFormat("h:mm a");
 	
-	public String localEventId; //check this if objectId is null
+	public String localEventId;
 	
 	public LocalEvent() {
 		super();
@@ -178,25 +171,10 @@ public class LocalEvent extends ParseObject {
 		}
 		return descriptionText;
 	}
-	/**
-	mSettings = getSharedPreferences("LetsGoSettings", 0);	
-	spEventType = (Spinner) findViewById(R.id.spEventType);
-
-	sbCost = (SeekBar) findViewById(R.id.sbCost);
-	tvCostValue = (TextView) findViewById(R.id.tvCostValue);		
 	
-	if (mSettings != null) {
-		String type = mSettings.getString("eventType", "missing");			
-		int cost = mSettings.getInt("cost",  0);
-		sbCost.setProgress(cost);
-		tvCostValue.setText(String.valueOf(cost));
-		etStartDate.setText(mSettings.getString("startDate", "7/18/2014"));
-		etStartTime.setText(mSettings.getString("startTime", "16:00"));
-		etEndDate.setText(mSettings.getString("endDate", "7/28/2014"));
-		etEndTime.setText(mSettings.getString("endTime", "20:00"));
-	}			
-	*/
-	
+	public int getTypeImage(){
+		return R.id.action_calendar;
+	}
 
 }
 

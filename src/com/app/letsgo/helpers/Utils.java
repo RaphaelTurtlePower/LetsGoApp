@@ -18,9 +18,15 @@ import android.provider.CalendarContract.Events;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.letsgo.R;
 import com.app.letsgo.fragments.DatePickerFragment;
@@ -143,4 +149,19 @@ public class Utils {
 		newFragment.show(activity.getSupportFragmentManager(), "timePicker");	
 	}
 
+
+	public static void showValidationWarning(Activity view, String toastMsg) {
+		LayoutInflater inflater = view.getLayoutInflater();
+		View layout = inflater.inflate(R.layout.toast_layout,
+		                               (ViewGroup) view.findViewById(R.id.toast_layout_root));
+
+		TextView text = (TextView) layout.findViewById(R.id.text);
+		text.setText(toastMsg);
+
+		Toast toast = new Toast(view.getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.setView(layout);
+		toast.show();
+	}
 }

@@ -40,7 +40,7 @@ public class MapActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		
-		events = LocalEventParcel.getLocalEvents();		
+		// events = LocalEventParcel.getLocalEvents();		
 		setupNavDrawer(savedInstanceState);
 		Log.d("debug", "MapActivity.onCreate(): setupNavDrawer. ");
 	}
@@ -112,7 +112,8 @@ public class MapActivity extends ActionBarActivity {
 	
 	private void setNearByLocationInvisible() {
 		TextView tvNearBy = (TextView) findViewById(R.id.tvNearByLocation);		
-		tvNearBy.setVisibility(View.INVISIBLE);		
+		tvNearBy.setVisibility(View.INVISIBLE);	
+		Log.d("debug", "MapActivity.setNearByLocaitonInvisible...");
 	}
 		
 	/*

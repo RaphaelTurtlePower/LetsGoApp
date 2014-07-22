@@ -46,4 +46,3 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 	}
 
 }
-//minecraft is awesome

@@ -1,26 +1,27 @@
 package com.app.letsgo.activities;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.app.letsgo.R;
 import com.app.letsgo.adapters.PlacesAdapter;
-import com.app.letsgo.fragments.DatePickerFragment;
-import com.app.letsgo.fragments.TimePickerFragment;
 import com.app.letsgo.helpers.Utils;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
@@ -34,7 +35,8 @@ public class CreateEventActivity extends FragmentActivity {
 	EditText etEventName;
 	Spinner spEventType;
 	EditText etDescription;
-	EditText etCost;
+	SeekBar sbCost;
+	TextView tvCostValue;
 	EditText etStartDate;
 	EditText etStartTime;
 	EditText etEndDate;
@@ -57,7 +59,8 @@ public class CreateEventActivity extends FragmentActivity {
 		etEventName = (EditText) findViewById(R.id.etEventName);
 		spEventType = (Spinner) findViewById(R.id.spEventType);
 		etDescription = (EditText) findViewById(R.id.etDescription);
-		etCost = (EditText) findViewById(R.id.etCost);
+		sbCost = (SeekBar) findViewById(R.id.sbCost);
+		tvCostValue = (TextView) findViewById(R.id.tvCostValue);
 		etStartDate = (EditText) findViewById(R.id.etStartDate);
 		etStartTime = (EditText) findViewById(R.id.etStartTime);
 		etEndDate = (EditText) findViewById(R.id.etEndDate);
@@ -70,6 +73,8 @@ public class CreateEventActivity extends FragmentActivity {
 		Utils.setupEventType(this, spEventType);
 
 		setLocation();
+		setupCostListener();
+		// setupDatePickerListener(etStartDate);
 	}
 
 	/** 
@@ -80,7 +85,6 @@ public class CreateEventActivity extends FragmentActivity {
 		etLocation.setAdapter(adapter);
 
 		etLocation.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 				Place place = adapter.getPlace(position);
@@ -88,7 +92,7 @@ public class CreateEventActivity extends FragmentActivity {
 				geoAsyncTask.execute(place);
 				Log.d(Utils.LOG_TAG,  "CreateEvent.setLocation(): " + place.getAddress());
 			}
-		});
+		}); 
 	}
 
 	public static class GeoCodeAsyncTask extends AsyncTask<Place, Integer, Location> {
@@ -108,10 +112,27 @@ public class CreateEventActivity extends FragmentActivity {
 		return this;
 	}
 	
+	public void setupDatePickerListener(EditText etDate) {
+		etDate.setOnTouchListener(new OnTouchListener() {
+	        @Override
+	        public boolean onTouch(View v, MotionEvent event) {
+	            // show calendar date picker
+	            showStartDatePickerDialog(v);
+	            Log.d(Utils.LOG_TAG, "Inside On touch");
+	            return false;
+	        }
+	    });
+	}
+	
 	public void onCreateEvent(View v) {
 
+		// validation
+		if (Utils.isNull(etLocation)) {
+			Utils.showValidationWarning(this,  "Please enter event venue.");
+			return;
+		}
 		event = new LocalEvent();
-		// TODO: add validation later
+		
 		// for now all fields are set default values if the field is not entered
 		event.setEventName("party");
 		if (!Utils.isNull(etEventName)) {
@@ -122,11 +143,10 @@ public class CreateEventActivity extends FragmentActivity {
 			event.setEventType(spEventType.getSelectedItem().toString());
 		}
 
-		saveDates();
-
-		if (!Utils.isNull(etCost)) {
+		if (sbCost != null) {
 			try {
-				Double cost = Double.parseDouble(etCost.getText().toString());
+				Integer cost = sbCost.getProgress();
+				Log.d("debug", "saveEvent(): cost = " + cost);
 				event.setCost(cost);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
@@ -142,6 +162,7 @@ public class CreateEventActivity extends FragmentActivity {
 
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		event.setCreatedBy(currentUser);
+		saveDates();
 
 		if (geoAsyncTask != null) {
 			try {
@@ -152,8 +173,7 @@ public class CreateEventActivity extends FragmentActivity {
 			}
 		}
 
-		// TODO: default to 0 for now
-		event.setCost(0);  // default to free
+		// default values		
 		event.setUpCount(0);
 		event.setDownCount(0);
 		event.put("public", true); // default to public
@@ -164,18 +184,17 @@ public class CreateEventActivity extends FragmentActivity {
 				if(e == null){
 					Log.d("OBJECT_SAVE", "Event successfully saved.");
 					
-					Utils.addToCalendar(getContext(), 
+					/* Utils.addToCalendar(getContext(), 
 							etEventName.getText().toString(), 
 							etLocation.getText().toString(), 
 							etDescription.getText().toString(), 
 							etStartDate.getText().toString(), 
-							etEndDate.getText().toString()); 
+							etEndDate.getText().toString()); */
 					
-					Intent data = new Intent();
+					Intent data = new Intent(getContext(), EventDetailActivity.class);
 					LocalEventParcel parcel = new LocalEventParcel(event);
 					data.putExtra("event", parcel);
-					setResult(RESULT_OK, data);
-					finish();
+					startActivity(data);
 				} else {
 					Log.e("OBJECT NOT SAVED", "Event not successfully saved");
 				}				
@@ -209,20 +228,37 @@ public class CreateEventActivity extends FragmentActivity {
 		Utils.showTimePickerDialog(this, etEndTime, endDate);
 	} 
 
+	public void setupCostListener() {
+		sbCost.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				tvCostValue.setText(String.valueOf(progress));	
+			}
+		});
+	}
 	public void saveDates() {
-		event.setStartDate("7/18/14");
+		event.setStartDate("8/12/14");
 		if (!Utils.isNull(etStartDate)) {
 			event.setStartDate(etStartDate.getText().toString());
 		}
-		event.setStartTime("16:00");
+		event.setStartTime("4:00 PM");
 		if (!Utils.isNull(etStartTime)) {
 			event.setStartTime(etStartTime.getText().toString());
 		}
-		event.setEndDate("7/18/14");
+		event.setEndDate("8/18/14");
 		if (!Utils.isNull(etEndDate)) {
 			event.setEndDate(etEndDate.getText().toString());
 		}
-		event.setEndTime("22:00");
+		event.setEndTime("10:00 PM");
 		if (!Utils.isNull(etEndTime)) {
 			event.setEndTime(etEndTime.getText().toString());
 		}

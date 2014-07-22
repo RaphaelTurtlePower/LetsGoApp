@@ -35,7 +35,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class BaseMapFragment extends MapFragment implements OnMarkerClickListener {
 	private ArrayList<LocalEventParcel> events;
 	private HashMap<Marker, LocalEventParcel> markerMap = new HashMap<Marker, LocalEventParcel>();
-	// private LocationClient mLocationClient;
 	
 	public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
@@ -44,7 +43,7 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 		Bundle args = new Bundle();
 		args.putParcelableArrayList("events", events);
 		mapFragment.setArguments(args);
-		Log.d("debug", "MapFragment.newInstance(): events size = " + events.size());;
+		// Log.d("debug", "MapFragment.newInstance(): events size = " + events.size());;
 		return mapFragment;
 	}
 	
@@ -55,11 +54,10 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		// mLocationClient = new LocationClient(getActivity(), this, this);
 		
 		Bundle args = getArguments();
-		// Log.d("debug", "BaseMapFragment.onCreate(): args = " + args);
 		events = args.getParcelableArrayList("events");
+		Log.d("debug", "BaseMapFragment.onCreate(): events.size = " + events.size());
 		
 	}
 	@Override
@@ -79,7 +77,10 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 	}
 	
 	public void addEvent(LocalEvent event, Boolean updateCamera){
-		Marker mapMarker = getMap().addMarker( new MarkerOptions().position(event.getMapPosition()).icon(BitmapDescriptorFactory.fromResource(event.getMarkerType())));
+		Marker mapMarker = getMap().addMarker( 
+				new MarkerOptions().position(event.getMapPosition()).
+				icon(BitmapDescriptorFactory.fromResource(event.getMarkerType())));
+		
 		markerMap.put(mapMarker, new LocalEventParcel(event));
 		
 		getMap().setInfoWindowAdapter(new InfoWindowAdapter(){

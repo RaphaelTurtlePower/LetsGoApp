@@ -117,7 +117,7 @@ public class ActionBarActivity extends FragmentActivity implements
     protected void onStart() {
         super.onStart();
         // Connect the client
-        if (mCurrentLocation == null && isGooglePlayServicesAvailable()) {
+        if (isGooglePlayServicesAvailable()) {
         	mLocationClient.connect();
             Log.d("debug", "ActionBarActivity.onStart(): connecting...");
         }
@@ -329,7 +329,7 @@ public class ActionBarActivity extends FragmentActivity implements
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.actions, menu);
-		searchEvents(menu);
+		// searchEvents(menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -358,20 +358,6 @@ public class ActionBarActivity extends FragmentActivity implements
 			
 			public void setLocationText() {
 				Log.d("debug", "Location Text: " + nearByArea);
-				/*
-				// show a text box with current location info (only city, state)
-				TextView tvLocation = new TextView(getContext());
-				tvLocation.setTextSize(10);
-				tvLocation.setGravity(Gravity.TOP);
-				tvLocation.setText(nearByArea);
-
-				LinearLayout ll = new LinearLayout(getContext());
-				ll.setOrientation(LinearLayout.VERTICAL);
-				ll.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				ll.setGravity(Gravity.TOP);
-				ll.addView(tvLocation);
-				setContentView(ll);
-				*/
 			}
 		});		
 	}

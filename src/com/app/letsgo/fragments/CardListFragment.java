@@ -2,6 +2,7 @@ package com.app.letsgo.fragments;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.view.CardListView;
@@ -56,19 +57,27 @@ public class CardListFragment extends Fragment {
 		return myCards;
 	}
 	
-	public Card generateCard(LocalEvent e){
+	public Card generateCard(final LocalEvent e){
 		 // Create a Card
 		Card card = new Card(getActivity());
         // Create a CardHeader
         CardHeader header = new CardHeader(getActivity());
         // Add Header to card
+        CardExpand expand = new CardExpand(getActivity());
         header.setTitle(e.getEventName());
         card.setTitle(e.getLocation().getAddress());
         card.addCardHeader(header);
-
         CardThumbnail thumb = new CardThumbnail(getActivity());
         thumb.setDrawableResource(e.getTypeImage());
         card.addCardThumbnail(thumb);
+        card.setOnClickListener(new Card.OnCardClickListener() {
+			@Override
+			public void onClick(Card arg0, View arg1) {
+				Intent i = new Intent(getActivity(), EventDetailActivity.class);
+				i.putExtra("event", new LocalEventParcel(e));
+				startActivity(i);
+			}
+		});
         return card;
 	}
 	
@@ -103,20 +112,8 @@ public class CardListFragment extends Fragment {
 		 View view = inflater.inflate(R.layout.fragment_card_list, container, false);
 		 mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
 		 listView = (CardListView) view.findViewById(R.id.myList);
-		 
-			 listView.setAdapter(mCardArrayAdapter);
-		 	 listView.setOnItemClickListener(new OnItemClickListener() {
-	
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					LocalEventParcel event = itemList.get(position);
-					Intent i = new Intent(getActivity(), EventDetailActivity.class);
-					i.putExtra("event", event);
-					startActivity(i);
-				}
-		 	 });
-		
+		 listView.setAdapter(mCardArrayAdapter);
+		 	
 	 	 return view;
 	 }
 

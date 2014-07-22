@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.app.letsgo.R;
 import com.app.letsgo.fragments.BaseMapFragment;
-import com.app.letsgo.fragments.ListFragment;
+import com.app.letsgo.fragments.CardListFragment;
 import com.app.letsgo.fragments.LogoutFragment;
 import com.app.letsgo.fragments.MapViewFragment;
 import com.app.letsgo.fragments.NotificationFragment;
@@ -40,11 +40,10 @@ public class MapActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 		
-		// events = LocalEventParcel.getLocalEvents();		
 		setupNavDrawer(savedInstanceState);
 		Log.d("debug", "MapActivity.onCreate(): setupNavDrawer. ");
 	}
-	
+		
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean value = super.onCreateOptionsMenu(menu);
@@ -68,7 +67,7 @@ public class MapActivity extends ActionBarActivity {
 			@Override
 			public boolean onQueryTextSubmit(String query) {
             	Log.d("debug", "searchEvents(): query = " + query);
-            	events = LocalEventParcel.search(MapActivity.this, query);
+            	events = LocalEventParcel.search(mCurrentLocation, MapActivity.this, query);
             	if (mShowingBack) {
             		getListFragment().setList(events);
             	} else {            		
@@ -146,7 +145,7 @@ public class MapActivity extends ActionBarActivity {
 				MenuItem searchItem = menu.findItem(R.id.action_search);
 				SearchView sView = (SearchView) searchItem.getActionView();
 				String query = (String) sView.getQuery().toString();
-				events = LocalEventParcel.search(MapActivity.this, query);
+				events = LocalEventParcel.search(mCurrentLocation, MapActivity.this, query);
             	if (mShowingBack) {
             		getListFragment().setList(events);
             	} else {            		
@@ -163,6 +162,8 @@ public class MapActivity extends ActionBarActivity {
 		// setNearByLocation();
 		Log.d("debug", "MapActivity.OnConnected: " + mCurrentLocation);
 		getBaseMapFragment().setCurrentLocation(mCurrentLocation);
+		events = LocalEventParcel.search(mCurrentLocation, this, null);		
+		
 	}
 	
 	void setupNavDrawer(Bundle savedInstanceState) {        
@@ -223,7 +224,7 @@ public class MapActivity extends ActionBarActivity {
 		return getMapViewFragment().getBaseMapFragment();
 	}
 	
-	private ListFragment getListFragment() {
+	private CardListFragment getListFragment() {
 		return getMapViewFragment().getListFragment();
 	}
 	

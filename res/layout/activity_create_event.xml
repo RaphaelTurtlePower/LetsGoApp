@@ -83,7 +83,7 @@
        android:layout_alignLeft="@+id/etEventName"
        android:layout_below="@+id/llCost"
        android:layout_alignRight="@+id/etEventName"
-       android:lines="5"        
+       android:lines="2"        
        android:hint="Description (Optional)"
        android:inputType="textMultiLine" />
     
@@ -117,16 +117,6 @@
             android:text="Cancel" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/etCost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etDescription"
-        android:layout_below="@+id/etDescription"
-        android:ems="10"
-        android:hint="$"
-        android:inputType="numberDecimal" />
-
     <AutoCompleteTextView
         android:id="@+id/etLocation"
         android:layout_width="wrap_content"
@@ -145,6 +135,7 @@
         android:layout_alignLeft="@+id/spEventType"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/etLocation"
+        android:paddingTop="5dp"
         android:max="200"
         android:progress="1" />
 
@@ -152,7 +143,7 @@
     <LinearLayout
         android:id="@+id/llCost"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content"        
         android:layout_below="@+id/sbCost"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal" >

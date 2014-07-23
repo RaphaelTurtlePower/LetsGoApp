@@ -68,7 +68,9 @@ public class LocalEventParcel implements Parcelable {
 		SharedPreferences mSettings = activity.getSharedPreferences("LetsGoSettings", 0);
 		
 		//pull data from SharedPreferences and default values to the right
+
 		Double maxDistance = Double.valueOf(mSettings.getInt("max_distance", 500));
+
 		Double cost  = Double.valueOf(mSettings.getInt("cost", 1000000000));
 		
 		//Search criteria looking at the name

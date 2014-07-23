@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -80,6 +83,24 @@ public class LocalEvent extends ParseObject {
 
 	public ParseUser getCreatedBy() {
 		return getParseUser("createdBy");
+	}
+	
+	public String getCreatedByName(){
+		ParseUser user = getParseUser("createdBy");
+		if(user == null){
+			return "EventBrite";
+		}else{
+			if(user.get("profile") != null){
+				JSONObject profile = user.getJSONObject("profile");
+				try{
+					String name = (String) profile.get("name");
+					return name;
+				}catch(JSONException e){
+					e.printStackTrace();
+				}
+			}
+			return "";
+		}
 	}
 	
 	public void setCreatedBy(ParseUser createdBy) {
@@ -193,7 +214,7 @@ public class LocalEvent extends ParseObject {
         if (s.toLowerCase().startsWith("travel")) return R.drawable.ic_travel;
         if (s.toLowerCase().startsWith("family")) return R.drawable.ic_family;
 
-		return R.id.action_calendar;
+		return R.drawable.ic_family;
 	}
 
 }

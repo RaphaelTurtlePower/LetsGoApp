@@ -29,7 +29,6 @@ import com.app.letsgo.models.LocalEventParcel;
 
 public class MapActivity extends ActionBarActivity {
 
-	private boolean mShowingBack = false;
 	ArrayList<LocalEventParcel> events;
 	Menu menu;
 	private FragmentNavigationDrawer dlDrawer;
@@ -67,11 +66,7 @@ public class MapActivity extends ActionBarActivity {
 			public boolean onQueryTextSubmit(String query) {
             	Log.d("debug", "searchEvents(): query = " + query);
             	events = LocalEventParcel.search(mCurrentLocation, MapActivity.this, query);
-            	if (mShowingBack) {
-            		getListFragment().setList(events);
-            	} else {            		
-            		getBaseMapFragment().loadEvents(events);
-            	}
+            	getMapViewFragment().setEvents(events);
             	setNearByLocationInvisible();
             	return true;
 			}
@@ -133,11 +128,8 @@ public class MapActivity extends ActionBarActivity {
 			if(resultCode == Activity.RESULT_OK){
 				LocalEvent event = data.getParcelableExtra("event");
 				events.add(new LocalEventParcel(event));	//add local event
-				if (mShowingBack) {
-					getListFragment().addEvent(event);
-            	} else {            		
-            		getBaseMapFragment().addEvent(event, false);
-            	}
+				getMapViewFragment().addEvent(new LocalEventParcel(event));
+				
 			}
 			break;
 		case ActionBarActivity.SETTINGS_REQUEST_CODE:
@@ -147,11 +139,7 @@ public class MapActivity extends ActionBarActivity {
 				SearchView sView = (SearchView) searchItem.getActionView();
 				String query = (String) sView.getQuery().toString();
 				events = LocalEventParcel.search(mCurrentLocation, MapActivity.this, query);
-            	if (mShowingBack) {
-            		getListFragment().setList(events);
-            	} else {            		
-            		getBaseMapFragment().loadEvents(events);
-            	}
+            	getMapViewFragment().setEvents(events);
 			}
 			break;
 		}
@@ -175,7 +163,7 @@ public class MapActivity extends ActionBarActivity {
                      R.layout.drawer_nav_item, R.id.fragmentContainer);
 		
 		// Add nav items
-		dlDrawer.addNavItem("Local Events", "Local Event", MapViewFragment.class);
+		dlDrawer.addNavItem("Local Events", "Let's Go!", MapViewFragment.class);
 		// dlDrawer.addNavItem("New Event", "New Event", NewEventFragment.class);
 		dlDrawer.addNavItem("Settings", "Settings", SystemSettingFragment.class);
 		dlDrawer.addNavItem("Notifications", "Notifications", NotificationFragment.class);

@@ -65,8 +65,8 @@ public class SettingsActivity extends FragmentActivity {
 		sbCost = (SeekBar) findViewById(R.id.sbCost);
 		tvCostValue = (TextView) findViewById(R.id.tvCostValue);		
 		
-		sbDistance = (SeekBar) findViewById(R.id.sbDistance);
-		tvDistanceValue = (TextView) findViewById(R.id.tvDistanceValue);
+//		sbDistance = (SeekBar) findViewById(R.id.sbDistance);
+//		tvDistanceValue = (TextView) findViewById(R.id.tvDistanceValue);
 		
 		if (mSettings != null) {
 			int cost = mSettings.getInt("cost",  0);
@@ -76,15 +76,15 @@ public class SettingsActivity extends FragmentActivity {
 			etStartTime.setText(mSettings.getString("startTime", "16:00"));
 			etEndDate.setText(mSettings.getString("endDate", "7/28/2014"));
 			etEndTime.setText(mSettings.getString("endTime", "20:00"));
-			int max_distance = mSettings.getInt("max_distance", 50);
-			sbDistance.setProgress(max_distance);
+	//		int max_distance = mSettings.getInt("max_distance", 50);
+	//		sbDistance.setProgress(max_distance);
 
 		}				
 		setupCostListener();
-		setupDistanceListener();
+//		setupDistanceListener();
 		setupEventType();
 	}
-	
+/*
 	public void setupDistanceListener(){
 		sbDistance.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 
@@ -108,7 +108,7 @@ public class SettingsActivity extends FragmentActivity {
 			
 		});
 	}
-	
+	*/
 	public void setupCostListener() {
 		sbCost.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
@@ -143,7 +143,7 @@ public class SettingsActivity extends FragmentActivity {
 		editor.putString("startTime", etStartTime.getText().toString());
 		editor.putInt("cost", sbCost.getProgress());
 		editor.putInt("eventTypePos", spEventType.getSelectedItemPosition());
-		editor.putInt("max_distance", sbDistance.getProgress());
+	//	editor.putInt("max_distance", sbDistance.getProgress());
 		Log.d("debug", "SettingsActivity.onSave(): cost = " + sbCost.getProgress());
 		editor.commit();
 		Intent data = new Intent();

@@ -187,14 +187,7 @@ public class CreateEventActivity extends FragmentActivity {
 			public void done(ParseException e) {
 				if(e == null){
 					Log.d("OBJECT_SAVE", "Event successfully saved.");
-					
-					/* Utils.addToCalendar(getContext(), 
-							etEventName.getText().toString(), 
-							etLocation.getText().toString(), 
-							etDescription.getText().toString(), 
-							etStartDate.getText().toString(), 
-							etEndDate.getText().toString()); */
-					
+
 					Intent data = new Intent(getContext(), EventDetailActivity.class);
 					LocalEventParcel parcel = new LocalEventParcel(event);
 					data.putExtra("event", parcel);
@@ -205,7 +198,6 @@ public class CreateEventActivity extends FragmentActivity {
 			}			
 		});		
 	}
-
 
 	/**
 	 *  Returns t/o Map view when click on Cancel button

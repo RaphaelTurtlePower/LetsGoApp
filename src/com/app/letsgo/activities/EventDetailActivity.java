@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.app.letsgo.R;
 import com.app.letsgo.fragments.MiniMapFragment;
+import com.app.letsgo.helpers.Utils;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
 import com.parse.GetCallback;
@@ -146,8 +147,10 @@ public class EventDetailActivity extends Activity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		lp = (LocalEventParcel) getIntent().getExtras().getParcelable("event");
 		e = lp.getEvent();
-		setUpViews();
+		Log.d("debug", "EventDetail.onCreate(): setting up view...");
+		setUpViews();		
 		loadFieldsIntoView();
+		Log.d("debug", "EventDetail.onCreate(): fields are loaded...");
 		
 		final TextView tvUpCount = (TextView) findViewById(R.id.tvUpCount);
 		final TextView tvDownCount = (TextView) findViewById(R.id.tvDownCount);
@@ -172,15 +175,11 @@ public class EventDetailActivity extends Activity {
 							@Override
 							public void done(ParseException e) {
 								tvUpCount.setText(up.toString());
-							}
-							
-						});
-					
-					}
-					
+							}							
+						});					
+					}					
 				});
-			}
-			
+			}			
 		});
 		
 		ibimageDown.setOnClickListener(new OnClickListener(){
@@ -198,15 +197,11 @@ public class EventDetailActivity extends Activity {
 							@Override
 							public void done(ParseException e) {
 								tvDownCount.setText(down.toString());
-							}
-							
-						});
-					
-					}
-					
+							}							
+						});					
+					}					
 				});
-			}
-			
+			}			
 		});
 		
 		miniMapFragment = MiniMapFragment.newInstance(lp);
@@ -218,16 +213,25 @@ public class EventDetailActivity extends Activity {
 			getFragmentManager().executePendingTransactions();
 		}
 	}
-	
-	
-	
+		
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d("debug", "EventDetail.onOptionsItemSelected(): ");
+
 	    switch (item.getItemId()) {
 	        case android.R.id.home:
 	        	NavUtils.navigateUpFromSameTask(this);
 	            //this.finish();
 	            return true;
+	        case R.id.action_calendar:				
+	    		Log.d("debug", "EventDetail.onOptionsItemSelected(): do Calendar..." +
+	    				tvName + tvLocation + tvDescription + tvStart + tvEnd);
+				Utils.addToCalendar(this, 
+						tvName != null? tvName.getText().toString(): "", 
+						tvLocation != null? tvLocation.getText().toString(): "",
+						tvDescription != null? tvDescription.getText().toString(): "", 
+						tvStart != null? tvStart.getText().toString(): "", 
+						tvEnd != null? tvEnd.getText().toString(): ""); 
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }

@@ -162,11 +162,11 @@ public class LocalEvent extends ParseObject {
 	}
 	
 	public LatLng getMapPosition(){
-		if(getLocation() ==null){
-			return null;
+		if(getLocation() != null && getLocation().getGeoPoint() != null ){
+			LatLng mapPosition = new LatLng(getLocation().getGeoPoint().getLatitude(), getLocation().getGeoPoint().getLongitude());
+			return mapPosition;
 		}
-		LatLng mapPosition = new LatLng(getLocation().getGeoPoint().getLatitude(), getLocation().getGeoPoint().getLongitude());
-		return mapPosition;
+		return null;
 	}
 		
 	public static Address convertAddress(Context context, String address){

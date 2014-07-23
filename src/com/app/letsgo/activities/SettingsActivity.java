@@ -1,30 +1,20 @@
 package com.app.letsgo.activities;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.app.letsgo.R;
-import com.app.letsgo.fragments.DatePickerFragment;
-import com.app.letsgo.fragments.TimePickerFragment;
 import com.app.letsgo.helpers.Utils;
 import com.app.letsgo.models.LocalEvent;
 
@@ -72,10 +62,10 @@ public class SettingsActivity extends FragmentActivity {
 			int cost = mSettings.getInt("cost",  0);
 			sbCost.setProgress(cost);
 			tvCostValue.setText(String.valueOf(cost));
-			etStartDate.setText(mSettings.getString("startDate", "7/18/2014"));
-			etStartTime.setText(mSettings.getString("startTime", "16:00"));
-			etEndDate.setText(mSettings.getString("endDate", "7/28/2014"));
-			etEndTime.setText(mSettings.getString("endTime", "20:00"));
+			etStartDate.setText(mSettings.getString("startDate", "8/18/2014"));
+			etStartTime.setText(mSettings.getString("startTime", "4:00 PM"));
+			etEndDate.setText(mSettings.getString("endDate", "8/28/2014"));
+			etEndTime.setText(mSettings.getString("endTime", "10:00 PM"));
 	//		int max_distance = mSettings.getInt("max_distance", 50);
 	//		sbDistance.setProgress(max_distance);
 

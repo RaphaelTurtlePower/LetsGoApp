@@ -68,13 +68,13 @@ public class CardListFragment extends Fragment {
         card.addCardThumbnail(thumb);
         card.setCost("$" + e.getCost().toString());
         card.setStartDate(e.getStartDate());
-        String percentage = "100%";
+        String percentage = "Be the first to recommend!";
         int total = e.getUpCount().intValue() + e.getDownCount().intValue();
         if(total > 0){
-        	Integer p = e.getUpCount().intValue() / total;
-        	percentage = p.toString() + "%";
+        	Integer p = e.getUpCount().intValue() * 100 / total;
+        	percentage = p.toString() + "% Recommended";
         }
-        card.setPercentage(percentage + " Recommended");
+        card.setPercentage(percentage);
     /*    CardExpand ce = new CardExpand(getActivity());
         ce.setTitle(e.getItemShortDescription());
         card.addCardExpand(ce);

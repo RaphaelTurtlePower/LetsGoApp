@@ -57,14 +57,16 @@ public class MiniMapFragment extends MapFragment{
 				LocalEvent event = eventParcel.getEvent();
 				LayoutInflater mInflater = getActivity().getLayoutInflater();
 				View v = mInflater.inflate(R.layout.mini_map_item, null);
-				TextView title = (TextView) v.findViewById(R.id.mini_map_item_title);
-				title.setText(event.getEventName());
-				
+			
+
 				TextView street_address = (TextView) v.findViewById(R.id.mini_map_item_street);
 				street_address.setText(event.getLocation().getAddress());
-		
+	
+				/*	TextView title = (TextView) v.findViewById(R.id.mini_map_item_title);
+				title.setText(event.getEventName());
+					
 				TextView startDate = (TextView) v.findViewById(R.id.mini_map_item_startDate);
-				startDate.setText(event.getStartDate());
+				startDate.setText(event.getStartDate()); */
 				return v;
 			}
 

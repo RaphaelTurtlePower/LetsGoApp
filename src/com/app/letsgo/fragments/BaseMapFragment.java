@@ -99,7 +99,16 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 		
 				TextView startDate = (TextView) v.findViewById(R.id.map_item_startDate);
 				startDate.setText(event.getStartDate());
-				
+				TextView recommend = (TextView) v.findViewById(R.id.map_item_recommend);
+				String percentage = "Be the first to recommend!";
+		        int total = event.getUpCount().intValue() + event.getDownCount().intValue();
+		        if(total > 0){
+		        	Integer p = event.getUpCount().intValue() * 100 / total;
+		        	percentage = p.toString() + "% Recommended";
+		        }
+		        recommend.setText(percentage);
+				TextView cost = (TextView) v.findViewById(R.id.map_item_cost);
+		        cost.setText("$" + event.getCost());
 				return v;
 			}
 

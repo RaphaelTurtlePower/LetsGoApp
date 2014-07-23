@@ -68,7 +68,7 @@ public class CardListFragment extends Fragment {
         card.setTitle(e.getLocation().getAddress());
         card.addCardHeader(header);
         CardThumbnail thumb = new CardThumbnail(getActivity());
-        thumb.setDrawableResource(e.getTypeImage());
+        thumb.setDrawableResource(LocalEvent.getTypeImage(e.getEventType()));
         card.addCardThumbnail(thumb);
         card.setOnClickListener(new Card.OnCardClickListener() {
 			@Override

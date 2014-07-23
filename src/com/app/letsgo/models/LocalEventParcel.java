@@ -29,6 +29,7 @@ public class LocalEventParcel implements Parcelable {
 		String objectId = in.readString();
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("LocalEvent");
 		query.include("location");
+		query.include("createdBy");
 		try {
 			ev = (LocalEvent) query.get(objectId);
 		} catch (ParseException e) {
@@ -67,8 +68,8 @@ public class LocalEventParcel implements Parcelable {
 		SharedPreferences mSettings = activity.getSharedPreferences("LetsGoSettings", 0);
 		
 		//pull data from SharedPreferences and default values to the right
-		Double maxDistance = Double.valueOf(mSettings.getLong("max_distance", 50));
-		Double cost  = Double.valueOf(mSettings.getLong("cost", 1000000000));
+		Double maxDistance = Double.valueOf(mSettings.getInt("max_distance", 500));
+		Double cost  = Double.valueOf(mSettings.getInt("cost", 1000000000));
 		
 		//Search criteria looking at the name
 		ParseQuery<ParseObject> name = ParseQuery.getQuery("LocalEvent");
@@ -99,6 +100,7 @@ public class LocalEventParcel implements Parcelable {
 		queries.add(description);
 		ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
 		mainQuery.include("location");
+		mainQuery.include("createdBy");
 		List<ParseObject> objects;
 		HashSet<String> ids = new HashSet<String>();
 		try {

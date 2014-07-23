@@ -7,6 +7,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -106,7 +107,7 @@ public class EventDetailActivity extends Activity {
 		tvStart.setText(dateTimes);
 
 		//ParseUser u = e.getCreatedBy();
-		tvCreatedBy.setText("GET NAME FROM PARSE");
+		tvCreatedBy.setText(e.getCreatedByName());
 		String locn = e.getLocation().getAddress();
 		locn = locn.trim();
 		String charsToDrop = ", CA United States";
@@ -224,7 +225,8 @@ public class EventDetailActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	        case android.R.id.home:
-	            this.finish();
+	        	NavUtils.navigateUpFromSameTask(this);
+	            //this.finish();
 	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -248,4 +250,6 @@ public class EventDetailActivity extends Activity {
 	    mShareActionProvider.setShareIntent(myIntent);
 	    return super.onCreateOptionsMenu(menu);
 	}
+	
+	
 }

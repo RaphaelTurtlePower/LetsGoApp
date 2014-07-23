@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Lets Go!</string>
-    <string name="hello_world">LetsGo</string>
-    <string name="title_activity_map">Map</string>
+    <string name="app_name">Let\'s Go!</string>
+    <string name="hello_world">Let\'s Go!</string>
+    <string name="title_activity_map">Let\'s Go!</string>
     <string name="title_activity_event_detail">Event Details</string>
     <string name="fb_app_id">629002607207382</string>
     <string name="app_id">629002607207382</string>

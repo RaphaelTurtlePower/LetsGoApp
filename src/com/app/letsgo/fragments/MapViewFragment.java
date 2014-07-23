@@ -103,5 +103,22 @@ public class MapViewFragment extends Fragment implements OnBackStackChangedListe
 	public CardListFragment getListFragment() {
 		return listFragment;
 	}
-
+	
+	public void addEvent(LocalEventParcel event){
+		this.events.add(event);
+		if (mShowingBack) {
+			getListFragment().addEvent(event.getEvent());
+    	} else {            		
+    		getBaseMapFragment().addEvent(event.getEvent(), false);
+    	}
+	}
+	
+	public void setEvents(ArrayList<LocalEventParcel> events){
+		this.events = events;
+		if (mShowingBack) {
+			getListFragment().setList(events);
+    	} else {            		
+    		getBaseMapFragment().loadEvents(events);
+    	}
+	}
 }

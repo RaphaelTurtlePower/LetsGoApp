@@ -117,16 +117,6 @@
             android:text="Cancel" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/etCost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etDescription"
-        android:layout_below="@+id/etDescription"
-        android:ems="10"
-        android:hint="$"
-        android:inputType="numberDecimal" />
-
     <AutoCompleteTextView
         android:id="@+id/etLocation"
         android:layout_width="wrap_content"

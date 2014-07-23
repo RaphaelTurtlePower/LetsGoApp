@@ -53,6 +53,7 @@ public class FragmentNavigationDrawer extends DrawerLayout {
 			this.drawerContainerRes = drawerContainerRes; 
 			// Setup drawer list view and related adapter
 			lvDrawer = drawerListView;
+			lvDrawer.setBackgroundResource(R.drawable.abstractbkgrnd);
 			lvDrawer.setAdapter(drawerAdapter);
 			// Setup item listener
 			lvDrawer.setOnItemClickListener(new FragmentDrawerItemListener());

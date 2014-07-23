@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
@@ -56,18 +57,22 @@ public class EventDetailActivity extends Activity {
     private TextView tvCreatedBy;
     private TextView tvLocation;
     private TextView tvCost;
+    private TextView tvUpCount;
+    private TextView tvDownCount;
     private TextView tvDescription;
+    private ImageView ivTypeIcon;
     private ImageButton ibimageUp;
     private ImageButton ibimageDown;
     private Button bInvite;
 
 	private void setUpViews() {
+		ivTypeIcon = (ImageView) findViewById(R.id.ivTypeIcon);
 		tvName = (TextView) findViewById(R.id.tvName);
-		tvType = (TextView) findViewById(R.id.tvType);
+	//	tvType = (TextView) findViewById(R.id.tvType);
 		tvStart = (TextView) findViewById(R.id.tvStart);
-		tvEnd = (TextView) findViewById(R.id.tvEnd);
+		//  tvEnd = (TextView) findViewById(R.id.tvEnd);
 		tvCreatedBy = (TextView) findViewById(R.id.tvCreatedBy);
-		tvLocation = (TextView) findViewById(R.id.tvLocation);
+		//tvLocation = (TextView) findViewById(R.id.tvLocation);
 		tvCost = (TextView) findViewById(R.id.tvCost);
 		tvDescription = (TextView) findViewById(R.id.tvDescription);
 		ibimageUp = (ImageButton) findViewById(R.id.imageUp);
@@ -79,18 +84,43 @@ public class EventDetailActivity extends Activity {
 
 	private void loadFieldsIntoView() {
 		tvName.setText(e.getEventName());
-		tvType.setText(e.getEventType());
-		tvStart.setText(e.getStartDate()+ " " + e.getStartTime());
-		tvEnd.setText(e.getEndDate()+ " " + e.getEndTime());
-		ParseUser u = e.getCreatedBy();
-		tvCreatedBy.setText("put parse user");
+		String dateTimes = e.getStartDate()+ " " + e.getStartTime();
+		String startDate = e.getStartDate();
+		String tmp = e.getEndDate();
+		String endDate = "";
+		endTime="";
+		if (tmp!=null && tmp!="" && !tmp.equals(dateTimes)) {
+			// only add an end date if it differs from start date
+			endDate =tmp;
+		}
+//		tmp = e.getEndTime();
+//		if (tmp!=null && tmp!="") {
+//			// add end time if present
+//			endTime = tmp;
+//		}
+//		
+//		if (endDate!="" || endTime !="") {
+//			dateTimes = dateTimes + " - " + endDate + " "+ endTime;
+//		}
+//  TODO format date/time better and add end date/time
+		tvStart.setText(dateTimes);
+
+		//ParseUser u = e.getCreatedBy();
+		tvCreatedBy.setText("GET NAME FROM PARSE");
 		String locn = e.getLocation().getAddress();
-		tvLocation.setText(locn);
+		locn = locn.trim();
+		String charsToDrop = ", CA United States";
+		if (locn.endsWith(charsToDrop)) {
+			locn = locn.substring(0, locn.indexOf(charsToDrop));
+		}
 		Number n = e.getCost();
 		String cost =  df.format(e.getCost().floatValue());
 		tvCost.setText("$"+cost);
 		tvDescription.setText(e.getDescription());
-	
+		
+		int iconResourceId = LocalEvent.getTypeImage(e.getEventType());
+		Log.d("letsgo", "eventType="+e.getEventType() +", resId="+iconResourceId);
+		ivTypeIcon.setImageResource(iconResourceId);
 	}	
 
 	public void onClick(View v) {
@@ -118,8 +148,8 @@ public class EventDetailActivity extends Activity {
 		setUpViews();
 		loadFieldsIntoView();
 		
-		final TextView tvUpCount = (TextView) findViewById(R.id.txtUpCount);
-		final TextView tvDownCount = (TextView) findViewById(R.id.txtDownCount);
+		final TextView tvUpCount = (TextView) findViewById(R.id.tvUpCount);
+		final TextView tvDownCount = (TextView) findViewById(R.id.tvDownCount);
 		Number n = (e.getUpCount() == null) ? 0 : e.getUpCount();
 		tvUpCount.setText(n.toString());
 		n = (e.getDownCount() == null) ? 0 : e.getDownCount();

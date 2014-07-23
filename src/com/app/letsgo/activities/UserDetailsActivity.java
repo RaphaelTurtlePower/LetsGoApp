@@ -46,11 +46,6 @@ public class UserDetailsActivity extends Activity {
 
 		userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
 		userNameView = (TextView) findViewById(R.id.userName);
-		userLocationView = (TextView) findViewById(R.id.userLocation);
-		userGenderView = (TextView) findViewById(R.id.userGender);
-		userDateOfBirthView = (TextView) findViewById(R.id.userDateOfBirth);
-		userRelationshipView = (TextView) findViewById(R.id.userRelationship);
-
 		logoutButton = (Button) findViewById(R.id.logoutButton);
 		logoutButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -208,33 +203,7 @@ public class UserDetailsActivity extends Activity {
 				} else {
 					userNameView.setText("");
 				}
-				userLocationView.setText("");
-				userGenderView.setText("");
-				userDateOfBirthView.setText("");
-				userRelationshipView.setText("");
 
-//				if (userProfile.getString("location") != null) {
-//					userLocationView.setText(userProfile.getString("location"));
-//				} else {
-//					userLocationView.setText("");
-//				}
-//				if (userProfile.getString("gender") != null) {
-//					userGenderView.setText(userProfile.getString("gender"));
-//				} else {
-//					userGenderView.setText("");
-//				}
-//				if (userProfile.getString("birthday") != null) {
-//					userDateOfBirthView.setText(userProfile
-//							.getString("birthday"));
-//				} else {
-//					userDateOfBirthView.setText("");
-//				}
-//				if (userProfile.getString("relationship_status") != null) {
-//					userRelationshipView.setText(userProfile
-//							.getString("relationship_status"));
-//				} else {
-//					userRelationshipView.setText("");
-//				}
 			} catch (JSONException e) {
 				Log.d(LetsGoApplication.TAG,
 						"Error parsing in uVwithP in UserDetailsActivity. Excpn e="

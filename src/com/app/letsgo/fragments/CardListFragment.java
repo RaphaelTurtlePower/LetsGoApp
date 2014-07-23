@@ -8,22 +8,19 @@ import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.view.CardListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 import com.app.letsgo.R;
 import com.app.letsgo.activities.EventDetailActivity;
-import com.app.letsgo.adapters.ListEventsAdapter;
+import com.app.letsgo.models.EventCard;
 import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
 
@@ -50,26 +47,39 @@ public class CardListFragment extends Fragment {
 		}
 		for(int i=0; i<events.size(); i++){
 			LocalEvent e = events.get(i).getEvent();
-			Card card = generateCard(e);
+			EventCard card = generateCard(e);
             myCards.add(card);
 		}
 		
 		return myCards;
 	}
 	
-	public Card generateCard(final LocalEvent e){
+	public EventCard generateCard(final LocalEvent e){
 		 // Create a Card
-		Card card = new Card(getActivity());
+		EventCard card = new EventCard(getActivity());
         // Create a CardHeader
         CardHeader header = new CardHeader(getActivity());
         // Add Header to card
-        CardExpand expand = new CardExpand(getActivity());
         header.setTitle(e.getEventName());
-        card.setTitle(e.getLocation().getAddress());
+        card.setAddress(e.getLocation().getAddress());
         card.addCardHeader(header);
         CardThumbnail thumb = new CardThumbnail(getActivity());
         thumb.setDrawableResource(LocalEvent.getTypeImage(e.getEventType()));
         card.addCardThumbnail(thumb);
+        card.setCost("$" + e.getCost().toString());
+        card.setStartDate(e.getStartDate());
+        String percentage = "100%";
+        int total = e.getUpCount().intValue() + e.getDownCount().intValue();
+        if(total > 0){
+        	Integer p = e.getUpCount().intValue() / total;
+        	percentage = p.toString() + "%";
+        }
+        card.setPercentage(percentage + " Recommended");
+    /*    CardExpand ce = new CardExpand(getActivity());
+        ce.setTitle(e.getItemShortDescription());
+        card.addCardExpand(ce);
+        card.setExpanded(true); */
+        
         card.setOnClickListener(new Card.OnCardClickListener() {
 			@Override
 			public void onClick(Card arg0, View arg1) {

@@ -47,7 +47,7 @@ public class CreateEventActivity extends FragmentActivity {
 	AutoCompleteTextView etLocation;
 	GeoCodeAsyncTask geoAsyncTask;
 	LocalEvent event;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -127,10 +127,14 @@ public class CreateEventActivity extends FragmentActivity {
 	public void onCreateEvent(View v) {
 
 		// validation
+		/*if (!passedValidation()) {
+			return;
+		}*/
 		if (Utils.isNull(etLocation)) {
-			Utils.showValidationWarning(this,  "Please enter event venue.");
+			Utils.showValidationWarning(this, "Please enter event venue.");
 			return;
 		}
+		
 		event = new LocalEvent();
 		
 		// for now all fields are set default values if the field is not entered
@@ -264,5 +268,33 @@ public class CreateEventActivity extends FragmentActivity {
 		}
 	}
 
+	boolean passedValidation() {
+		StringBuilder toastMsg = new StringBuilder("Please enter event");
+		int validationBits = 0;
+		// eventType X10000, eventName X01000, startDate X00100, startTime X00010, locaiton X00001
+		if (Utils.isNull(etEventName)) {
+			validationBits |= 16; // 0b10000
+		}
+		if (Utils.isNull(etStartDate)) {
+			validationBits |= 4; //0b00100;
+		}
+		if (Utils.isNull(etLocation)) {
+			validationBits |= 1; //0b00100;
+		}
+		
+		if (validationBits > 0) {
+			switch (validationBits) {
+			case 1: // 0x00001:
+				toastMsg.append(" venue").toString();
+			case 4: // 0x00100
+				toastMsg.append(" start date").toString();
+			case 16: // 0x10000
+				toastMsg.append(" name").toString();
+			}
+			Utils.showValidationWarning(this, toastMsg.append(".").toString());
+			return false;
+		}
+		return true;	
+	}
 
 }

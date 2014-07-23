@@ -6,13 +6,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
@@ -103,15 +102,17 @@ public class MapActivity extends ActionBarActivity {
 	}
 	
 	private void setNearByLocationVisible() {
+		LinearLayout llNearBy = (LinearLayout) findViewById(R.id.llNearBy);
 		TextView tvNearBy = (TextView) findViewById(R.id.tvNearByLocation);
 		
 		tvNearBy.setText(nearByArea);
-		tvNearBy.setVisibility(View.VISIBLE);		
+		llNearBy.setVisibility(View.VISIBLE);		
 	}
 	
 	private void setNearByLocationInvisible() {
+		LinearLayout llNearBy = (LinearLayout) findViewById(R.id.llNearBy);
 		TextView tvNearBy = (TextView) findViewById(R.id.tvNearByLocation);		
-		tvNearBy.setVisibility(View.INVISIBLE);	
+		llNearBy.setVisibility(View.INVISIBLE);	
 		Log.d("debug", "MapActivity.setNearByLocaitonInvisible...");
 	}
 		

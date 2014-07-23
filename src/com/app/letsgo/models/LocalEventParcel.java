@@ -68,7 +68,7 @@ public class LocalEventParcel implements Parcelable {
 		
 		//pull data from SharedPreferences and default values to the right
 		Double maxDistance = Double.valueOf(mSettings.getLong("max_distance", 50));
-		Double cost  = Double.valueOf(mSettings.getLong("cost", 1000000000));
+		Double cost  = Double.valueOf(mSettings.getInt("cost", 1000000000));
 		
 		//Search criteria looking at the name
 		ParseQuery<ParseObject> name = ParseQuery.getQuery("LocalEvent");

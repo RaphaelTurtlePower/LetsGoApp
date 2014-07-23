@@ -5,9 +5,9 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:padding="8dp"
-              android:background="#DAAA"
+              android:background="#111212"
               >
-    <ImageView android:src="@drawable/ic_drawer"
+    <ImageView android:src="@drawable/ic_validation_error"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_marginRight="8dp"
@@ -16,5 +16,6 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textColor="#FFF"
+              android:text="validation message"
               />
 </LinearLayout>

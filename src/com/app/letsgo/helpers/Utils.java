@@ -159,7 +159,7 @@ public class Utils {
 		text.setText(toastMsg);
 
 		Toast toast = new Toast(view.getApplicationContext());
-		toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		toast.setGravity(Gravity.TOP, 0, 0);    //CENTER_VERTICAL
 		toast.setDuration(Toast.LENGTH_LONG);
 		toast.setView(layout);
 		toast.show();

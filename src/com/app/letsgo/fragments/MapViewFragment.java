@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.app.letsgo.R;
-import com.app.letsgo.models.LocalEvent;
 import com.app.letsgo.models.LocalEventParcel;
 
 public class MapViewFragment extends Fragment implements OnBackStackChangedListener{

@@ -75,16 +75,18 @@
         android:inputType="time"
         android:onClick="showEndTimePickerDialog" />
 
-    <EditText
-        android:id="@+id/etDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etEventName"
-        android:layout_alignRight="@+id/etEventName"
-        android:layout_below="@+id/etLocation"
-        android:hint="Description"
-        android:inputType="textMultiLine" />
 
+   <EditText
+       android:id="@+id/etDescription"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignLeft="@+id/etEventName"
+       android:layout_below="@+id/llCost"
+       android:layout_alignRight="@+id/etEventName"
+       android:lines="5"        
+       android:hint="Description (Optional)"
+       android:inputType="textMultiLine" />
+    
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -131,8 +133,43 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/etEventName"
         android:layout_alignRight="@+id/etEventName"
-        android:layout_below="@+id/etEndDate"
+        android:layout_below="@+id/etEndDate"        
         android:ems="10"
         android:hint="Venue" />
 
+     
+   <SeekBar
+        android:id="@+id/sbCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spEventType"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/etLocation"
+        android:max="200"
+        android:progress="1" />
+
+
+    <LinearLayout
+        android:id="@+id/llCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sbCost"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+       	<TextView
+        android:id="@+id/tvCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:text="Cost: $ " />
+        
+        <TextView
+            android:id="@+id/tvCostValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"            
+            android:text="0" />
+    </LinearLayout>
+
+    
 </RelativeLayout>
+

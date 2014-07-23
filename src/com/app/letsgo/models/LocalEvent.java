@@ -175,6 +175,26 @@ public class LocalEvent extends ParseObject {
 	public int getTypeImage(){
 		return R.id.action_calendar;
 	}
+	
+	static public int getTypeImage(String s){
+		// accepts a String that contains an event type
+		// returns an R.id of the icon for that event type.  
+		// types are from res/values/arrays.xml, and are:
+		//   Music, Food, Performing, Business, Film, Sports,
+		//   Community, Health, Science, Travel, Family
+        if (s.toLowerCase().startsWith("music")) return R.drawable.ic_music;
+        if (s.toLowerCase().startsWith("food")) return R.drawable.ic_food;
+        if (s.toLowerCase().startsWith("performing")) return R.drawable.ic_performing;
+        if (s.toLowerCase().startsWith("business")) return R.drawable.ic_business;
+        if (s.toLowerCase().startsWith("film")) return R.drawable.ic_film;
+        if (s.toLowerCase().startsWith("sports")) return R.drawable.ic_sports;
+        if (s.toLowerCase().startsWith("community")) return R.drawable.ic_community;
+        if (s.toLowerCase().startsWith("science")) return R.drawable.ic_science;
+        if (s.toLowerCase().startsWith("travel")) return R.drawable.ic_travel;
+        if (s.toLowerCase().startsWith("family")) return R.drawable.ic_family;
+
+		return R.id.action_calendar;
+	}
 
 }
 

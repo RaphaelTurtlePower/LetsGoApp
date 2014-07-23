@@ -77,4 +77,19 @@
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Androiddemov2</item>
     </style>
 
+    <style name="TextRegular">
+        <item name="android:textColor">#848484</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    
+    <style name="TextSubHead">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        
+    </style>
+        <style name="TextHead">
+        <item name="android:textColor">#FF5A5F</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    
 </resources>

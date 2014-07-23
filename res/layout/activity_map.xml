@@ -34,7 +34,6 @@
 	        android:layout_alignParentRight="true"
 	        android:textColor="#FFFFFF"
 	        android:textStyle="bold"     
-	        android:background="#79000000"
 	        android:text="Toggle" />
 	    
 </RelativeLayout>	    

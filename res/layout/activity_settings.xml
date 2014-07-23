@@ -56,87 +56,62 @@
         android:inputType="time"
         android:onClick="showEndTimePickerDialog" />
 
-    <TextView
-        android:id="@+id/tvCostValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etEndDate"
-        android:layout_marginTop="30dp"
-        android:layout_toRightOf="@+id/tvCost"
-        android:ems="3"
-        android:text="0" />
-
     <SeekBar
         android:id="@+id/sbCost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spEventType"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/etEndDate"
-        android:layout_toRightOf="@+id/tvCostValue"
-        android:layout_alignRight="@+id/spEventType"
-        android:layout_marginTop="30dp"
         android:max="200"
         android:progress="1" />
-    
-        <SeekBar
-            android:id="@+id/sbDistance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/sbCost"
-            android:layout_alignRight="@+id/spEventType"
-            android:layout_below="@+id/tvCostValue"
-            android:layout_marginTop="30dp"
-            android:max="300"
-            android:progress="1" />
 
-    <Button
-        android:id="@+id/btnSave"
+
+    <LinearLayout
+        android:id="@+id/llCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sbDistance"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="80dp"
-        android:layout_toRightOf="@+id/btnCancel"
-        android:onClick="saveSettings"
-        android:text="Save" />
+        android:layout_below="@+id/sbCost"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
 
+       	<TextView
+        android:id="@+id/tvCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:text="Cost: $ " />
+        
+        <TextView
+            android:id="@+id/tvCostValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"            
+            android:text="0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llCost"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+        
     <Button
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sbDistance"
-        android:layout_marginTop="80dp"
-        android:layout_alignLeft="@+id/tvCostValue"
+        android:layout_marginRight="15dp"
         android:onClick="cancelSettings"
         android:text="Cancel" />
 
-    <TextView
-        android:id="@+id/tvCost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etEndDate"
-        android:layout_marginTop="30dp"
-        android:layout_alignLeft="@+id/spEventType"
-        android:ems="2"
-        android:text="$$ " />
 
-    <TextView
-        android:id="@+id/tvDistanceValue"
+    <Button
+        android:id="@+id/btnSave"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/tvDistance"
-        android:textAlignment="textEnd"      
-         android:ems="3"
-        android:text="0" />
-
-    <TextView
-        android:id="@+id/tvDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvDistanceValue"
-        android:layout_alignBottom="@+id/tvDistanceValue"
-        android:layout_toLeftOf="@+id/tvCostValue"
-        android:ems="2"
-        android:text="Distance:" />
-
+        android:layout_height="wrap_content"                
+        android:onClick="saveSettings"
+        android:text="Save" />
+    </LinearLayout>
+    
 </RelativeLayout>

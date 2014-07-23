@@ -43,10 +43,7 @@ public class MapActivity extends ActionBarActivity {
 		setupNavDrawer(savedInstanceState);
 		Log.d("debug", "MapActivity.onCreate(): setupNavDrawer. ");
 	}
-	
-	
-	
-	
+		
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean value = super.onCreateOptionsMenu(menu);
@@ -114,7 +111,8 @@ public class MapActivity extends ActionBarActivity {
 	
 	private void setNearByLocationInvisible() {
 		TextView tvNearBy = (TextView) findViewById(R.id.tvNearByLocation);		
-		tvNearBy.setVisibility(View.INVISIBLE);		
+		tvNearBy.setVisibility(View.INVISIBLE);	
+		Log.d("debug", "MapActivity.setNearByLocaitonInvisible...");
 	}
 		
 	/*

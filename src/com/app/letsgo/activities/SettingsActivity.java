@@ -69,7 +69,6 @@ public class SettingsActivity extends FragmentActivity {
 		tvDistanceValue = (TextView) findViewById(R.id.tvDistanceValue);
 		
 		if (mSettings != null) {
-			String type = mSettings.getString("eventType", "missing");			
 			int cost = mSettings.getInt("cost",  0);
 			sbCost.setProgress(cost);
 			tvCostValue.setText(String.valueOf(cost));
@@ -79,6 +78,7 @@ public class SettingsActivity extends FragmentActivity {
 			etEndTime.setText(mSettings.getString("endTime", "20:00"));
 			int max_distance = mSettings.getInt("max_distance", 50);
 			sbDistance.setProgress(max_distance);
+
 		}				
 		setupCostListener();
 		setupDistanceListener();
@@ -173,19 +173,19 @@ public class SettingsActivity extends FragmentActivity {
 	} 
 
 	public void saveDates(LocalEvent event) {
-		event.setStartDate("7/18/14");
+		event.setStartDate("8/18/14");
 		if (!Utils.isNull(etStartDate)) {
 			event.setStartDate(etStartDate.getText().toString());
 		}
-		event.setStartTime("16:00");
+		event.setStartTime("4:00 PM");
 		if (!Utils.isNull(etStartTime)) {
 			event.setStartTime(etStartTime.getText().toString());
 		}
-		event.setEndDate("7/18/14");
+		event.setEndDate("8/18/14");
 		if (!Utils.isNull(etEndDate)) {
 			event.setEndDate(etEndDate.getText().toString());
 		}
-		event.setEndTime("22:00");
+		event.setEndTime("10:00 PM");
 		if (!Utils.isNull(etEndTime)) {
 			event.setEndTime(etEndTime.getText().toString());
 		}

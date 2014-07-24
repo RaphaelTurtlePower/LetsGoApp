@@ -92,4 +92,11 @@
         <item name="android:textSize">24sp</item>
     </style>
     
+	<style name="PrefDialogTheme" parent="android:Theme.DeviceDefault.Dialog">
+            <item name="android:background">"@color/offwhite</item>
+	</style>
+	
+	<color name=“white”>#FFFFFF</color>
+	<color name=“offwhite”>#F3F4F2</color>
+ 	<color name=“orangered”>#FF5A5F</color>
 </resources>

@@ -86,35 +86,47 @@ public class EventDetailActivity extends Activity {
 
 	private void loadFieldsIntoView() {
 		tvName.setText(e.getEventName());
-		String dateTimes = e.getStartDate()+ " " + e.getStartTime();
-		String startDate = e.getStartDate();
-		String tmp = e.getEndDate();
-		String endDate = "";
-		endTime="";
-		if (tmp!=null && tmp!="" && !tmp.equals(dateTimes)) {
-			// only add an end date if it differs from start date
-			endDate =tmp;
+		String startDate = e.getStartDate();	
+		String dateTimes = startDate;
+		String startTime = e.getStartTime();
+		if (startTime!=null && startTime!="") {
+			// we have a start time, so add it.
+			dateTimes = dateTimes + ", " + startTime;
 		}
-//		tmp = e.getEndTime();
-//		if (tmp!=null && tmp!="") {
-//			// add end time if present
-//			endTime = tmp;
-//		}
-//		
-//		if (endDate!="" || endTime !="") {
-//			dateTimes = dateTimes + " - " + endDate + " "+ endTime;
-//		}
-//  TODO format date/time better and add end date/time
+
+		boolean addedEndDate=false;
+		String endDate = e.getEndDate();
+		if (endDate!=null && endDate!="") {
+			// we have an end Date 
+			if (!endDate.equals(startDate)) {
+				// only append the end date if it differs from start
+				dateTimes = dateTimes + " to " + endDate;
+				addedEndDate = true;
+			}
+		}
+
+		endTime = e.getEndTime();
+		if (endTime!=null && endTime!="") {
+			// we have an end time
+			if (addedEndDate) {
+				// if we added end date, then string looks like
+				//  "Jul 23 2014, 8:15pm to Jul 25 2014"
+				// so add ", end time"
+				dateTimes = dateTimes + ", " + endTime;
+			} else {
+				dateTimes = dateTimes + " to " + endTime;
+			}
+		}
 		tvStart.setText(dateTimes);
 
-		//ParseUser u = e.getCreatedBy();
 		tvCreatedBy.setText(e.getCreatedByName());
-		String locn = e.getLocation().getAddress();
-		locn = locn.trim();
-		String charsToDrop = ", CA United States";
-		if (locn.endsWith(charsToDrop)) {
-			locn = locn.substring(0, locn.indexOf(charsToDrop));
-		}
+// no longer duplicating address in details (already shown on map flag)
+//		String locn = e.getLocation().getAddress();
+//		locn = locn.trim();
+//		String charsToDrop = ", CA United States";
+//		if (locn.endsWith(charsToDrop)) {
+//			locn = locn.substring(0, locn.indexOf(charsToDrop));
+//		}
 		Number n = e.getCost();
 		String cost =  df.format(e.getCost().floatValue());
 		tvCost.setText("$"+cost);

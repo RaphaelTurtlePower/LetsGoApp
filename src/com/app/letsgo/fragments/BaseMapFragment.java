@@ -77,10 +77,11 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 	}
 	
 	public void addEvent(LocalEvent event, Boolean updateCamera){
+		
 		Marker mapMarker = getMap().addMarker( 
 				new MarkerOptions().position(event.getMapPosition()).
-				icon(BitmapDescriptorFactory.fromResource(event.getMarkerType())));
-		
+					icon(BitmapDescriptorFactory.fromResource(event.getMarkerType())));
+
 		markerMap.put(mapMarker, new LocalEventParcel(event));
 		
 		getMap().setInfoWindowAdapter(new InfoWindowAdapter(){

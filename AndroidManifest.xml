@@ -80,7 +80,7 @@
         <activity
             android:name="com.app.letsgo.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/PrefDialogTheme" >
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.MinWidth" >
         </activity>
     </application>
 

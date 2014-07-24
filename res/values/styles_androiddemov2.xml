@@ -93,7 +93,7 @@
     </style>
     
 	<style name="PrefDialogTheme" parent="android:Theme.DeviceDefault.Dialog">
-            <item name="android:background">"@color/offwhite</item>
+            <item name="android:background">"@color/offwhite"</item>
 	</style>
 	
 	<color name=“white”>#FFFFFF</color>

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.support.v4.app.DialogFragment;
@@ -20,9 +21,12 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -164,4 +168,28 @@ public class Utils {
 		toast.setView(layout);
 		toast.show();
 	}
+	
+	public static void handleButtonPress(Button button) {
+		button.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN: {
+					v.getBackground().setColorFilter(0x521F1D, PorterDuff.Mode.SRC_ATOP);
+					v.invalidate();
+					break;
+				}
+				case MotionEvent.ACTION_UP: {
+					v.getBackground().clearColorFilter();
+					v.invalidate();
+					break;
+				}
+				}
+				return false;
+
+			}
+		});
+	}
+
 }

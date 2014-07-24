@@ -4,6 +4,7 @@ import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,7 @@ import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -65,6 +67,8 @@ public class CreateEventActivity extends FragmentActivity {
 		etStartTime = (EditText) findViewById(R.id.etStartTime);
 		etEndDate = (EditText) findViewById(R.id.etEndDate);
 		etEndTime = (EditText) findViewById(R.id.etEndTime);
+		Button createButton = (Button) findViewById(R.id.btnCreate);
+		Button cancelButton = (Button) findViewById(R.id.btnCancel);
 
 		startDate = new GregorianCalendar();
 		endDate = new GregorianCalendar();	   	
@@ -74,6 +78,8 @@ public class CreateEventActivity extends FragmentActivity {
 
 		setLocation();
 		setupCostListener();
+		// Utils.handleButtonPress(createButton);
+		// Utils.handleButtonPress(cancelButton);
 		// setupDatePickerListener(etStartDate);
 	}
 
@@ -192,6 +198,7 @@ public class CreateEventActivity extends FragmentActivity {
 					LocalEventParcel parcel = new LocalEventParcel(event);
 					data.putExtra("event", parcel);
 					startActivity(data);
+					// overridePendingTransition(R.animator.create_left_out, R.animator.create_right_in);
 				} else {
 					Log.e("OBJECT NOT SAVED", "Event not successfully saved");
 				}				

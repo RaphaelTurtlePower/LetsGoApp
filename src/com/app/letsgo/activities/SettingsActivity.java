@@ -25,9 +25,8 @@ public class SettingsActivity extends FragmentActivity {
 	
 	TextView tvDistanceValue;
 	SeekBar sbDistance;
-	SeekBar sbCost;
-	TextView tvCostValue;
-	
+	TextView tvRadius;
+	EditText etCost;	
 	EditText etStartDate;
 	EditText etStartTime;
 	EditText etEndDate;
@@ -52,55 +51,30 @@ public class SettingsActivity extends FragmentActivity {
 		mSettings = getSharedPreferences("LetsGoSettings", 0);	
 		spEventType = (Spinner) findViewById(R.id.spEventType);
 
-		sbCost = (SeekBar) findViewById(R.id.sbCost);
-		tvCostValue = (TextView) findViewById(R.id.tvCostValue);		
+		etCost = (EditText) findViewById(R.id.etCost);
+		// sbCost = (SeekBar) findViewById(R.id.sbCost);
+		// tvCostValue = (TextView) findViewById(R.id.tvCostValue);		
 		
-//		sbDistance = (SeekBar) findViewById(R.id.sbDistance);
-//		tvDistanceValue = (TextView) findViewById(R.id.tvDistanceValue);
+		sbDistance = (SeekBar) findViewById(R.id.sbDistance);
+		tvRadius = (TextView) findViewById(R.id.tvRadius);
 		
 		if (mSettings != null) {
-			int cost = mSettings.getInt("cost",  0);
-			sbCost.setProgress(cost);
-			tvCostValue.setText(String.valueOf(cost));
+			int distance = mSettings.getInt("distance",  30);
+			sbDistance.setProgress(distance);
+			tvRadius.setText(String.valueOf(distance));
 			etStartDate.setText(mSettings.getString("startDate", "8/18/2014"));
 			etStartTime.setText(mSettings.getString("startTime", "4:00 PM"));
 			etEndDate.setText(mSettings.getString("endDate", "8/28/2014"));
 			etEndTime.setText(mSettings.getString("endTime", "10:00 PM"));
-	//		int max_distance = mSettings.getInt("max_distance", 50);
-	//		sbDistance.setProgress(max_distance);
-
+			etCost.setText(String.valueOf(mSettings.getInt("cost", 60)));
 		}				
-		setupCostListener();
-//		setupDistanceListener();
+		// setupCostListener();
+		setupDistanceListener();
 		setupEventType();
 	}
-/*
-	public void setupDistanceListener(){
-		sbDistance.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				// TODO Auto-generated method stub
-				tvDistanceValue.setText(String.valueOf(progress) + " miles");
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				
-			}
-			
-		});
-	}
-	*/
-	public void setupCostListener() {
-		sbCost.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+	public void setupDistanceListener() {
+		sbDistance.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 			}
@@ -112,7 +86,7 @@ public class SettingsActivity extends FragmentActivity {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
-				tvCostValue.setText(String.valueOf(progress));	
+				tvRadius.setText(String.valueOf(progress));	
 			}
 		});
 	}
@@ -131,10 +105,11 @@ public class SettingsActivity extends FragmentActivity {
 		editor.putString("startTime", etStartTime.getText().toString());
 		editor.putString("startDate", etStartDate.getText().toString());
 		editor.putString("startTime", etStartTime.getText().toString());
-		editor.putInt("cost", sbCost.getProgress());
+		
+		editor.putInt("cost", sbDistance.getProgress());
 		editor.putInt("eventTypePos", spEventType.getSelectedItemPosition());
-	//	editor.putInt("max_distance", sbDistance.getProgress());
-		Log.d("debug", "SettingsActivity.onSave(): cost = " + sbCost.getProgress());
+		editor.putInt("cost", Integer.valueOf(etCost.getText().toString()));
+		Log.d("debug", "SettingsActivity.onSave(): distance = " + sbDistance.getProgress());
 		editor.commit();
 		Intent data = new Intent();
 		setResult(RESULT_OK, data);

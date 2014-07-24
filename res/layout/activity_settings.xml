@@ -56,46 +56,74 @@
         android:inputType="time"
         android:onClick="showEndTimePickerDialog" />
 
-    <SeekBar
-        android:id="@+id/sbCost"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spEventType"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/etEndDate"
-        android:paddingTop="10dp"
-        android:max="200"
-        android:progress="1" />
-
-
     <LinearLayout
         android:id="@+id/llCost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sbCost"
+        android:layout_below="@+id/etEndDate"
+        android:orientation="horizontal" >
+
+        <TextView
+	        android:id="@+id/tvCostLabel"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"        
+	        android:text="Budget: $ " />
+	        
+        <EditText
+	        android:id="@+id/etCost"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/etEndDate"
+	        android:ems="10"
+	        android:inputType="number" />
+    </LinearLayout>
+    
+    <SeekBar
+        android:id="@+id/sbDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spEventType"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/llCost"
+        android:paddingTop="10dp"
+        android:max="100"
+        android:progress="1" />
+
+
+    <LinearLayout
+        android:id="@+id/llDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sbDistance"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal" >
 
        	<TextView
-        android:id="@+id/tvCost"
+        android:id="@+id/tvDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"        
-        android:text="Cost: $ " />
+        android:text="Proximity: " />
         
         <TextView
-            android:id="@+id/tvCostValue"
+            android:id="@+id/tvRadius"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"            
             android:text="0" />
+        
+       	<TextView
+        android:id="@+id/tvDistanceUom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:text=" miles" />
     </LinearLayout>
         
 	<LinearLayout
 	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_height="75dp"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentRight="true"
-	    android:paddingTop="20dp"
-	    android:layout_below="@+id/llCost"
+	    android:paddingTop="25dp"
+	    android:layout_below="@+id/llDistance"
 	    android:orientation="horizontal" >
 
 	    <Button
@@ -108,6 +136,11 @@
 	        android:text="Cancel"
 	        android:textColor="#FDFFFF" />
 
+	    	     <View 
+	        android:layout_width="1dp"
+	        android:layout_height="match_parent"
+	        android:background="@drawable/vertical_line"/>
+	    
 	    <Button
 	        android:id="@+id/btnCreate"
 	        android:layout_width="match_parent"

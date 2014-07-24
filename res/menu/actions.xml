@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/action_search"
-          android:orderInCategory="5"
+          android:orderInCategory="1"
           android:title="Search"
           android:icon="@drawable/ic_search"
           android:showAsAction="ifRoom|collapseActionView"
           android:actionViewClass="android.widget.SearchView" />
 
     <item android:id="@+id/action_create"
-          android:orderInCategory="5"
+          android:orderInCategory="2"
           android:title="New Event"
           android:icon="@drawable/ic_create"
           android:showAsAction="ifRoom|collapseActionView" />
 
     <item android:id="@+id/action_settings"
-          android:orderInCategory="5"
-          android:title="Preferences"
-          android:icon="@drawable/ic_settings"
+          android:orderInCategory="3"
+          android:title="Search Filters"
+          android:icon="@drawable/ic_funnel"
           android:showAsAction="ifRoom|collapseActionView" />
     
 </menu>

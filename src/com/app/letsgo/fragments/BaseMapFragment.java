@@ -110,6 +110,7 @@ public class BaseMapFragment extends MapFragment implements OnMarkerClickListene
 		        recommend.setText(percentage);
 				TextView cost = (TextView) v.findViewById(R.id.map_item_cost);
 		        cost.setText("$" + event.getCost());
+		        
 				return v;
 			}
 

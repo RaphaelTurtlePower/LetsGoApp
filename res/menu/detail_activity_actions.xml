@@ -4,13 +4,13 @@
           android:orderInCategory="5"
           android:title="Share"
           android:icon="@drawable/ic_action_share"
-          android:showAsAction="ifRoom|collapseActionView"
+          android:showAsAction="always"
           android:actionProviderClass="android.widget.ShareActionProvider" />
 
     <item android:id="@+id/action_calendar"
           android:orderInCategory="5"
           android:title="Calendar"
-          android:icon="@drawable/ic_action_calendar"
-          android:showAsAction="ifRoom|collapseActionView" />
+          android:showAsAction="always"
+          android:icon="@drawable/ic_action_calendar" />
 
 </menu>

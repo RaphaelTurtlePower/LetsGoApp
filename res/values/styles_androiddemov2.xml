@@ -46,7 +46,7 @@
     </style>
 
     <style name="PopupMenu.Androiddemov2" parent="@android:style/Widget.Holo.Light.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_androiddemov2</item>	
+        <item name="android:popupBackground">@color/offwhite</item>	
     </style>
 
     <style name="DropDownListView.Androiddemov2" parent="@android:style/Widget.Holo.Light.ListView.DropDown">
@@ -59,7 +59,7 @@
 
     <style name="DropDownNav.Androiddemov2" parent="@android:style/Widget.Holo.Light.Spinner">
         <item name="android:background">@drawable/spinner_background_ab_androiddemov2</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_androiddemov2</item>
+        <item name="android:popupBackground">@color/offwhite</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_androiddemov2</item>
     </style>
     

@@ -103,6 +103,7 @@ public class LocalEventParcel implements Parcelable {
 		ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
 		mainQuery.include("location");
 		mainQuery.include("createdBy");
+		mainQuery.addDescendingOrder("created_at");
 		List<ParseObject> objects;
 		HashSet<String> ids = new HashSet<String>();
 		try {

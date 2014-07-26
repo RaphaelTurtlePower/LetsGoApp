@@ -59,7 +59,7 @@ public class SettingsActivity extends FragmentActivity {
 		tvRadius = (TextView) findViewById(R.id.tvRadius);
 		
 		if (mSettings != null) {
-			int distance = mSettings.getInt("distance",  30);
+			int distance = mSettings.getInt("max_distance",  30);
 			sbDistance.setProgress(distance);
 			tvRadius.setText(String.valueOf(distance));
 			etStartDate.setText(mSettings.getString("startDate", "8/18/2014"));
@@ -106,7 +106,7 @@ public class SettingsActivity extends FragmentActivity {
 		editor.putString("startDate", etStartDate.getText().toString());
 		editor.putString("startTime", etStartTime.getText().toString());
 		
-		editor.putInt("cost", sbDistance.getProgress());
+		editor.putInt("max_distance", sbDistance.getProgress());
 		editor.putInt("eventTypePos", spEventType.getSelectedItemPosition());
 		editor.putInt("cost", Integer.valueOf(etCost.getText().toString()));
 		Log.d("debug", "SettingsActivity.onSave(): distance = " + sbDistance.getProgress());
